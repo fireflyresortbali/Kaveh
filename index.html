@@ -3,6 +3,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+[hidden]{display:none!important}
 :root{
   color-scheme:dark;
   --ink:#090c17;--gold:#d6aa4e;--gold2:#f3dc97;--turq:#46b9ac;--turq2:#8fe0d4;--red:#c2463f;--text:#efe4c8;--muted:#a8a28c;
@@ -152,8 +153,60 @@ button{font:inherit;color:inherit}
   #modal .card{grid-template-columns:1fr;width:min(780px,100%);padding:14px}
   #modal h2{font-size:30px}#modal .text{font-size:16.5px}
 }
+/* Bronze, carved stone, and lapis: a compact RTS interface for landscape phones. */
+:root{
+  --ink:#101612;--gold:#caa765;--gold2:#f4dba1;--turq:#65aa9f;--turq2:#a7d8cb;
+  --red:#a73f35;--text:#eee5cc;--muted:#b5ae92;
+  --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='38' height='38'%3E%3Cg fill='none' stroke='%23dab97b' stroke-opacity='.08' stroke-width='1'%3E%3Cpath d='M19 1 37 19 19 37 1 19Z M19 8 30 19 19 30 8 19Z'/%3E%3Ccircle cx='19' cy='19' r='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+#vig{background:radial-gradient(ellipse at 48% 42%,transparent 49%,rgba(20,17,10,.34) 100%);mix-blend-mode:multiply}
+.panel{
+  background:var(--pattern),linear-gradient(148deg,rgba(50,56,44,.97),rgba(22,32,31,.98) 52%,rgba(12,22,23,.98));
+  border:1px solid #917a50;border-radius:2px;
+  box-shadow:inset 0 0 0 2px #182521,inset 0 0 0 3px rgba(226,194,129,.35),inset 0 20px 28px rgba(201,168,100,.045),0 6px 22px rgba(3,7,7,.62);
+}
+#top{border-top:2px solid #c5a26b;border-bottom:2px solid #554832;background:linear-gradient(180deg,rgba(79,73,53,.97),rgba(28,41,39,.98) 52%,rgba(16,28,29,.99));gap:10px}
+#top::before{content:'◆';font-size:15px;color:#e8c987;text-shadow:0 0 9px #d6aa4e;flex:none}
+.res{color:#f3e7cd;text-shadow:0 1px 2px #080d0e}
+.res svg{filter:drop-shadow(0 1px 1px #101010)}
+#age{color:#f5d99a;text-shadow:0 1px 2px #090e0e}
+.tb,.big.ghost{background:linear-gradient(180deg,#554f3b,#283936);border:1px solid #ac8954;box-shadow:inset 0 1px rgba(255,238,179,.15),0 2px 4px #0b1617;color:#f4e6c2}
+.tb:hover,.tb:active,.tb:focus-visible{background:linear-gradient(180deg,#806b45,#34514c)}
+.tb.on{background:#c9a363;color:#18221f}
+#obj{border-left:3px solid #bd9b61}
+#obj h3{font-variant:small-caps;letter-spacing:.11em}
+#objlist li i{border-color:#dbc17f}
+.msg{background:linear-gradient(180deg,rgba(47,51,40,.96),rgba(19,31,32,.97));border-color:#be9b65;box-shadow:0 5px 16px rgba(0,0,0,.4)}
+#bottom{border-top:2px solid #c2a066;background:var(--pattern),linear-gradient(155deg,#45483a,#1b2d2c 58%,#111f21)}
+#btog{background:linear-gradient(180deg,#6a5b3d,#253c39);border-color:#c3a66f;color:#f6deb0}
+#mini{border:2px solid #ba9a60;box-shadow:inset 0 0 0 2px #1a2a2a,0 0 0 2px #162322}
+.port,.queue div,.multi div{background:radial-gradient(circle at 50% 38%,#516456,#152528 75%);border-color:#b69a67}
+.hpb{background:#311d1a;border-color:#aa8d5e}
+.hpb i{background:linear-gradient(90deg,#326958,#92bc7d)}
+.cmd{background:linear-gradient(156deg,#51523c,#283c3a 52%,#152b2c);border-color:#88764f;box-shadow:inset 0 1px rgba(255,233,177,.14),0 2px 3px rgba(0,0,0,.32)}
+.cmd:hover,.cmd:active,.cmd:focus-visible{background:linear-gradient(160deg,#796944,#375550);border-color:#f0cf8b}
+.cmd .pic{border-color:#b9965d;border-radius:1px;box-shadow:inset 0 0 0 2px #102225,0 2px 5px #111}
+.cmd .pic.sym{background:radial-gradient(circle at 50% 32%,#68725b,#1d3436 72%)}
+.cmd .pic.sym.up{background:radial-gradient(circle at 50% 35%,#9b7842,#352817 75%)}
+.cmd .nm{color:#f6e8c8;text-shadow:0 1px 2px #101710}
+.pw{border-radius:50%;border:2px solid #d4b677;background:radial-gradient(circle at 35% 24%,#747353,#203534 73%,#101e20);box-shadow:0 2px 9px rgba(0,0,0,.5),inset 0 0 0 2px #17272a}
+#modal{background:radial-gradient(ellipse at center,rgba(14,25,23,.82),rgba(4,10,12,.94))}
+#modal .card{border:2px solid #bc9c65;box-shadow:inset 0 0 0 4px #142725,inset 0 0 0 5px rgba(227,198,132,.38),0 24px 60px #040a0b}
+#scene{border:2px solid #c6a56d;box-shadow:0 0 0 3px #162a2b,0 0 0 4px #896f48}
+#modal .eb{color:#abcbc3;letter-spacing:.2em}
+#modal h2{color:#f6dca0;text-shadow:0 2px 9px rgba(0,0,0,.55)}
+.big{background:linear-gradient(180deg,#f2d595,#ba8e4c);border:1px solid #f5dda6;box-shadow:inset 0 1px rgba(255,255,230,.5),0 3px 7px #0b1919;color:#172523}
+.big:hover,.big:active,.big:focus-visible{background:linear-gradient(180deg,#ffe4aa,#c79c5c)}
+.choice{background:linear-gradient(145deg,#4a4d3b,#1a3130);border-color:#9c8255}
+.choice:hover,.choice:active{background:linear-gradient(145deg,#676044,#264741);border-color:#e6c785}
+#loading{background:radial-gradient(ellipse at 50% 38%,#3b4b41,#14282a 53%,#091416);background-image:var(--pattern),radial-gradient(ellipse at 50% 38%,#3b4b41,#14282a 53%,#091416)}
+#loading h1{color:#f5dea8;text-shadow:0 3px 0 #4c3b25,0 9px 20px #050c0e}
+#loading .bar{height:7px;border:1px solid #b3925c;background:#0d1c1e;box-shadow:0 0 0 2px #213532}
+#loading .bar i{background:linear-gradient(90deg,#80683c,#efd595)}
+#loading .ey{color:#b6d7c7}
+#rotate{background:var(--pattern),radial-gradient(circle,#334a41,#0b1719)}
+@media (max-height:500px){#top{gap:7px}.res{font-size:12px}#top::before{font-size:11px}.tb{font-size:11px}}
 </style>
-
 <div id="game">
   <canvas id="view"></canvas>
   <canvas id="ov"></canvas>
@@ -587,12 +640,13 @@ function update(dt){now+=dt;buildGrid();
 const view=$('#view'),ov=$('#ov'),octx=ov.getContext('2d');
 let DPR=Math.min(window.devicePixelRatio||1,1.75),VW=1,VH=1;
 const R3=new T3.WebGLRenderer({canvas:view,antialias:true,powerPreference:'high-performance'});
-R3.outputEncoding=T3.sRGBEncoding;R3.toneMapping=T3.ACESFilmicToneMapping;R3.toneMappingExposure=1.0;R3.shadowMap.enabled=true;R3.shadowMap.type=T3.PCFSoftShadowMap;
-const scene=new T3.Scene();scene.fog=new T3.Fog(0xcbbfa6,70,170);
+R3.outputEncoding=T3.sRGBEncoding;R3.toneMapping=T3.ACESFilmicToneMapping;R3.toneMappingExposure=1.12;R3.shadowMap.enabled=true;R3.shadowMap.type=T3.PCFSoftShadowMap;
+const scene=new T3.Scene();scene.fog=new T3.Fog(0xd4bfa0,70,170);
 const camera=new T3.PerspectiveCamera(36,1,.5,700);
-const sunDir=new T3.Vector3(-.58,.7,.42).normalize();
-const sun=new T3.DirectionalLight(0xffe8cc,2.7);sun.castShadow=true;sun.shadow.mapSize.set(MOBILE?1024:1536,MOBILE?1024:1536);sun.shadow.bias=-.0005;sun.shadow.normalBias=.035;scene.add(sun);scene.add(sun.target);
-const hemi=new T3.HemisphereLight(0xd6e4ff,0x6e5a3e,.5);scene.add(hemi);
+const sunDir=new T3.Vector3(-.68,.62,.36).normalize();
+const sun=new T3.DirectionalLight(0xffd59b,2.2);sun.castShadow=true;sun.shadow.mapSize.set(MOBILE?1024:1536,MOBILE?1024:1536);sun.shadow.bias=-.0005;sun.shadow.normalBias=.035;sun.shadow.radius=2;scene.add(sun);scene.add(sun.target);
+const hemi=new T3.HemisphereLight(0xb8d4d8,0x705341,.85);scene.add(hemi);
+const bounce=new T3.DirectionalLight(0x9bc9cd,.38);bounce.position.set(35,22,-42);scene.add(bounce);
 const fowTex=new T3.DataTexture(fowData,MW,MH,T3.RGBAFormat);fowTex.magFilter=fowTex.minFilter=T3.LinearFilter;fowTex.needsUpdate=true;
 const whiteTex=new T3.DataTexture(new Uint8Array([255,255,255,255]),1,1,T3.RGBAFormat);whiteTex.needsUpdate=true;
 const U={uFow:{value:fowTex},uTime:{value:0}};
@@ -608,9 +662,11 @@ function tex(c,rep,srgb){const t=new T3.CanvasTexture(c);t.wrapS=t.wrapT=T3.Repe
 function noisy(x,w,h,amt,seed){const im=x.getImageData(0,0,w,h),d=im.data,R=mulberry32(seed);for(let j=0;j<h;j++)for(let i=0;i<w;i++){const k=(j*w+i)*4;const n=(R()-.5)*amt+(fbmP(i/32,j/32,Math.max(1,w/32),3)-.5)*amt*1.4;d[k]=clamp(d[k]+n,0,255);d[k+1]=clamp(d[k+1]+n,0,255);d[k+2]=clamp(d[k+2]+n,0,255)}x.putImageData(im,0,0)}
 function grayCanvas(n,f){const c=cvs(n,n),x=c.getContext('2d'),im=x.createImageData(n,n);for(let j=0;j<n;j++)for(let i=0;i<n;i++){const v=clamp(f(i,j),0,1)*255,k=(j*n+i)*4;im.data[k]=im.data[k+1]=im.data[k+2]=v;im.data[k+3]=255}x.putImageData(im,0,0);return c}
 function brickCanvas(base,mortar,seed){const c=cvs(256,256),x=c.getContext('2d');x.fillStyle=mortar;x.fillRect(0,0,256,256);const R=mulberry32(seed);
-  for(let r=0;r<16;r++){const off=(r%2)*16;for(let k=-1;k<9;k++){x.fillStyle=rgb(base,(R()-.5)*.16);x.fillRect(k*32+off+1.5,r*16+1.5,29,13)}}noisy(x,256,256,22,seed);return c}
-function stoneCanvas(base,seed){const c=cvs(256,256),x=c.getContext('2d');x.fillStyle=rgb(base,-.35);x.fillRect(0,0,256,256);const R=mulberry32(seed);
-  for(let r=0;r<8;r++){let px=-(R()*40);while(px<256){const w=36+R()*44;x.fillStyle=rgb(base,(R()-.5)*.2);x.fillRect(px+2,r*32+2,w-4,28);px+=w}}noisy(x,256,256,26,seed);return c}
+  for(let r=0;r<16;r++){const off=(r%2)*16;for(let k=-1;k<9;k++){const px=k*32+off+1.5,py=r*16+1.5;x.fillStyle=rgb(base,(R()-.5)*.28);x.fillRect(px,py,29,13);x.fillStyle='rgba(255,237,188,.19)';x.fillRect(px,py,28,1.5);x.fillStyle='rgba(55,34,25,.17)';x.fillRect(px,py+11,29,2)}}
+  for(let i=0;i<170;i++){x.fillStyle=R()<.6?'rgba(65,43,30,.17)':'rgba(242,216,171,.16)';const px=R()*256,py=R()*256;x.fillRect(px,py,1+R()*4,1+R()*2)}noisy(x,256,256,28,seed);return c}
+function stoneCanvas(base,seed){const c=cvs(256,256),x=c.getContext('2d');x.fillStyle=rgb(base,-.43);x.fillRect(0,0,256,256);const R=mulberry32(seed);
+  for(let r=0;r<8;r++){let px=-(R()*40);while(px<256){const w=36+R()*44,py=r*32+1.5;x.fillStyle=rgb(base,(R()-.5)*.3);x.fillRect(px+2,py,w-4,29);x.fillStyle='rgba(255,244,207,.23)';x.fillRect(px+3,py+1,w-7,1.5);x.fillStyle='rgba(34,32,30,.22)';x.fillRect(px+2,py+26,w-5,2);if(R()<.28){x.strokeStyle='rgba(45,39,31,.25)';x.lineWidth=1;x.beginPath();x.moveTo(px+R()*w,py+R()*10);x.lineTo(px+R()*w,py+16+R()*12);x.stroke()}px+=w}}
+  for(let i=0;i<280;i++){x.fillStyle=R()<.5?'rgba(62,55,41,.14)':'rgba(239,217,182,.14)';x.fillRect(R()*256,R()*256,1+R()*4,1+R()*2)}noisy(x,256,256,28,seed);return c}
 function plasterCanvas(base,seed){const c=cvs(256,256),x=c.getContext('2d');x.fillStyle=rgb(base);x.fillRect(0,0,256,256);noisy(x,256,256,20,seed);const R=mulberry32(seed);for(let i=0;i<40;i++){x.fillStyle=`rgba(90,60,30,${R()*.06})`;x.beginPath();x.ellipse(R()*256,R()*256,10+R()*40,6+R()*20,0,0,7);x.fill()}return c}
 function tileCanvas(a,b,g){const c=cvs(128,128),x=c.getContext('2d');x.fillStyle=b;x.fillRect(0,0,128,128);for(let j=0;j<8;j++)for(let i=0;i<9;i++){const cx=i*16+(j%2)*8,cy=j*16+8;x.fillStyle=a;x.beginPath();x.moveTo(cx,cy-7);x.lineTo(cx+7,cy);x.lineTo(cx,cy+7);x.lineTo(cx-7,cy);x.closePath();x.fill();x.fillStyle=g;x.fillRect(cx-1,cy-1,2,2)}noisy(x,128,128,10,5);return c}
 function woodCanvas(){const c=cvs(128,128),x=c.getContext('2d');for(let i=0;i<8;i++){x.fillStyle=rgb(0x7a5534,(hash2(i,3)-.5)*.25);x.fillRect(i*16,0,16,128);x.fillStyle='rgba(40,20,10,.5)';x.fillRect(i*16,0,1,128)}noisy(x,128,128,18,7);return c}
@@ -1025,15 +1081,15 @@ function reedCv(){return alphaCv(64,128,(x)=>{const R=mulberry32(17);for(let i=0
 function tileTex(size,f,seed){const c=cvs(size,size),x=c.getContext('2d'),im=x.createImageData(size,size),D=im.data;for(let j=0;j<size;j++)for(let i=0;i<size;i++){const k=(j*size+i)*4;const r=f(i,j);D[k]=clamp(r[0],0,255);D[k+1]=clamp(r[1],0,255);D[k+2]=clamp(r[2],0,255);D[k+3]=255}x.putImageData(im,0,0);return[c,x]}
 function wrapDraw(x,S,fn){for(const ox of [-S,0,S])for(const oy of [-S,0,S]){x.save();x.translate(ox,oy);fn();x.restore()}}
 function makeGroundTextures(){const S=512,P=16;
-  let [c,x]=tileTex(S,(i,j)=>{const n=fbmP(i/32,j/32,P,4),m=fbmP(i/8,j/8,64,2);const g=.72+n*.5;return[62*g+m*18,78*g+m*20,36*g+m*8]},1);
+  let [c,x]=tileTex(S,(i,j)=>{const n=fbmP(i/32,j/32,P,4),m=fbmP(i/8,j/8,64,2);const g=.76+n*.48;return[77*g+m*18,91*g+m*19,47*g+m*8]},1);
   { const R=mulberry32(41);for(let k=0;k<5200;k++){const px=R()*S,py=R()*S,l=5+R()*9,a=-1.57+(R()-.5)*1.4;const col=R()<.5?`rgba(${120+R()*50|0},${150+R()*40|0},${60+R()*30|0},.55)`:`rgba(28,44,16,.5)`;wrapDraw(x,S,()=>{x.strokeStyle=col;x.lineWidth=1.2;x.beginPath();x.moveTo(px,py);x.lineTo(px+Math.cos(a)*l,py+Math.sin(a)*l);x.stroke()})}}
   TX.gGrass=tex(c);
-  [c,x]=tileTex(S,(i,j)=>{const n=fbmP(i/32,j/32,16,4),m=fbmP(i/8,j/8,64,2);const g=.74+n*.36;return[172*g+m*14,148*g+m*12,104*g+m*8]},2);
+  [c,x]=tileTex(S,(i,j)=>{const n=fbmP(i/32,j/32,16,4),m=fbmP(i/8,j/8,64,2);const g=.77+n*.34;return[184*g+m*14,150*g+m*12,102*g+m*8]},2);
   { const R=mulberry32(42);for(let k=0;k<900;k++){const px=R()*S,py=R()*S,r=1.2+R()*3.2,sh=R()*.3;wrapDraw(x,S,()=>{x.fillStyle='rgba(60,44,28,.35)';x.beginPath();x.ellipse(px+1,py+1.2,r,r*.75,0,0,7);x.fill();x.fillStyle=`rgb(${150+R()*70|0},${140+R()*60|0},${120+R()*50|0})`;x.beginPath();x.ellipse(px,py,r,r*.75,sh,0,7);x.fill()})}
     for(let k=0;k<900;k++){const px=R()*S,py=R()*S,l=4+R()*7,a=-1.57+(R()-.5)*1.8;wrapDraw(x,S,()=>{x.strokeStyle=`rgba(${190+R()*40|0},${170+R()*30|0},${110},.6)`;x.lineWidth=1;x.beginPath();x.moveTo(px,py);x.lineTo(px+Math.cos(a)*l,py+Math.sin(a)*l);x.stroke()})}
     for(let k=0;k<40;k++){let px=R()*S,py=R()*S;wrapDraw(x,S,()=>{x.strokeStyle='rgba(80,60,36,.35)';x.lineWidth=1;x.beginPath();x.moveTo(px,py);let qx=px,qy=py;for(let s=0;s<5;s++){qx+=(R()-.5)*24;qy+=(R()-.5)*24;x.lineTo(qx,qy)}x.stroke()})}}
   TX.gDry=tex(c);
-  [c,x]=tileTex(S,(i,j)=>{const n=fbmP(i/64,j/64,8,5);const rg=1-Math.abs(fbmP(i/32+3,j/32,16,3)*2-1);const g=.62+n*.5+rg*.18;const lic=fbmP(i/16+9,j/16,32,3)>.66?1:0;return[126*g+lic*20,116*g+lic*26,102*g+lic*6]},3);
+  [c,x]=tileTex(S,(i,j)=>{const n=fbmP(i/64,j/64,8,5);const rg=1-Math.abs(fbmP(i/32+3,j/32,16,3)*2-1);const g=.65+n*.48+rg*.18;const lic=fbmP(i/16+9,j/16,32,3)>.66?1:0;return[138*g+lic*19,127*g+lic*23,110*g+lic*7]},3);
   { const R=mulberry32(43);for(let k=0;k<70;k++){let px=R()*S,py=R()*S;wrapDraw(x,S,()=>{x.strokeStyle='rgba(30,24,20,.55)';x.lineWidth=1+R()*1.5;x.beginPath();x.moveTo(px,py);let qx=px,qy=py;for(let s=0;s<6;s++){qx+=(R()-.5)*30;qy+=R()*20;x.lineTo(qx,qy)}x.stroke()})}}
   TX.gRock=tex(c);
   [c,x]=tileTex(S,(i,j)=>{const n=fbmP(i/32,j/32,16,3);const g=.8+n*.35;return[140*g,128*g,104*g]},4);
@@ -1087,7 +1143,7 @@ function terrainMaterial(){return patch(new T3.MeshStandardMaterial({roughness:.
   vec4 hg=vec4(dot(cG,vec3(.4)),dot(cD,vec3(.4)),dot(cR,vec3(.4))+.08,dot(cB,vec3(.4)));w=w*(hg+.3);w=pow(w,vec4(3.0));w/=(w.x+w.y+w.z+w.w+1e-5);
   vec3 col=cG*w.x+cD*w.y+cR*w.z+cB*w.w;
   float sn=smoothstep(5.0,6.3,vWP.y+(mac-.5)*2.4)*smoothstep(.8,.45,sl);col=mix(col,texture2D(tS,tuv).rgb,sn);
-  col*=vTn*(.84+.32*mac2);diffuseColor.rgb=col;`})}
+  float fine=texture2D(tM,vWP.xz*.12).r;col*=vTn*(.78+.33*mac2+.12*fine);diffuseColor.rgb=col;`})}
 
 // ================= world meshes =================
 let treeIM={},scatIM=[],scatByTile=new Map(),rallyObj=null;const CHUNKS=[];const CH=27;
@@ -1101,7 +1157,7 @@ const FR=new T3.Frustum(),FM=new T3.Matrix4();
 function cullChunks(){FM.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);FR.setFromProjectionMatrix(FM);const sc=sun.shadow.camera;for(const c of CHUNKS){c.im.visible=FR.intersectsSphere(c.sp)}}
 const ZERO=new T3.Matrix4().makeScale(0,0,0);
 function buildWorld3D(){
-  const sg=new T3.SphereGeometry(520,32,20);const cl=[];const P=sg.attributes.position;const cTop=new T3.Color(0x4f7fc0),cMid=new T3.Color(0x9fc0e0),cHor=new T3.Color(0xe6d6b4),cGr=new T3.Color(0x8a7658);const tmp=new T3.Color();
+  const sg=new T3.SphereGeometry(520,32,20);const cl=[];const P=sg.attributes.position;const cTop=new T3.Color(0x4a7793),cMid=new T3.Color(0x98b9b9),cHor=new T3.Color(0xf2d6a0),cGr=new T3.Color(0x9e7658);const tmp=new T3.Color();
   for(let i=0;i<P.count;i++){const y=P.getY(i)/520;if(y>0){if(y<.2)tmp.copy(cHor).lerp(cMid,y/.2);else tmp.copy(cMid).lerp(cTop,Math.min(1,(y-.2)/.6))}else tmp.copy(cHor).lerp(cGr,Math.min(1,-y*4));cl.push(tmp.r,tmp.g,tmp.b)}
   sg.setAttribute('color',new T3.Float32BufferAttribute(cl,3));const sky=new T3.Mesh(sg,new T3.MeshBasicMaterial({vertexColors:true,side:T3.BackSide,fog:false,depthWrite:false}));sky.renderOrder=-1;scene.add(sky);scene.userData.sky=sky;
   const pm=new T3.PMREMGenerator(R3);const es=new T3.Scene();es.add(sky.clone());scene.environment=pm.fromScene(es,.04).texture;
@@ -1112,7 +1168,7 @@ function buildWorld3D(){
     for(const nm in A){const src=tg.attributes[nm].array,k=A[nm];const arr=new Float32Array((nx+1)*(nz+1)*k);let o=0;for(let z=0;z<=nz;z++)for(let x=0;x<=nx;x++){const si=((cz+z)*SS+(cx+x))*k;for(let q=0;q<k;q++)arr[o++]=src[si+q]}g.setAttribute(nm,new T3.BufferAttribute(arr,k))}
     const idx=[];for(let z=0;z<nz;z++)for(let x=0;x<nx;x++){const a=z*(nx+1)+x,b=a+nx+1;idx.push(a,b,a+1,b,b+1,a+1)}g.setIndex(idx);g.computeBoundingSphere();const m=new T3.Mesh(g,tm);m.receiveShadow=true;scene.add(m)}}
   const wg=new T3.PlaneGeometry(HEXT,HEXT,1,1);wg.rotateX(-Math.PI/2);wg.translate(HOFF+HEXT/2,WL,HOFF+HEXT/2);
-  const wmat=patch(new T3.MeshStandardMaterial({color:0x2b6072,roughness:.06,metalness:.35,transparent:true,opacity:.84,normalMap:TX.waterN,normalScale:new T3.Vector2(.35,.35)}),{key:'water'});
+  const wmat=patch(new T3.MeshStandardMaterial({color:0x3a8190,roughness:.1,metalness:.25,transparent:true,opacity:.86,normalMap:TX.waterN,normalScale:new T3.Vector2(.35,.35)}),{key:'water2',fHead:'uniform float uTime;\n',fMap:'float wave=sin(vFw.x*5.7+uTime*1.4)*sin(vFw.y*4.1-uTime*.8);float glint=pow(max(0.0,wave),12.0)*.18;diffuseColor.rgb+=vec3(.15,.22,.2)*glint;'});
   const waterMesh=new T3.Mesh(wg,wmat);waterMesh.receiveShadow=true;scene.add(waterMesh);
   const tmpM=new T3.Matrix4(),q=new T3.Quaternion(),sv=new T3.Vector3(),pv=new T3.Vector3(),col=new T3.Color(),UP=new T3.Vector3(0,1,0);
   const byKV={};TREES.forEach((t,k)=>{const key=t.kind+'_'+(t.v||0);t.key=key;(byKV[key]||(byKV[key]=[])).push(k)});
