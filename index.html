@@ -286,6 +286,7 @@ function rgb(hex,v){v=v||0;const k=1+v;return `rgb(${clamp(((hex>>16)&255)*k,0,2
 
 // ================= map design (tile units) =================
 const RIV=[[24,-3],[27,12],[35,28],[50,39],[66,43.5],[83,47]];
+const MAP_PATHS=[[14,64,24,56],[24,56,34,44],[34,44,43.25,34.05],[14,64,30,60],[30,60,46,52],[46,52,59.6,41.7],[43.25,34.05,52,24],[52,24,64.5,15],[59.6,41.7,63,28],[63,28,64.5,15]];
 const FORDS=[[31,20],[43.25,34.05],[59.6,41.7],[74.5,45.25]];
 const MSEG=[[-2,1.5,82,1.5,5.5],[0,8,11,34,7],[11,34,4,50,5],[40,14,43,26,3.2],[79.5,0,79.5,80,3],[-1,79.5,34,79.5,2.6],[60,79.5,81,79.5,2.6],[-.5,0,-.5,80,2.2]];
 const PBASE=[14,64],PAL=[64.5,11.5],PITS=[[55.5,18.5],[72.5,22.5]],PEN=[58.5,59.5];
@@ -321,9 +322,8 @@ async function genWorldData(prog){
     let t=T_LAND;if(dr<riverW(u,v))t=fordNear(u,v)?T_FORD:T_WATER;else if(m>.56)t=T_MTN;if(tx===0||ty===0||tx===MW-1||ty===MH-1)t=T_MTN;ttype[i]=t;tblk[i]=(t===T_WATER||t===T_MTN)?1:0}
   for(let j=0;j<HN;j++){for(let i=0;i<HN;i++)HGT[j*HN+i]=heightFn(HOFF+i/HR,HOFF+j/HR);if(j%30===0){prog(.02+j/HN*.25);await wait()}}
   const NV=HN*HN;SPL=new Float32Array(NV*4);TINT=new Float32Array(NV*3);
-  const pathSeg=[[14,64,24,56],[24,56,34,44],[34,44,43.25,34.05],[14,64,30,60],[30,60,46,52],[46,52,59.6,41.7],[43.25,34.05,52,24],[52,24,64.5,15],[59.6,41.7,63,28],[63,28,64.5,15]];
   for(let j=0;j<HN;j++){for(let i=0;i<HN;i++){const u=HOFF+i/HR,v=HOFF+j/HR,k=j*HN+i;const m=mountain(u,v),dr=riverD(u,v),w=riverW(u,v),mo=moist(u,v,dr),sc=scorchAt(u,v);
-      let pd=9;for(const sg of pathSeg){const d=segD(u,v,sg[0],sg[1],sg[2],sg[3]);if(d<pd)pd=d}const pw=clamp(1-pd/.9,0,1)*.85;
+      let pd=9;for(const sg of MAP_PATHS){const d=segD(u,v,sg[0],sg[1],sg[2],sg[3]);if(d<pd)pd=d}const pw=clamp(1-pd/.9,0,1)*.85;
       const bed=dr<w?1:dr<w+.9?1-(dr-w)/.9:0;const fkk=fordK(u,v);const rock=clamp((m-.34)/.22,0,1);
       const g=clamp(mo*1.3-.12,0,1)*(1-rock)*(1-bed)*(1-pw),dd=(1-g)*(1-rock)*(1-bed);const sum=g+dd+rock+bed+1e-5;
       SPL[k*4]=g/sum;SPL[k*4+1]=dd/sum;SPL[k*4+2]=rock/sum;SPL[k*4+3]=bed/sum;
@@ -648,13 +648,13 @@ function update(dt){now+=dt;buildGrid();
 const view=$('#view'),ov=$('#ov'),octx=ov.getContext('2d');
 let DPR=Math.min(window.devicePixelRatio||1,1.75),VW=1,VH=1;
 const R3=new T3.WebGLRenderer({canvas:view,antialias:true,powerPreference:'high-performance'});
-R3.outputEncoding=T3.sRGBEncoding;R3.toneMapping=T3.ACESFilmicToneMapping;R3.toneMappingExposure=1.12;R3.shadowMap.enabled=true;R3.shadowMap.type=T3.PCFSoftShadowMap;
-const scene=new T3.Scene();scene.fog=new T3.Fog(0xd4bfa0,70,170);
+R3.outputEncoding=T3.sRGBEncoding;R3.toneMapping=T3.ACESFilmicToneMapping;R3.toneMappingExposure=1.02;R3.shadowMap.enabled=true;R3.shadowMap.type=T3.PCFSoftShadowMap;
+const scene=new T3.Scene();scene.fog=new T3.Fog(0xc7b99d,70,170);
 const camera=new T3.PerspectiveCamera(36,1,.5,700);
 const sunDir=new T3.Vector3(-.68,.62,.36).normalize();
-const sun=new T3.DirectionalLight(0xffd59b,2.2);sun.castShadow=true;sun.shadow.mapSize.set(MOBILE?1024:1536,MOBILE?1024:1536);sun.shadow.bias=-.0005;sun.shadow.normalBias=.035;sun.shadow.radius=2;scene.add(sun);scene.add(sun.target);
-const hemi=new T3.HemisphereLight(0xb8d4d8,0x705341,.85);scene.add(hemi);
-const bounce=new T3.DirectionalLight(0x9bc9cd,.38);bounce.position.set(35,22,-42);scene.add(bounce);
+const sun=new T3.DirectionalLight(0xffd7a0,2.45);sun.castShadow=true;sun.shadow.mapSize.set(MOBILE?1024:2048,MOBILE?1024:2048);sun.shadow.bias=-.0005;sun.shadow.normalBias=.025;sun.shadow.radius=2.5;scene.add(sun);scene.add(sun.target);
+const hemi=new T3.HemisphereLight(0xb8d4df,0x584536,.68);scene.add(hemi);
+const bounce=new T3.DirectionalLight(0x91b8c1,.32);bounce.position.set(35,22,-42);scene.add(bounce);
 const fowTex=new T3.DataTexture(fowData,MW,MH,T3.RGBAFormat);fowTex.magFilter=fowTex.minFilter=T3.LinearFilter;fowTex.needsUpdate=true;
 const whiteTex=new T3.DataTexture(new Uint8Array([255,255,255,255]),1,1,T3.RGBAFormat);whiteTex.needsUpdate=true;
 const U={uFow:{value:fowTex},uTime:{value:0}};
@@ -960,7 +960,10 @@ function simurghModel(){const root=new T3.Group();const body=new T3.Group();root
 // ================= building models (world units, origin footprint centre, front = +Z) =================
 function flagOn(g,x,y,z,team,list,big){const p=new T3.Group();p.userData.fl=1;p.position.set(x,y,z);g.add(p);const ph=big?1.2:.7;mesh(cylg(.02,.02,ph,6),MAT.dwood,0,ph/2,0,p);
   const f=new T3.Group();f.position.y=big?1.05:.58;p.add(f);const fw=big?.6:.38;mesh(box(fw,big?.34:.22,.01),clothD(TEAMC[team].main),fw/2,0,0,f);list.push(f);return p}
-function plinth(g,w,d,m){mesh(box(w,1.1,d),m||MAT.stoneL,0,-.5,0,g)}
+function plinth(g,w,d,m){const stone=m||MAT.stoneL;mesh(box(w,1.1,d),stone,0,-.5,0,g);
+  // A projecting foundation catches the light and separates walls from the terrain.
+  for(const z of [-d/2,d/2])mesh(box(w+.11,.075,.11),stone,0,.075,z,g);
+  for(const x of [-w/2,w/2])mesh(box(.11,.075,d+.11),stone,x,.075,0,g)}
 function archFaceGeo(w,h,aw,ah,dp){return geo(`arch${w},${h},${aw},${ah},${dp}`,()=>{const s=new T3.Shape();s.moveTo(-w/2,0);s.lineTo(w/2,0);s.lineTo(w/2,h);s.lineTo(-w/2,h);s.lineTo(-w/2,0);
   const p=new T3.Path();const y0=.05;p.moveTo(-aw/2,y0);p.lineTo(aw/2,y0);p.lineTo(aw/2,ah*.55);p.quadraticCurveTo(aw/2-aw*.02,ah*.95,0,ah);p.quadraticCurveTo(-aw/2+aw*.02,ah*.95,-aw/2,ah*.55);p.lineTo(-aw/2,y0);s.holes.push(p);
   return new T3.ExtrudeGeometry(s,{depth:dp,bevelEnabled:false,curveSegments:10})})}
@@ -980,6 +983,9 @@ tc(g,T,team,U){plinth(g,3.95,3.95);mesh(box(3.4,.06,3.4),MAT.pave,0,.03,0,g,fals
   mesh(box(.12,1.62,.18),MAT.tileT,-.62,.81,-.16,g);mesh(box(.12,1.62,.18),MAT.tileT,.62,.81,-.16,g);
   dome(g,0,1.48,-.9,.55,MAT.tileT);U.glows.push(glow(g,0,.35,-.02,0xffa040,.8))},
 house(g,T,team,U){plinth(g,1.9,1.9);mesh(box(1.5,.95,1.3),MAT.brick,0,.475,.05,g);mesh(box(1.58,.1,1.38),MAT.plaster,0,1.0,.05,g);
+  for(const z of [-.66,.76])mesh(box(1.62,.21,.09),MAT.brick,0,1.15,z,g);
+  for(const x of [-.76,.76])mesh(box(.09,.21,1.5),MAT.brick,x,1.15,.05,g);
+  mesh(box(.63,.025,.48),MAT.tileT,-.35,1.075,-.08,g,false);
   mesh(box(.38,1.6,.38),MAT.brick,.45,.8,-.42,g);mesh(box(.44,.08,.44),MAT.plaster,.45,1.62,-.42,g);for(const z of [-.62,-.22])for(let i=0;i<3;i++)mesh(box(.05,.36,.02),MAT.dark,.35+i*.1,1.36,z,g,false);
   facade(g,.34,.52,-.3,.26,.705,MAT.door);const aw=mesh(box(.5,.03,.2),cloth(T.main),-.3,.58,.78,g);aw.rotation.x=.35;facade(g,.18,.2,.3,.6,.705,MAT.dark)},
 store(g,T,team,U){plinth(g,1.9,1.9);mesh(box(1.6,.9,.2),MAT.brick,0,.45,-.62,g);mesh(box(.16,.9,1.3),MAT.brick,-.72,.45,0,g);mesh(box(.16,.9,1.3),MAT.brick,.72,.45,0,g);mesh(box(1.72,.08,1.45),MAT.wood,0,.94,0,g);
@@ -1195,6 +1201,7 @@ function buildWorld3D(){
     addS(L,TG.bark,barkMat('juniper'),sf,false);addS(L,TG.core,coreMat('shrub'),sf,true);addS(L,TG.leaves,leafMat('shrub'),sf,false)}
   const rkm=mat('rock2',{map:TX.gRock,roughness:.95});const rg=new T3.SphereGeometry(.5,12,9);displace(rg,.14,2.2,1);
   addS(SCAT.rocks,rg,rkm,(p,j,M,c)=>{const m=tmv[(p[1]|0)*MW+(p[0]|0)];const big=m>.3?p[2]*.55:p[2]*.18;pv.set(p[0],heightAt(p[0],p[1])-big*.18,p[1]);q.setFromEuler(new T3.Euler(hash2(j,1)*.5,p[3],hash2(j,6)*.4));sv.set(big,big*(.5+hash2(j,2)*.35),big*(.75+hash2(j,3)*.4));M.compose(pv,q,sv);const gv=.8+hash2(j,4)*.35;c.setRGB(gv,gv*.97,gv*.92)},true);
+  buildRoadDetails();
   // stone causeways at the fords
   {const sm=mat('slab',{map:TX.stoneL,roughness:.9});const slabs=[];for(const f of FORDS){let best=null,bd=1e9;for(let i=0;i<RIV.length-1;i++){const a=RIV[i],b=RIV[i+1];const d=segD(f[0],f[1],a[0],a[1],b[0],b[1]);if(d<bd){bd=d;best=[b[0]-a[0],b[1]-a[1]]}}const L=Math.hypot(best[0],best[1]);const rx=best[0]/L,rz=best[1]/L,px=-rz,pz=rx;
       for(let k=-7;k<=7;k++)for(let w=-2;w<=2;w++){const u=f[0]+px*k*.36+rx*w*.4+(hash2(k,w)-.5)*.08,v=f[1]+pz*k*.36+rz*w*.4+(hash2(w,k)-.5)*.08;if(riverD(u,v)>riverW(u,v)+.5)continue;slabs.push([u,v,Math.atan2(rx,rz)+(hash2(k*3,w)-.5)*.3,hash2(k,w*7)])}}
@@ -1204,6 +1211,23 @@ function buildWorld3D(){
   for(const r of [[27,49],[47,58],[69,53]]){if(ttype[(r[1]|0)*MW+(r[0]|0)]!==T_LAND)continue;const g=new T3.Group();g.position.set(r[0],heightAt(r[0],r[1]),r[1]);g.rotation.y=hash2(r[0],r[1])*6;scene.add(g);
     for(let i=0;i<4;i++){const h=.4+hash2(i,r[0])*1.1;mesh(cylg(.11,.13,h,12),MAT.stoneL,-.8+i*.55,h/2,0,g);mesh(box(.3,.1,.3),MAT.stoneL,-.8+i*.55,.05,0,g)}const fc=mesh(cylg(.11,.12,1.2,12),MAT.stoneL,.2,.1,.7,g);fc.rotation.z=Math.PI/2;fc.rotation.y=.4;mesh(box(1.4,.5,.25),MAT.brick,.1,.25,-.7,g);mesh(box(.5,.3,.25),MAT.brick,-.6,.15,-.4,g).rotation.y=.8}
   rallyObj=new T3.Group();mesh(cylg(.02,.02,.8,5),MAT.dwood,0,.4,0,rallyObj,false);mesh(box(.35,.2,.01),clothD(TEAMC[0].main),.18,.68,0,rallyObj,false);rallyObj.visible=false;scene.add(rallyObj);
+}
+// Irregular flagstones break up the painted paths and give the map a sense of scale.
+// One instanced draw call keeps the detail affordable on phones.
+function buildRoadDetails(){const stones=[],R=mulberry32(7251);
+  for(const [ax,az,bx,bz] of MAP_PATHS){const len=Math.hypot(bx-ax,bz-az),nx=-(bz-az)/len,nz=(bx-ax)/len;
+    for(let d=1;d<len-1;d+=.42){if(R()<.28)continue;for(const side of [-1,0,1]){
+      if(R()<(side===0?.12:.42))continue;const off=side*.31+(R()-.5)*.24;
+      const x=ax+(bx-ax)*d/len+nx*off,z=az+(bz-az)*d/len+nz*off;
+      if(x<1||z<1||x>79||z>79||riverD(x,z)<riverW(x,z)+.45||Math.hypot(x-PBASE[0],z-PBASE[1])<3.5||Math.hypot(x-PAL[0],z-PAL[1])<4.5)continue;
+      if(ttype[(z|0)*MW+(x|0)]!==T_LAND)continue;
+      stones.push([x,z,.13+R()*.12,.09+R()*.09,R()*Math.PI]);
+    }}
+  }
+  const g=new T3.IcosahedronGeometry(1,0),m=mat('roadFlagstones',{color:0xb09b78,roughness:1,map:TX.stoneL});
+  const im=new T3.InstancedMesh(g,m,stones.length),M=new T3.Matrix4(),Q=new T3.Quaternion(),S=new T3.Vector3(),P=new T3.Vector3(),C=new T3.Color();
+  stones.forEach((s,i)=>{P.set(s[0],heightAt(s[0],s[1])+.012,s[1]);Q.setFromAxisAngle(new T3.Vector3(0,1,0),s[4]);S.set(s[2],.033,s[3]);M.compose(P,Q,S);im.setMatrixAt(i,M);const v=.75+hash2(i,17)*.42;C.setRGB(v,v*.96,v*.86);im.setColorAt(i,C)});
+  im.receiveShadow=true;im.frustumCulled=false;scene.add(im);
 }
 function buildWorld3DLight(){const sg=new T3.SphereGeometry(520,16,10);const sky=new T3.Mesh(sg,new T3.MeshBasicMaterial({color:0x9fc0e0,side:T3.BackSide}));const pm=new T3.PMREMGenerator(R3);const es=new T3.Scene();es.add(sky);scene.environment=pm.fromScene(es,.04).texture}
 function onPlaced(e){if(!scatIM.length)return;for(let y=e.ty;y<e.ty+e.h;y++)for(let x=e.tx;x<e.tx+e.w;x++){const a=scatByTile.get(y*MW+x);if(!a)continue;for(const [im,j] of a){im.setMatrixAt(j,ZERO);im.instanceMatrix.needsUpdate=true}}}
@@ -1215,10 +1239,15 @@ function resetScatterTrees(){for(const im of scatIM){im.instanceMatrix.array.set
 
 // ================= sync entities -> 3D =================
 const objs=new Map();const fxObjs=new Map();const projObjs=[];const ringPool=[];let ringUsed=0;
-function clearWorld3D(){for(const [,o] of objs)scene.remove(o.root);objs.clear();for(const [,o] of fxObjs)scene.remove(o);fxObjs.clear();if(scatIM.length)resetScatterTrees()}
+const contactGeo=new T3.PlaneGeometry(1,1).rotateX(-Math.PI/2);
+let contactMat=null;
+function clearWorld3D(){for(const [,o] of objs){scene.remove(o.root);if(o.contact)scene.remove(o.contact)}objs.clear();for(const [,o] of fxObjs)scene.remove(o);fxObjs.clear();if(scatIM.length)resetScatterTrees()}
 function bldBase(e){const x0=e.tx,z0=e.ty;let s=0,mx=-99;for(const p of [[0,0],[e.w,0],[0,e.h],[e.w,e.h],[e.w/2,e.h/2]]){const h=heightAt(x0+p[0],z0+p[1]);s+=h;mx=Math.max(mx,h)}return Math.max(s/5,mx-.25)}
 function makeObj(e){let o;
-  if(e.kind==='unit'){const R=unitModel(e.type,e.team);R.root.traverse(m=>{if(m.isMesh)m.castShadow=true});o={kind:'unit',root:R.root,R,yaw:0,px:e.x,py:e.y}}
+  if(e.kind==='unit'){const R=unitModel(e.type,e.team);R.root.traverse(m=>{if(m.isMesh)m.castShadow=true});
+    contactMat ||= new T3.MeshBasicMaterial({map:TX.soft,color:0x291f19,transparent:true,opacity:.43,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2});
+    const contact=new T3.Mesh(contactGeo,contactMat);const radius=clamp(DEF[e.type].r/TILE*2.8,.62,1.18);contact.scale.set(radius,1,radius*.72);contact.renderOrder=1;scene.add(contact);
+    o={kind:'unit',root:R.root,R,contact,yaw:0,px:e.x,py:e.y}}
   else if(e.kind==='bld'){const lv=bldLevel(e.type,e.team);const b=bldModel(e.type,e.team,lv);o={kind:'bld',root:b.root,U:b.U,lvl:lv};b.root.position.set(e.tx+e.w/2,bldBase(e)-(e.type==='farm'?.02:0),e.ty+e.h/2)}
   else{if(e.type==='tree')return null;const m=e.type==='mine'?mineModel():bushModel();o={kind:'res',root:m.root};m.root.position.set(e.tx+e.w/2,heightAt(e.tx+e.w/2,e.ty+e.h/2),e.ty+e.h/2);m.root.rotation.y=hash2(e.tx,e.ty)*6}
   scene.add(o.root);objs.set(e.id,o);return o}
@@ -1227,17 +1256,18 @@ function shown(e){if(e.team===0)return true;if(e.kind==='unit')return !!vis[clam
 const _sp=new T3.Sphere(new T3.Vector3(),1.4);
 function sync(dt,t){const live=new Set();
   for(const e of ents){if(e.kind==='res'&&e.type==='tree')continue;live.add(e.id);let o=objs.get(e.id);if(!o)o=makeObj(e);if(!o)continue;
-    if(e.kind==='unit'){o.root.visible=!e.fallen&&shown(e);if(!o.root.visible)continue;const X=e.x/TILE,Z=e.y/TILE;
+    if(e.kind==='unit'){o.root.visible=!e.fallen&&shown(e);o.contact.visible=o.root.visible;if(!o.root.visible)continue;const X=e.x/TILE,Z=e.y/TILE;
       const dx=e.x-o.px,dz=e.y-o.py;let ty=o.yaw;if(dx*dx+dz*dz>.02)ty=Math.atan2(dx,dz);else if(e.tgx!==undefined&&(e.inRange||e.anim==='work'))ty=Math.atan2(e.tgx-e.x,e.tgy-e.y);
       o.yaw=lerpAng(o.yaw,ty,Math.min(1,dt*9));o.px=e.x;o.py=e.y;o.root.rotation.y=o.yaw;
-      const gy=heightAt(X,Z);o.root.position.set(X,e.fly?Math.max(gy,WL)+2.3:Math.max(gy,WL-.12),Z);_sp.center.set(X,gy+.5,Z);if(FR.intersectsSphere(_sp)){o.root.visible=true;animUnit(o.R,e,t,o.skip?dt*2:dt)}else o.root.visible=false}
+      const gy=heightAt(X,Z);o.root.position.set(X,e.fly?Math.max(gy,WL)+2.3:Math.max(gy,WL-.12),Z);o.contact.position.set(X,Math.max(gy,WL)+.035,Z);
+      _sp.center.set(X,gy+.5,Z);if(FR.intersectsSphere(_sp)){o.root.visible=true;animUnit(o.R,e,t,o.skip?dt*2:dt)}else{o.root.visible=false;o.contact.visible=false}}
     else if(e.kind==='bld'){if(o.lvl!==bldLevel(e.type,e.team)){scene.remove(o.root);objs.delete(e.id);o=makeObj(e)}o.root.visible=shown(e);const s=e.done?1:.06+.94*e.bp;o.root.scale.set(1,s,1);
       const UU=o.U;UU.flags.forEach((f,i)=>{f.rotation.y=Math.sin(t*2.6+i*1.7+e.id)*.35});if(UU.fire){UU.fire.visible=e.done;UU.fire.children.forEach((c,i)=>{c.scale.set(1+Math.sin(t*13+i*2)*.12,1+Math.sin(t*9+i)*.25,1+Math.cos(t*11+i)*.12)})}
       UU.glows.forEach((g,i)=>{g.visible=e.done;g.material.opacity=.55+Math.sin(t*6+i*2)*.15+(Math.random()*.08)});
       if(UU.captives)UU.captives.forEach((h,i)=>{h.head.rotation.x=.3+Math.sin(t*.8+i)*.1})}
     else o.root.visible=!!expl[e.ty*MW+e.tx]}
   for(const [id,o] of objs){if(live.has(id))continue;
-    if(o.kind==='unit'){if(!o.dying){o.dying=.001}o.dying+=dt;o.root.rotation.x=-Math.min(1,o.dying*2.2)*Math.PI/2*.95;if(o.dying>2.6)o.root.position.y-=dt*.35;if(o.dying>5){scene.remove(o.root);objs.delete(id)}}
+    if(o.kind==='unit'){if(!o.dying){o.dying=.001;scene.remove(o.contact)}o.dying+=dt;o.root.rotation.x=-Math.min(1,o.dying*2.2)*Math.PI/2*.95;if(o.dying>2.6)o.root.position.y-=dt*.35;if(o.dying>5){scene.remove(o.root);objs.delete(id)}}
     else{scene.remove(o.root);objs.delete(id)}}}
 const tmpV=new T3.Vector3();
 function spriteFx(col,op,add){return new T3.Sprite(new T3.SpriteMaterial({map:TX.soft,color:col,transparent:true,opacity:op,depthWrite:false,blending:add?T3.AdditiveBlending:T3.NormalBlending}))}
