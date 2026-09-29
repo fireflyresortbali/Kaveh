@@ -212,6 +212,35 @@ button{font:inherit;color:inherit}
 #loading .ey{color:#b6d7c7}
 #rotate{background:var(--pattern),radial-gradient(circle,#334a41,#0b1719)}
 @media (max-height:500px){#top{gap:7px}.res{font-size:12px}#top::before{font-size:11px}.tb{font-size:11px}}
+
+/* compact command bar with flat icons */
+:root{--panel:78px}
+#bottom{background:linear-gradient(180deg,rgba(28,38,36,.93),rgba(14,22,22,.95));border:1px solid rgba(201,166,99,.55);border-top:1.5px solid #c9a663;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.45);padding:5px 6px;gap:8px}
+#btog{background:rgba(22,32,31,.95);border-color:rgba(201,166,99,.6);border-radius:8px 8px 0 0;height:22px;top:-22px;font-size:11px}
+#mini{border:1px solid rgba(201,166,99,.55);border-radius:6px;box-shadow:none}
+.port{width:46px;height:46px;border-radius:8px;overflow:hidden;border:1px solid rgba(201,166,99,.55)}.port img{width:46px;height:46px}
+.info .nm{font-size:14px}.stats{font-size:11px}.hpb{max-width:150px}
+.desel{width:26px;height:26px;border-radius:6px;font-size:13px;background:rgba(14,22,22,.9)}
+#cmds{grid-auto-columns:58px;gap:2px;align-items:start}
+.cmd,.cmd:hover,.cmd:active,.cmd:focus-visible{height:auto!important;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;gap:2px!important;outline:none}
+.cmd .pic.g{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;border:1px solid rgba(233,200,130,.55);background:linear-gradient(160deg,#3b5a54,#1c302e);box-shadow:inset 0 1px rgba(255,240,200,.18),0 2px 4px rgba(0,0,0,.4);color:#f1d690;overflow:visible}
+.cmd .pic.g.tr{background:linear-gradient(160deg,#4a4e7a,#232845)}
+.cmd .pic.g.up{background:linear-gradient(160deg,#7a5f32,#3a2b16)}
+.cmd .pic.g.red{background:linear-gradient(160deg,#8a3a32,#4a1c18);color:#fff2e0}
+.cmd:hover .pic.g,.cmd:active .pic.g,.cmd:focus-visible .pic.g{border-color:#f6dca0;filter:brightness(1.18)}
+.cmd:active .pic.g{transform:scale(.94)}
+.cmd .pic.g .gl{width:26px;height:26px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.55))}
+.cmd .badge.up{right:-3px;bottom:-3px;top:auto;font-size:9px;color:#9ff0d4}
+.cmd.off{opacity:.45}.cmd.off .pic.g{filter:saturate(.3)}
+.cmd .nm{font-size:9px;max-width:58px;font-weight:600;letter-spacing:-.01em}
+.cmd .c{font-size:9px;gap:2px}.ri{width:9px;height:9px}
+.queue div{border-radius:6px;overflow:hidden}.qsym{background:#2a3a37;color:#f1d690}.qsym .gl{width:20px;height:20px}
+@media (min-width:1100px) and (min-height:700px){
+  :root{--panel:100px}
+  #cmds{grid-template-columns:repeat(auto-fill,64px);grid-auto-columns:auto;max-width:40vw;min-width:260px}
+  .cmd .pic.g{width:46px;height:46px}.cmd .pic.g .gl{width:30px;height:30px}.cmd .nm{font-size:10px;max-width:64px}.cmd .c{font-size:10px}
+  .port{width:60px;height:60px}.port img{width:60px;height:60px}.info .nm{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -397,18 +426,18 @@ const RATE={bush:1,farm:.7,tree:.8,mine:.7};let CAP=10;
 const BASE_DEF=JSON.parse(JSON.stringify(DEF)),BASE_RATE=Object.assign({},RATE);
 const TECH={
   axes:{at:'store',name:'Iron Axes',short:'Iron Axes',cost:{wood:75,gold:25},time:20,eff:'Villagers chop wood 30% faster.',apply(){RATE.tree*=1.3}},
-  shafts:{at:'store',name:'Deep Shafts',short:'Deep Shafts',cost:{wood:100,food:50},time:25,eff:'Villagers mine gold 30% faster.',apply(){RATE.mine*=1.3}},
+  shafts:{at:'store',name:'Deep Shafts',short:'Shafts',cost:{wood:100,food:50},time:25,eff:'Villagers mine gold 30% faster.',apply(){RATE.mine*=1.3}},
   qanat:{at:'store',name:'Irrigation',short:'Irrigation',cost:{wood:120,gold:40},time:30,eff:'Water channels to the fields: farms produce 40% more food.',apply(){RATE.farm*=1.4}},
   baskets:{at:'store',name:'Wide Baskets',short:'Baskets',cost:{food:75,wood:50},time:20,eff:'Villagers carry 15 instead of 10 before walking back.',apply(){CAP=15}},
-  spearheads:{at:'barracks',name:'Bronze Spearheads',short:'Spearheads',cost:{food:100,gold:60},time:30,eff:'Spearmen and horsemen deal +3 damage.',apply(){DEF.spearman.atk+=3;DEF.horseman.atk+=3}},
+  spearheads:{at:'barracks',name:'Bronze Spearheads',short:'Spears',cost:{food:100,gold:60},time:30,eff:'Spearmen and horsemen deal +3 damage.',apply(){DEF.spearman.atk+=3;DEF.horseman.atk+=3}},
   armour:{at:'barracks',name:'Layered Armour',short:'Armour',cost:{food:120,gold:80},time:35,eff:'Spearmen and archers get 30% more hit points.',apply(){boostHP(['spearman','archer'],1.3)}},
-  bows:{at:'barracks',name:'Composite Bows',short:'Comp. Bows',cost:{wood:100,gold:75},time:30,eff:'Archers shoot 1 tile further and deal +2 damage.',apply(){DEF.archer.rng+=1;DEF.archer.atk+=2}},
+  bows:{at:'barracks',name:'Composite Bows',short:'Bows',cost:{wood:100,gold:75},time:30,eff:'Archers shoot 1 tile further and deal +2 damage.',apply(){DEF.archer.rng+=1;DEF.archer.atk+=2}},
   nisean:{at:'stable',name:'War Horses',short:'War Horses',cost:{food:150,gold:100},time:35,age:2,eff:'Stronger, faster horses: horsemen get 25% more hit points and 10% more speed.',apply(){boostHP(['horseman'],1.25);DEF.horseman.spd*=1.1}},
   masons:{at:'tc',name:'Masons',short:'Masons',cost:{wood:100,gold:50},time:30,eff:'All your buildings get 15% more hit points.',apply(){boostHP(['tc','tower','house','store','barracks','temple','stable','farm'],1.15)}},
   fortify:{at:'tc',name:'Fortified Town Center',short:'Fortify',cost:{wood:200,gold:150},time:45,age:2,pic:'tc',eff:'Stone walls and roofed towers: Town Center +25% hit points, +50% attack, +2 range, +5 population.',apply(){const d=DEF.tc;boostHP(['tc'],1.25);d.atk=Math.round(d.atk*1.5);d.rng+=2;d.popc+=5;d.name='Fortified Town Center';d.bh=3.2;recalcPop()}},
-  guard:{at:'tower',name:'Guard Tower',short:'Guard Tower',cost:{wood:150,gold:150},time:40,age:2,pic:'tower',eff:'Towers are rebuilt in stone: +300 hit points and +70% attack.',apply(){const d=DEF.tower;d.hp+=300;for(const e of ents)if(e.type==='tower'&&e.team===0&&!e.dead)e.hp+=300;d.atk=Math.round(d.atk*1.7);d.name='Guard Tower';d.bh=4.1}},
+  guard:{at:'tower',name:'Guard Tower',short:'Guard',cost:{wood:150,gold:150},time:40,age:2,pic:'tower',eff:'Towers are rebuilt in stone: +300 hit points and +70% attack.',apply(){const d=DEF.tower;d.hp+=300;for(const e of ents)if(e.type==='tower'&&e.team===0&&!e.dead)e.hp+=300;d.atk=Math.round(d.atk*1.7);d.name='Guard Tower';d.bh=4.1}},
   watch:{at:'tower',name:'Watchmen',short:'Watchmen',cost:{wood:80,gold:60},time:25,eff:'Towers see and shoot 2 tiles further.',apply(){DEF.tower.rng+=2;DEF.tower.los+=2}},
-  flame:{at:'temple',name:'Eternal Flame',short:'Eternal Flame',cost:{wood:100,gold:100},time:30,eff:'Temples produce twice as much Favor.',apply(){DEF.temple.farr*=2}}};
+  flame:{at:'temple',name:'Eternal Flame',short:'Flame',cost:{wood:100,gold:100},time:30,eff:'Temples produce twice as much Favor.',apply(){DEF.temple.farr*=2}}};
 let techs=new Set();
 function boostHP(types,m){for(const t of types){DEF[t].hp=Math.round(DEF[t].hp*m);for(const e of ents)if(e.type===t&&e.team===0&&!e.dead)e.hp*=m}}
 function resetStats(){for(const k in BASE_DEF)Object.assign(DEF[k],JSON.parse(JSON.stringify(BASE_DEF[k])));Object.assign(RATE,BASE_RATE);CAP=10;techs=new Set()}
@@ -1524,6 +1553,45 @@ t_walls:`<path d="M6 44V20h36v24z" fill="#b8a888" stroke="${K}" stroke-width="1.
 t_watch:`<path d="M16 44V16h16v28z" fill="#d8b47e" stroke="${K}" stroke-width="1.8"/><path d="M14 16V10h4v3h4v-3h4v3h4v-3h4v6z" fill="#e6c894" stroke="${K}" stroke-width="1.6"/><circle cx="24" cy="27" r="5" fill="#fff" stroke="${K}" stroke-width="1.6"/><circle cx="24" cy="27" r="2.4" fill="#1d3470"/><path d="M4 27c6-8 14-8 20-8M44 27c-6-8-14-8-20-8" stroke="${GL}" stroke-width="1.8" fill="none" stroke-dasharray="3 2"/>`,
 t_flame:`<path d="M10 44h28v-6H10z" fill="#a8906e" stroke="${K}" stroke-width="1.6"/><path d="M24 38c-9-3-11-11-6-19 1 5 3 6 5 6-1-7 1-14 7-19 0 8 7 11 7 19 0 7-5 12-13 13z" fill="#ff8a1a" stroke="${K}" stroke-width="1.6"/><path d="M24 37c-4-2-5-6-2-10 1 3 3 3 3 3 0-4 2-6 4-8 0 4 3 6 2 10-1 3-3 5-7 5z" fill="#ffe27a"/><circle cx="10" cy="14" r="2" fill="${GL}"/><circle cx="38" cy="10" r="2" fill="${GL}"/>`
 });
+const GLY=(()=>{const P=(d,x='')=>`<path d="${d}" ${x}/>`,SK=(d,w=3.2)=>`<path d="${d}" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+const HORSE='M15 44h22c0-6-2-10-3-15-1-6 0-12-4-17-2-3-5-4-8-4l-1-4-3 5c-4 2-7 6-8 11l-2 6c-.5 2 .5 3 2 3.5l2 .5c1.5.3 2.5-.5 3.5-1.5l3-3 2 .5c-2 5-5 8-5.5 13z';
+const WHEAT=a=>`<g transform="rotate(${a} 24 44)"><path d="M24 44V12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>${[12,18,24,30].map(y=>`<ellipse cx="20.6" cy="${y}" rx="2.3" ry="4.2" transform="rotate(-28 20.6 ${y})"/><ellipse cx="27.4" cy="${y}" rx="2.3" ry="4.2" transform="rotate(28 27.4 ${y})"/>`).join('')}<ellipse cx="24" cy="7.5" rx="2.2" ry="4.2"/></g>`;
+const SWORD=`<path d="M24 2l3 5v22h-6V7z"/><rect x="15" y="28.5" width="18" height="4" rx="2"/><rect x="22.3" y="32" width="3.4" height="8"/><circle cx="24" cy="42.5" r="2.8"/>`;
+const PERSON='<circle cx="19" cy="11" r="6.5"/><path d="M5 45c0-13 6-21 14-21s14 8 14 21z"/>';
+const TOWER='M14 45V17h20v28zM22 23v9h4v-9z';
+const GL={
+house:P('M4 23L24 7l20 16-2.5 3L39 24v21H9V24l-2.5 2zM19 45V33h10v12z','fill-rule="evenodd"'),
+store:P('M3 21L24 9l21 12v24H3zM13 45V29h22v16z','fill-rule="evenodd"')+'<rect x="16" y="35" width="7.5" height="7.5" rx="1"/><rect x="24.5" y="35" width="7.5" height="7.5" rx="1"/><rect x="20.2" y="30" width="7.5" height="4.6" rx="1"/>',
+farm:WHEAT(-22)+WHEAT(0)+WHEAT(22),
+barracks:`<g transform="rotate(42 24 24)">${SWORD}</g><g transform="rotate(-42 24 24)">${SWORD}</g>`,
+temple:P('M6 45V27h36v18zM19 45v-8a5 5 0 0 1 10 0v8z','fill-rule="evenodd"')+P('M9 25a15 13 0 0 1 30 0z')+P('M24 1c4 3.5 5 7 2 10.5-.8-1.7-1.7-2.5-2-2.5-.3 0-1.2.8-2 2.5-3-3.5-2-7 2-10.5z'),
+tower:P(TOWER,'fill-rule="evenodd"')+P('M11 17V6h5.5v4.5h3.8V6h7.4v4.5h3.8V6H37v11z'),
+tc:P('M3 45V21h9v24zM36 45V21h9v24zM10 45V28h28v17zM19 45v-9a5 5 0 0 1 10 0v9z','fill-rule="evenodd"')+P('M1 21v-7h3v3h2v-3h3v3h2v-3h3v7zM34 21v-7h3v3h2v-3h3v3h2v-3h3v7z')+P('M13 27a11 11 0 0 1 22 0z')+'<rect x="23" y="9" width="2" height="7"/>',
+stable:P('M9 7h8.5v19a6.5 6.5 0 0 0 13 0V7H39v19a15 15 0 0 1-30 0zM12 5h9v5h-9zM27 5h9v5h-9z'),
+villager:PERSON+SK('M38 8v37',3)+P('M31 4h13v6H31z'),
+spearman:PERSON+P('M19 0l6 5.5H13z')+SK('M39 11v34',2.8)+P('M39 1l4 10h-8z'),
+archer:PERSON+SK('M33 5c12 11 12 27 0 38',3.2)+SK('M33 5v38',1.2),
+horseman:P(HORSE),
+simurgh:P('M24 17C18 9 9 7 1 10c6 2 9 6 10 11 5-1 9 0 13 3zM24 17c6-8 15-10 23-7-6 2-9 6-10 11-5-1-9 0-13 3z')+'<ellipse cx="24" cy="24" rx="4.2" ry="9"/><circle cx="24" cy="13" r="3.5"/>'+P('M24 31l-8 15 8-5 8 5z'),
+ageup:P('M7 37L4 13l11 10 9-16 9 16 11-10-3 24z')+'<rect x="7" y="39" width="34" height="5" rx="1.5"/>',
+stop:P('M16 3h16l13 13v16L32 45H16L3 32V16zM12 21v6h24v-6z','fill-rule="evenodd"'),
+rally:'<rect x="9" y="4" width="3.6" height="41" rx="1.5"/>'+P('M12.6 6c9-4 15 4 27 0v18c-12 4-18-4-27 0z'),
+cancel:SK('M11 11l26 26M37 11L11 37',6),
+t_axes:SK('M13 43L32 12',4.2)+P('M27 5c9-1 16 5 17 13l-9-1-9-7z'),
+t_shafts:SK('M12 42l22-28',4)+P('M14 8c11-3 23 5 26 17l-5-1.5C31 16 23 12 16 12z'),
+t_qanat:P('M24 3c9 12 15 20 15 27a15 15 0 0 1-30 0c0-7 6-15 15-27zM15 30a9 9 0 0 0 9 9v-3.5A5.5 5.5 0 0 1 18.5 30z','fill-rule="evenodd"'),
+t_baskets:SK('M13 20c0-12 22-12 22 0',3.4)+P('M5 20h38l-5 24H10zM11 26l1 4h24l1-4zM13 34l1 4h20l1-4z','fill-rule="evenodd"'),
+t_spearheads:P('M24 1l9 20-9 7-9-7z')+'<rect x="22" y="27" width="4" height="19" rx="1.5"/>',
+t_armour:P('M24 3l17 6v13c0 11-7 19-17 23C14 41 7 33 7 22V9zM24 9L13 13v9c0 8 5 14 11 17z','fill-rule="evenodd"'),
+t_bows:SK('M12 4c17 9 17 31 0 40',3.6)+SK('M12 4v40',1.2)+SK('M8 24h30',2.4)+P('M45 24l-9-5v10z'),
+t_nisean:P(HORSE),
+t_masons:SK('M16 42l15-19',4)+P('M22 8l12-3 10 13-7 5-6-8-6 2z'),
+t_watch:P('M2 24C8 14 16 9 24 9s16 5 22 15c-6 10-14 15-22 15S8 34 2 24zM24 14a10 10 0 1 0 0 20 10 10 0 1 0 0-20z','fill-rule="evenodd"')+'<circle cx="24" cy="24" r="5.5"/>',
+t_flame:P('M24 2c2 7 12 12 12 24a12 12 0 0 1-24 0c0-6 3-10 6-13 0 4 1 6 3 7 0-7 1-12 3-18z')+'<rect x="10" y="41" width="28" height="5" rx="1.5"/>',
+fereydun:P('M7 37L4 13l11 10 9-16 9 16 11-10-3 24z')+'<rect x="7" y="39" width="34" height="5" rx="1.5"/>'};
+GL.t_fortify=GL.tc;GL.t_guard=GL.tower;
+return GL})();
+const glyph=k=>`<svg class="gl" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true">${GLY[k]||IC[k]||''}</svg>`;
 const PICK={house:'house',store:'store',farm:'farm',barracks:'barracks',temple:'temple',tower:'tower',stable:'stable',villager:'villager',spearman:'spearman',archer:'archer',horseman:'horseman',simurgh:'simurgh',ageup:'fereydun'};
 const svgI=k=>`<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">${IC[k]||''}</svg>`;
 const portCache=new Map();
@@ -1558,7 +1626,7 @@ function refreshSel(){const S=selEnts();const el=$('#sel');layoutBottom();
     if(e.kind==='unit'){st=`HP <b>${Math.ceil(e.hp)}/${d.hp}</b> · Attack <b>${d.atk}</b>${d.rng?` · Range <b>${d.rng}</b>`:''}`;if(e.carry)st+=` · Carrying <b>${e.carry} ${e.ctype}</b>`}
     else if(e.kind==='bld'){st=d.invul?'':`HP <b>${Math.ceil(e.hp)}/${d.hp}</b>`;if(!e.done)st+=` · Building <b>${Math.floor(e.bp*100)}%</b>`;if(e.type==='farm'&&e.done)st+=' · Endless food';if(e.team===0&&e.done){const all=Object.keys(TECH).filter(id=>TECH[id].at===e.type);if(all.length)st+=` · Upgrades <b>${all.filter(id=>techs.has(id)).length}/${all.length}</b>`}if(d.farr&&e.team===0)st+=' · +0.3 Favor/s'}
     else st=`Remaining <b>${Math.ceil(e.amt)} ${d.res}</b>`;
-    let q='';if(e.kind==='bld'&&e.team===0&&e.queue.length)q='<div class="queue">'+e.queue.map((t,i)=>{const tt=qTime(t);return `<div data-q="${i}" title="Tap to cancel">${t.startsWith('tech:')?`<span class="qsym">${svgI('t_'+t.slice(5))}</span>`:`<img src="${portrait(t==='ageup'?'fereydun':t,0)}" alt="">`}<span class="p" style="width:${i===0?e.qt/tt*100:0}%"></span></div>`}).join('')+'</div>';
+    let q='';if(e.kind==='bld'&&e.team===0&&e.queue.length)q='<div class="queue">'+e.queue.map((t,i)=>{const tt=qTime(t);return `<div data-q="${i}" title="Tap to cancel"><span class="qsym">${glyph(t.startsWith('tech:')?'t_'+t.slice(5):t==='ageup'?'ageup':t)}</span><span class="p" style="width:${i===0?e.qt/tt*100:0}%"></span></div>`}).join('')+'</div>';
     const hp=e.kind==='res'||d.invul?'':`<div class="hpb ${e.team===1?'en':''}"><i style="width:${clamp(e.hp/d.hp,0,1)*100}%"></i></div>`;
     const hint=e.team===0&&e.kind==='unit'?`<div class="hint">${e.type==='villager'?'Tap a tree, mine or bush to gather · pick a building to construct':'Now tap where it should go, or an enemy to attack'}</div>`:'';
     html=`<div class="port"><img src="${portrait(e.type,e.kind==='res'?0:e.team)}" alt=""></div><div class="info"><div class="nm">${d.name}</div>${hp}<div class="stats">${st}</div>${q}${d.desc&&!q?`<div class="desc">${d.desc}</div>`:''}${hint}</div>`}
@@ -1575,7 +1643,7 @@ function cmdList(){if(placing||targeting||rallying)return[{act:'cancel',ico:'can
   if(types.some(t=>DEF[t].trains))out.push({act:'rally',ico:'rally',nm:'Rally',tip:{name:'Set gathering point',desc:'Tap here, then tap the map. New units from this building walk straight there. Tap a tree, mine or bush and new villagers start gathering it.'}});
   if(S.some(e=>e.kind==='unit'))out.push({act:'stop',ico:'stop',nm:'Stop',tip:{name:'Stop',desc:'Units halt and hold position.'}});return out}
 function refreshCmds(){layoutBottom();const L=cmdList();const sig=L.map(c=>c.act).join('|')+age+(placing||'')+(targeting||'')+(rallying?'r':'');if(sig===cmdSig){updateCmdStates();return}cmdSig=sig;
-  $('#cmds').innerHTML=L.map(c=>{const pk=PICK[c.ico];const pic=c.pic2?`<span class="pic"><img src="${portrait(c.pic2,0,2)}" alt=""><i class="badge up">▲</i></span>`:pk?`<span class="pic"><img src="${portrait(pk,0)}" alt="">${c.ico==='ageup'?'<i class="badge">▲</i>':''}</span>`:`<span class="pic sym${c.up?' up':''}">${svgI(c.ico)}${c.up?'<i class="badge up">▲</i>':''}</span>`;return `<button class="cmd${c.cancel?' cancel':''}" data-act="${c.act}" aria-label="${c.tip.name}">${pic}<span class="nm">${c.nm}</span><span class="c">${costHTML(c.cost)}</span></button>`}).join('');updateCmdStates()}
+  $('#cmds').innerHTML=L.map(c=>{const pic=`<span class="pic g${c.up?' up':''}${c.act.startsWith('train')?' tr':''}${c.cancel||c.ico==='stop'?' red':''}">${glyph(c.ico)}${c.up?'<i class="badge up">▲</i>':''}</span>`;return `<button class="cmd${c.cancel?' cancel':''}" data-act="${c.act}" aria-label="${c.tip.name}">${pic}<span class="nm">${c.nm}</span><span class="c">${costHTML(c.cost)}</span></button>`}).join('');updateCmdStates()}
 function canDo(act){if(act==='ageup'){const tc=selEnts().find(e=>e.type==='tc');return afford(AGEUP.cost)&&ents.some(b=>b.type==='temple'&&b.team===0&&b.done&&!b.dead)&&tc&&!tc.queue.includes('ageup')}const [a,t]=act.split(':');if(a==='build'||a==='train')return afford(DEF[t].cost);if(a==='tech')return afford(TECH[t].cost)&&!techQueued(t);return true}
 function updateCmdStates(){for(const b of document.querySelectorAll('.cmd'))b.classList.toggle('off',!canDo(b.dataset.act))}
 $('#cmds').addEventListener('click',ev=>{const b=ev.target.closest('.cmd');if(!b||paused)return;sfx(b.classList.contains('off')?'error':'ui');doAct(b.dataset.act)});
