@@ -564,6 +564,10 @@ function orderBuild(e,t){e.state='build';e.target=t.id;e.path=null}
 function nearestDrop(e){let best=null,bd=1e9;for(const b of ents){if(b.kind!=='bld'||b.team!==e.team||!b.done||b.dead||!DEF[b.type].drop)continue;const d=edist(e,b);if(d<bd){bd=d;best=b}}return best}
 function findRes(e,type,R){let best=null,bd=R;for(const r of ents){if(r.dead)continue;if(type==='farm'){if(r.type!=='farm'||r.team!==e.team||!r.done||(r.worker&&r.worker!==e.id&&workingOn(r.worker,r.id)))continue}else if(r.type!==type||r.amt<=0)continue;const d=Math.hypot(ecx(r)-e.x,ecy(r)-e.y);if(d<bd){bd=d;best=r}}return best}
 function workingOn(uid,rid){const u=byId.get(uid);return alive(u)&&u.state==='gather'&&u.target===rid}
+const RES_CAP={tree:4,bush:5,mine:7};
+function gatherers(t,ex){let n=0;for(const u of ents)if(u!==ex&&u.kind==='unit'&&u.state==='gather'&&u.target===t.id&&!u.dead)n++;return n}
+function spreadRes(e,t){const cap=RES_CAP[t.type]||5;if(gatherers(t,e)<cap)return t;let best=null,bd=8*TILE;for(const r of ents){if(r===t||r.dead||r.type!==t.type||r.amt<=0)continue;const d=Math.hypot(ecx(r)-e.x,ecy(r)-e.y);if(d<bd&&gatherers(r,e)<(RES_CAP[r.type]||5)){bd=d;best=r}}return best||t}
+function reachR(e){return 6+Math.min(16,(e.crowd||0)*10+(e.stuck||0)*12)}
 function resType(t){return t.type==='farm'?'food':DEF[t.type].res}
 function updUnit(e,dt){const d=DEF[e.type];
   e.moving=false;e.crowd=(e.crowd||0)*Math.exp(-dt*2);e.cd-=dt;e.repath-=dt;if(e.atkT>0)e.atkT-=dt;if(e.hitT>0)e.hitT-=dt;e.inRange=false;
@@ -586,15 +590,17 @@ function updUnit(e,dt){const d=DEF[e.type];
     const bad=!t||t.dead||(t.kind==='res'&&t.amt<=0)||(t.type==='farm'&&t.worker&&t.worker!==e.id&&workingOn(t.worker,t.id));
     if(bad){const nt=findRes(e,e.gtype,10*TILE);if(nt){e.target=nt.id;e.path=null;t=nt}else{e.state=e.carry>0?'return':'idle';break}}
     const rt=resType(t);if(e.carry>0&&e.ctype!==rt)e.carry=0;if(e.carry>=CAP){e.state='return';e.path=null;e.anim=null;break}
-    if(edist(e,t)<=6){e.path=null;e.tgx=ecx(t);e.tgy=ecy(t);e.anim='work';e.workKind=t.type;if(t.type==='farm')t.worker=e.id;
+    const dd=edist(e,t);
+    if(t.kind==='res'&&e.anim!=='work'&&dd<3*TILE){e.capT=(e.capT||0)-dt;if(e.capT<=0){e.capT=1+Math.random()*.5;const alt=spreadRes(e,t);if(alt&&alt!==t){e.target=alt.id;e.path=null;t=alt;break}}}
+    if(dd<=reachR(e)+(e.anim==='work'?10:0)){e.path=null;e.tgx=ecx(t);e.tgy=ecy(t);e.anim='work';e.workKind=t.type;if(t.type==='farm')t.worker=e.id;
       e.work+=dt*RATE[t.type];if(e.work>=1){const n=Math.floor(e.work);e.work-=n;let k=n;if(t.kind==='res'){k=Math.min(n,t.amt);t.amt-=k;if(t.amt<=0){t.dead=true;stampE(t,false);resGone(t)}}e.carry+=k;e.ctype=rt}}
     else{e.anim=null;approach(e,t,dt)}break}
   case 'return':{e.anim=null;const b=nearestDrop(e);if(!b){e.state='idle';break}
-    if(edist(e,b)<=6){if(e.team===0)sfx(e.ctype==='gold'?'coins':'drop',e.x,e.y,.7);res[e.ctype]+=e.carry;e.carry=0;e.path=null;const t=byId.get(e.target);if(t&&!t.dead)e.state='gather';else{const nt=findRes(e,e.gtype,12*TILE);if(nt)orderGather(e,nt);else e.state='idle'}}else approach(e,b,dt);break}
+    if(edist(e,b)<=reachR(e)){if(e.team===0)sfx(e.ctype==='gold'?'coins':'drop',e.x,e.y,.7);res[e.ctype]+=e.carry;e.carry=0;e.path=null;const t=byId.get(e.target);if(t&&!t.dead)e.state='gather';else{const nt=findRes(e,e.gtype,12*TILE);if(nt)orderGather(e,nt);else e.state='idle'}}else approach(e,b,dt);break}
   case 'build':{const t=byId.get(e.target);
     if(!t||t.dead||(t.done&&t.hp>=DEF[t.type].hp)){e.anim=null;const nb=ents.find(b=>b.kind==='bld'&&b.team===e.team&&!b.dead&&(!b.done||b.hp<DEF[b.type].hp*.98)&&!DEF[b.type].invul&&Math.hypot(ecx(b)-e.x,ecy(b)-e.y)<8*TILE);
       if(nb)orderBuild(e,nb);else if(t&&!t.dead&&t.type==='farm'&&!t.worker)orderGather(e,t);else if(e.target0){const g=byId.get(e.target0);if(g&&!g.dead)orderGather(e,g);else e.state='idle'}else e.state='idle';break}
-    if(edist(e,t)<=6){e.path=null;e.anim='work';e.workKind='build';e.tgx=ecx(t);e.tgy=ecy(t);const bd=DEF[t.type];if(t.done){const rep=nearby(t,e.team)*dt*bd.hp/Math.max(20,(bd.time||40)*1.5);t.hp=Math.min(bd.hp,t.hp+rep);if(t.hp>=bd.hp&&!t.repMsg){t.repMsg=1;msg(bd.name+' repaired.','good');setTimeout(()=>t.repMsg=0,3000)}}else{const inc=dt/bd.time;t.bp=Math.min(1,t.bp+inc);t.hp=Math.min(bd.hp,t.hp+bd.hp*inc);if(t.bp>=1)complete(t,e)}}
+    if(edist(e,t)<=reachR(e)){e.path=null;e.anim='work';e.workKind='build';e.tgx=ecx(t);e.tgy=ecy(t);const bd=DEF[t.type];if(t.done){const rep=nearby(t,e.team)*dt*bd.hp/Math.max(20,(bd.time||40)*1.5);t.hp=Math.min(bd.hp,t.hp+rep);if(t.hp>=bd.hp&&!t.repMsg){t.repMsg=1;msg(bd.name+' repaired.','good');setTimeout(()=>t.repMsg=0,3000)}}else{const inc=dt/bd.time;t.bp=Math.min(1,t.bp+inc);t.hp=Math.min(bd.hp,t.hp+bd.hp*inc);if(t.bp>=1)complete(t,e)}}
     else{e.anim=null;approach(e,t,dt)}break}}}
 function nearby(t,team){return 1}
 function complete(b,builder){if(b.team===0)sfx('built',ecx(b),ecy(b));b.done=true;b.bp=1;const d=DEF[b.type];b.hp=d.hp;recalcPop();msg(`${d.name} completed.`,'good');if(b.type==='farm'&&builder)orderGather(builder,b);if(b.type==='temple'&&!flags.templeTip){flags.templeTip=1;msg('The eternal fire burns. Favor now flows from the Temple.','good')}}
@@ -760,7 +766,9 @@ const MF={
   hay:()=>mat('hay',{map:TX.hay,roughness:1}),rock:()=>mat('rock',{color:0x8a7c6c,map:TX.rock,roughness:.95}),rockD:()=>mat('rockD',{color:0x4a3e38,map:TX.rock,roughness:.95}),
   bone:()=>mat('bone',{color:0xe8dcc0,roughness:.7}),banner:()=>mat('banner',{map:TX.banner,side:T3.DoubleSide,alphaTest:.5,roughness:.9}),
   spot:()=>mat('spot',{map:TX.spot,roughness:.7}),leaf:()=>mat('leaf',{color:0x3f5f26,roughness:.9}),pom:()=>mat('pom',{color:0xb01c2c,roughness:.45}),
-  pool:()=>mat('pool',{color:0x2d7f8a,roughness:.1,metalness:.3}),snake:()=>mat('snake',{color:0x1c2a1e,roughness:.4,metalness:.2}),eye:()=>bmat('eye',{color:0xff3020})};
+  pool:()=>mat('pool',{color:0x2d7f8a,roughness:.1,metalness:.3}),snake:()=>mat('snake',{color:0x1c2a1e,roughness:.4,metalness:.2}),eye:()=>bmat('eye',{color:0xff3020}),
+  adobe:()=>mat('adobe',{map:TX.plaster,color:0xe9c9a0,roughness:.96}),adobeL:()=>mat('adobeL',{map:TX.plaster,color:0xfff0da,roughness:.9}),clay:()=>mat('clay',{color:0xa65a34,roughness:.8,map:TX.grain}),
+  sack:()=>mat('sack',{color:0xd9c7a0,map:TX.fabric,roughness:.95}),log:()=>mat('log',{color:0xa88058,map:TX.wood,roughness:.85}),dirt:()=>mat('dirtS',{color:0x8f7550,map:TX.grain,roughness:1})};
 const MAT=new Proxy({},{get:(o,k)=>o[k]||(o[k]=MF[k]())});
 const G={};const geo=(k,f)=>G[k]||(G[k]=f());
 function mesh(g,m,x,y,z,p,cast){const o=new T3.Mesh(g,m);o.position.set(x||0,y||0,z||0);o.castShadow=cast!==false;o.receiveShadow=true;if(p)p.add(o);return o}
@@ -1027,15 +1035,36 @@ tc(g,T,team,U){plinth(g,3.95,3.95);mesh(box(3.4,.06,3.4),MAT.pave,0,.03,0,g,fals
   mesh(box(1.9,1.4,1.3),MAT.plaster,0,.7,-.85,g);mesh(box(2.0,.1,1.4),MAT.stoneL,0,1.43,-.85,g);mesh(box(1.2,1.62,.16),MAT.plaster,0,.81,-.16,g);facade(g,.95,1.28,0,.64,-.075,MAT.iwan);
   mesh(box(.12,1.62,.18),MAT.tileT,-.62,.81,-.16,g);mesh(box(.12,1.62,.18),MAT.tileT,.62,.81,-.16,g);
   dome(g,0,1.48,-.9,.55,MAT.tileT);U.glows.push(glow(g,0,.35,-.02,0xffa040,.8))},
-house(g,T,team,U){plinth(g,1.9,1.9);mesh(box(1.5,.95,1.3),MAT.brick,0,.475,.05,g);mesh(box(1.58,.1,1.38),MAT.plaster,0,1.0,.05,g);
-  for(const z of [-.66,.76])mesh(box(1.62,.21,.09),MAT.brick,0,1.15,z,g);
-  for(const x of [-.76,.76])mesh(box(.09,.21,1.5),MAT.brick,x,1.15,.05,g);
-  mesh(box(.63,.025,.48),MAT.tileT,-.35,1.075,-.08,g,false);
-  mesh(box(.38,1.6,.38),MAT.brick,.45,.8,-.42,g);mesh(box(.44,.08,.44),MAT.plaster,.45,1.62,-.42,g);for(const z of [-.62,-.22])for(let i=0;i<3;i++)mesh(box(.05,.36,.02),MAT.dark,.35+i*.1,1.36,z,g,false);
-  facade(g,.34,.52,-.3,.26,.705,MAT.door);const aw=mesh(box(.5,.03,.2),cloth(T.main),-.3,.58,.78,g);aw.rotation.x=.35;facade(g,.18,.2,.3,.6,.705,MAT.dark)},
-store(g,T,team,U){plinth(g,1.9,1.9);mesh(box(1.6,.9,.2),MAT.brick,0,.45,-.62,g);mesh(box(.16,.9,1.3),MAT.brick,-.72,.45,0,g);mesh(box(.16,.9,1.3),MAT.brick,.72,.45,0,g);mesh(box(1.72,.08,1.45),MAT.wood,0,.94,0,g);
-  for(const x of [-.7,.7])mesh(cylg(.04,.04,.9,6),MAT.dwood,x,.45,.64,g);mesh(box(1.3,.02,1),mat('dirt',{color:0x6a5238,map:TX.grain}),0,.02,0,g,false);
-  for(let i=0;i<3;i++){const s=mesh(sph(.16,10,8),cloth(0xd8c7a0),-.4+i*.3,.14,.45,g);s.scale.set(1,.8,1)}for(let i=0;i<4;i++)mesh(cylg(.06,.06,.8,8),MAT.wood,0,.07+(i>2?.11:0),-.3+(i%3)*.13,g).rotation.z=Math.PI/2;mesh(sph(.13,8,6),MAT.gold,.5,.06,.55,g).scale.set(1,.5,1);mesh(box(.3,.25,.3),cloth(T.main),-.45,.13,-.35,g)},
+house(g,T,team,U){plinth(g,1.9,1.9);const A=MAT.adobe,AL=MAT.adobeL;
+  // Yazd-style mud-brick house: rooms at the back, a walled courtyard in front, a windcatter and a small roof dome.
+  mesh(box(1.64,1.0,.92),A,0,.5,-.42,g);mesh(box(1.72,.07,1.0),AL,0,1.03,-.42,g);
+  for(const x of [-.82,.82])mesh(box(.07,.12,1.0),AL,x,1.1,-.42,g);mesh(box(1.72,.12,.07),AL,0,1.1,-.9,g);
+  facade(g,.34,.52,0,.26,.045,MAT.door);mesh(box(.5,.07,.05),MAT.tileT,0,.58,.06,g,false);mesh(box(.44,.04,.05),AL,0,.63,.06,g,false);
+  for(const x of [-.52,.52]){facade(g,.15,.2,x,.64,.045,MAT.dark);mesh(box(.21,.03,.04),AL,x,.53,.06,g,false)}
+  const dm=new T3.Mesh(geo('hdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),A);dm.scale.set(.3,.26,.3);dm.position.set(-.38,1.06,-.5);dm.castShadow=true;g.add(dm);mesh(cylg(.3,.31,.06,20),AL,-.38,1.07,-.5,g);
+  mesh(box(.34,.82,.34),A,.48,1.43,-.6,g);mesh(box(.42,.07,.42),AL,.48,1.87,-.6,g);
+  for(const z of [-.425,-.775])for(let i=0;i<3;i++)mesh(box(.05,.4,.012),MAT.dark,.38+i*.1,1.55,z,g,false);
+  for(const x of [.305,.655])for(let i=0;i<3;i++)mesh(box(.012,.4,.05),MAT.dark,x,1.55,-.7+i*.1,g,false);
+  mesh(box(1.52,.02,.8),MAT.pave,0,.02,.44,g,false);
+  mesh(box(.08,.48,.86),A,-.8,.24,.46,g);mesh(box(.08,.48,.86),A,.8,.24,.46,g);
+  for(const x of [-.53,.53])mesh(box(.62,.48,.08),A,x,.24,.86,g);mesh(box(.3,.1,.1),AL,0,.52,.86,g);
+  for(const [x,z,w,d] of [[-.8,.46,.12,.9],[.8,.46,.12,.9],[-.53,.86,.66,.12],[.53,.86,.66,.12]])mesh(box(w,.04,d),AL,x,.5,z,g,false);
+  facade(g,.26,.44,0,.22,.83,MAT.door);
+  mesh(cylg(.035,.045,.5,6),MAT.dwood,-.48,.27,.42,g);const cr=mesh(sph(.24,12,9),MAT.leaf,-.48,.66,.42,g);cr.scale.set(1,.8,1);for(let i=0;i<5;i++)mesh(sph(.035,6,5),MAT.pom,-.48+Math.cos(i*1.3)*.2,.6+hash2(i,3)*.15,.42+Math.sin(i*1.3)*.2,g,false);
+  for(const [x,z,r] of [[.5,.6,.09],[.62,.48,.07],[.4,.66,.06]]){mesh(cylg(r*.7,r,r*2.2,10),MAT.clay,x,.04+r*1.1,z,g);mesh(cylg(r*.55,r*.7,.03,10),MAT.clay,x,.06+r*2.2,z,g,false)}
+  const aw=mesh(box(.54,.025,.24),cloth(T.main),0,.72,.17,g);aw.rotation.x=.38;g.children.forEach((c,i)=>{if(i>=5)c.position.y+=.05})},
+store(g,T,team,U){plinth(g,1.9,1.9);const A=MAT.adobe,AL=MAT.adobeL;
+  // Bazaar-style storehouse: an arched hall under two brick domes, with the village's goods stacked in the yard.
+  mesh(box(1.64,.95,.12),A,0,.475,-.84,g);for(const x of [-.76,.76])mesh(box(.12,.95,1.0),A,x,.475,-.4,g);
+  mesh(box(1.64,.14,1.0),A,0,1.02,-.4,g);mesh(box(1.72,.06,1.08),AL,0,1.1,-.4,g);
+  mesh(archFaceGeo(1.64,.95,1.0,.8,.12),A,0,0,.04,g);mesh(box(1.4,.02,.9),MAT.dark,0,.015,-.38,g,false);facade(g,1.4,.9,0,.45,-.77,MAT.dark);
+  for(const x of [-.4,.4]){const dm=new T3.Mesh(geo('sdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),MAT.brick);dm.scale.set(.34,.3,.34);dm.position.set(x,1.19,-.42);dm.castShadow=true;g.add(dm);mesh(cylg(.35,.36,.08,20),AL,x,1.17,-.42,g);mesh(sph(.035,6,5),AL,x,1.5,-.42,g,false)}
+  for(let i=0;i<4;i++){const s2=mesh(sph(.13,10,8),MAT.sack,-.52+(i%2)*.2,.12+(i>1?.17:0),-.45+(i>1?.04:0),g);s2.scale.set(1,.8,1.1)}
+  for(let i=0;i<3;i++)mesh(box(.24,.2,.24),MAT.wood,.42+(i%2)*.1,.1+(i>1?.2:0),-.52+(i===1?.26:0),g);
+  const aw=mesh(box(1.2,.025,.3),cloth(T.main),0,.9,.2,g);aw.rotation.x=.42;for(const x of [-.58,.58])mesh(cylg(.022,.022,.86,6),MAT.dwood,x,.43,.34,g);
+  for(let r=0;r<3;r++)for(let i=0;i<3-r;i++){const l=mesh(cylg(.065,.065,.6,8),MAT.log,-.42,.07+r*.115,.52+i*.135+r*.067,g);l.rotation.z=Math.PI/2}
+  for(let i=0;i<3;i++){const s2=mesh(sph(.12,10,8),MAT.sack,.28+i*.2,.1,.62+(i%2)*.06,g);s2.scale.set(1,.8,1.1)}
+  mesh(box(.24,.16,.18),MAT.dwood,.6,.1,.78,g);mesh(box(.26,.03,.2),MAT.gold,.6,.19,.78,g,false);mesh(sph(.06,8,6),MAT.gold,.6,.21,.78,g,false).scale.set(1.4,.5,1);g.children.forEach((c,i)=>{if(i>=5)c.position.y+=.05})},
 farm(g,T,team,U){
   // Solid geometry and explicit gold materials keep ripe wheat readable even
   // on devices that render transparent vegetation cards differently.
@@ -1072,9 +1101,24 @@ temple(g,T,team,U){plinth(g,2.9,2.9);mesh(box(2.5,.3,2.5),MAT.stoneL,0,.15,0,g);
   mesh(box(1.92,.25,1.92),MAT.plaster,0,1.78,0,g);mesh(box(2.0,.06,2.0),MAT.stoneL,0,1.93,0,g);dome(g,0,1.96,0,.8,MAT.plaster);
   mesh(box(.34,.4,.34),MAT.stoneL,0,.5,0,g);mesh(cylg(.2,.16,.1,10),MAT.darksteel,0,.74,0,g);
   const fl=new T3.Group();fl.position.y=.78;g.add(fl);[0xff5010,0xff9a20,0xffe070].forEach((c,i)=>{const m=new T3.Mesh(coneg(.13-i*.03,.5-i*.1,8),new T3.MeshBasicMaterial({color:c,transparent:true,opacity:.85,blending:T3.AdditiveBlending,depthWrite:false}));m.position.y=.2-i*.03;fl.add(m)});U.fire=fl;U.glows.push(glow(g,0,1.0,0,0xff8a30,1.8))},
-stable(g,T,team,U){plinth(g,2.95,2.95);mesh(box(2.6,1.0,1.5),MAT.brick,0,.5,-.4,g);const rg=geo('roofg',()=>{const rs=new T3.Shape();rs.moveTo(-.85,0);rs.lineTo(.85,0);rs.lineTo(0,.55);rs.lineTo(-.85,0);const e=new T3.ExtrudeGeometry(rs,{depth:2.8,bevelEnabled:false});e.translate(0,0,-1.4);e.rotateY(Math.PI/2);return e});mesh(rg,MAT.wood,0,1.0,-.4,g);
-  for(let i=0;i<3;i++)facade(g,.42,.62,-.8+i*.8,.31,.355,MAT.door);for(let i=0;i<4;i++)mesh(cylg(.03,.03,.5,5),MAT.dwood,-1.2+i*.8,.25,1.2,g);mesh(box(2.5,.04,.04),MAT.dwood,0,.42,1.2,g);mesh(box(2.5,.04,.04),MAT.dwood,0,.25,1.2,g);
-  for(const s of [[-1.0,.7],[.9,.6],[1.1,.85]])mesh(box(.4,.28,.3),MAT.hay,s[0],.14,s[1],g);mesh(box(.7,.15,.25),MAT.wood,.1,.08,.75,g)},
+stable(g,T,team,U){plinth(g,2.95,2.95);const A=MAT.adobe,AL=MAT.adobeL;
+  // Caravanserai stable: three arched stalls under a flat roof, and a fenced paddock with the horses in front.
+  mesh(box(2.7,1.15,.14),A,0,.575,-1.33,g);for(const x of [-1.3,1.3])mesh(box(.14,1.15,1.1),A,x,.575,-.85,g);
+  mesh(box(2.7,.16,1.12),A,0,1.23,-.84,g);mesh(box(2.8,.07,1.2),AL,0,1.33,-.84,g);merlonsLine(g,-1.35,-1.4,1.35,-1.4,1.43,AL);
+  for(const x of [-.86,0,.86]){mesh(archFaceGeo(.88,1.15,.6,.86,.12),A,x,0,-.34,g);facade(g,.6,.85,x,.43,-1.25,MAT.dark);mesh(box(.54,.02,.8),MAT.hay,x,.02,-.8,g,false)}
+  for(const x of [-.43,.43])mesh(box(.14,1.15,.8),A,x,.575,-.85,g);
+  mesh(box(.4,.26,.3),MAT.hay,1.12,1.49,-.62,g);
+  mesh(box(2.8,.02,1.55),MAT.dirt,0,.02,.55,g,false);
+  const posts=new T3.InstancedMesh(cylg(.035,.04,.46,6),MAT.dwood,22);const M=new T3.Matrix4();let n=0;
+  for(let i=0;i<8;i++){const x=-1.35+i*2.7/7;M.makeTranslation(x,.23,1.34);if(Math.abs(x)>.3)posts.setMatrixAt(n++,M)}
+  for(const x of [-1.35,1.35])for(let i=1;i<6;i++){M.makeTranslation(x,.23,-.2+i*1.54/6);posts.setMatrixAt(n++,M)}
+  posts.count=n;posts.castShadow=true;g.add(posts);
+  for(const y of [.2,.38]){for(const sx of [-1,1])mesh(box(1.06,.035,.035),MAT.wood,sx*.83,y,1.34,g);for(const x of [-1.35,1.35])mesh(box(.035,.035,1.54),MAT.wood,x,y,.57,g)}
+  mesh(box(.7,.16,.2),MAT.wood,.75,.1,.1,g);mesh(box(.62,.02,.13),MAT.pool,.75,.18,.1,g,false);
+  for(const [x,z] of [[-.95,.95],[-1.1,.7]])mesh(cylg(.16,.16,.26,12),MAT.hay,x,.13,z,g).rotation.x=Math.PI/2;
+  const hs=[[-.2,.75,.5,.2],[.55,.6,-2.3,-.25]];for(const [x,z,ry,lean] of hs){const H=instantiate(horseProto());H.root.scale.setScalar(.48);H.root.position.set(x,.03,z);H.root.rotation.y=ry;if(H.neck)H.neck.rotation.x=lean>0?.9:.2;g.add(H.root)}
+  for(const x of [-.86,0,.86]){const dm=new T3.Mesh(geo('sdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),MAT.adobe);dm.scale.set(.3,.24,.3);dm.position.set(x,1.36,-.84);dm.castShadow=true;g.add(dm);mesh(sph(.03,6,5),AL,x,1.62,-.84,g,false)}
+  flagOn(g,-1.2,1.36,-1.2,team,U.flags,true);g.children.forEach((c,i)=>{if(i>=5)c.position.y+=.05})},
 tower(g,T,team,U){plinth(g,1.9,1.9);mesh(cylg(.6,.7,2.35,22),MAT.brick,0,1.17,0,g);mesh(cylg(.74,.66,.16,22),MAT.plaster,0,2.4,0,g);merlonsRing(g,0,0,.68,2.55,MAT.brick,12);
   for(const y of [.9,1.7])facade(g,.07,.3,0,y,.66,MAT.dark);flagOn(g,0,2.45,0,team,U.flags,true)},
 palace(g,T,team,U){plinth(g,4.95,4.95,MAT.stoneD);mesh(box(4.6,.55,4.6),MAT.stoneD,0,.27,0,g);for(let i=0;i<4;i++)mesh(box(1.5,.14,.2),MAT.stoneD,0,.48-i*.14,2.35+i*.2,g);
