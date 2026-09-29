@@ -991,11 +991,39 @@ house(g,T,team,U){plinth(g,1.9,1.9);mesh(box(1.5,.95,1.3),MAT.brick,0,.475,.05,g
 store(g,T,team,U){plinth(g,1.9,1.9);mesh(box(1.6,.9,.2),MAT.brick,0,.45,-.62,g);mesh(box(.16,.9,1.3),MAT.brick,-.72,.45,0,g);mesh(box(.16,.9,1.3),MAT.brick,.72,.45,0,g);mesh(box(1.72,.08,1.45),MAT.wood,0,.94,0,g);
   for(const x of [-.7,.7])mesh(cylg(.04,.04,.9,6),MAT.dwood,x,.45,.64,g);mesh(box(1.3,.02,1),mat('dirt',{color:0x6a5238,map:TX.grain}),0,.02,0,g,false);
   for(let i=0;i<3;i++){const s=mesh(sph(.16,10,8),cloth(0xd8c7a0),-.4+i*.3,.14,.45,g);s.scale.set(1,.8,1)}for(let i=0;i<4;i++)mesh(cylg(.06,.06,.8,8),MAT.wood,0,.07+(i>2?.11:0),-.3+(i%3)*.13,g).rotation.z=Math.PI/2;mesh(sph(.13,8,6),MAT.gold,.5,.06,.55,g).scale.set(1,.5,1);mesh(box(.3,.25,.3),cloth(T.main),-.45,.13,-.35,g)},
-farm(g,T,team,U){const sg=geo('farmsoil',()=>{const p=new T3.PlaneGeometry(2.8,2.8,1,40);p.rotateX(-Math.PI/2);const a=p.attributes.position;for(let i=0;i<a.count;i++){const z=a.getZ(i);a.setY(i,.045*(.5+.5*Math.cos(z*Math.PI*2*3.9)))}p.computeVertexNormals();return p});mesh(sg,MAT.field,0,.03,0,g,false);
-  for(const s of [[0,-1.45,2.95,.14],[0,1.45,2.95,.14],[1.45,0,.14,2.95]])mesh(box(s[2],.14,s[3]),mat('bund2',{color:0x9a7c56,map:TX.gDry,roughness:1}),s[0],.05,s[1],g);
-  mesh(box(.16,.04,2.8),MAT.pool,-1.46,.03,0,g,false);mesh(box(.05,.12,2.8),mat('bund2',{}),-1.36,.05,0,g);
-  const n=Math.round(3.9*2.7)+1,cols=24;const im=new T3.InstancedMesh(cardGeo(.2,.38,2),mat('wheat2',{map:TX.wheat,alphaTest:.45,side:T3.DoubleSide,roughness:.9},{key:'grass',vBegin:WIND_GRASS}),n*cols);const M=new T3.Matrix4(),q=new T3.Quaternion(),sc=new T3.Vector3(),ps=new T3.Vector3(),c=new T3.Color();let k=0;
-  for(let r=0;r<n;r++)for(let j=0;j<cols;j++){const z=-1.3+r/3.9,x=-1.22+j*.108+hash2(r,j)*.04;ps.set(x,.07,z+(hash2(j,r)-.5)*.05);q.setFromAxisAngle(new T3.Vector3(0,1,0),hash2(r*7,j)*6);sc.setScalar(.85+hash2(j*3,r)*.35);M.compose(ps,q,sc);im.setMatrixAt(k,M);const t=hash2(r,j*5);c.setRGB(.9+t*.15,.88+t*.1,.75+t*.1);im.setColorAt(k,c);k++}
+farm(g,T,team,U){
+  // Sculpt four raised beds into one soil mesh. The lower channels between them
+  // stay visible through the crops, rather than reading as a flat striped rug.
+  const beds=[-.99,-.33,.33,.99];
+  const sg=geo('farmRaisedBeds',()=>{const p=new T3.PlaneGeometry(2.86,2.86,48,20);p.rotateX(-Math.PI/2);const a=p.attributes.position;
+    for(let i=0;i<a.count;i++){const x=a.getX(i),z=a.getZ(i);let ridge=0;
+      for(let b=0;b<4;b++){const dx=(x-beds[b]-Math.sin(z*2.1+b)*.018)/.3;ridge=Math.max(ridge,Math.pow(Math.max(0,1-Math.abs(dx)),1.35))}
+      const edge=clamp((1.42-Math.max(Math.abs(x),Math.abs(z)))/.15,0,1);
+      a.setY(i,.012+edge*(ridge*.105+(hash2(i,37)-.5)*.009))}
+    p.computeVertexNormals();return p});
+  mesh(sg,mat('farmEarth',{map:TX.gDry,color:0xd0b494,roughness:1,side:T3.DoubleSide}),0,.015,0,g,false);
+  const damp=mat('farmDampEarth',{map:TX.gDry,color:0x766b58,roughness:1});
+  for(const x of [-.66,0,.66])mesh(box(.12,.012,2.57),damp,x,.035,0,g,false);
+  // A modest irrigation rill, with earthen banks rather than a bright blue moat.
+  const water=mat('farmRill',{color:0x607d7a,roughness:.35,metalness:.08});
+  mesh(box(.095,.012,2.63),water,-1.37,.04,0,g,false);
+  for(const x of [-1.44,-1.28])mesh(box(.07,.07,2.72),damp,x,.055,0,g,false);
+  for(const z of [-1.39,1.39])mesh(box(2.88,.055,.095),damp,0,.045,z,g,false);
+  // Sparse stones and an uneven edge help the plot sit in the landscape.
+  const rockGeo=new T3.IcosahedronGeometry(1,0),stones=new T3.InstancedMesh(rockGeo,MAT.stoneL,28);
+  const M=new T3.Matrix4(),q=new T3.Quaternion(),sc=new T3.Vector3(),ps=new T3.Vector3(),c=new T3.Color();
+  for(let i=0;i<28;i++){const u=hash2(i,19),v=hash2(i,23),along=-1.33+u*2.66;
+    const x=i<14?(i%2?-1.4:1.4)+(v-.5)*.08:along,z=i<14?along:(i%2?-1.4:1.4)+(v-.5)*.08;
+    ps.set(x,.063,z);q.setFromAxisAngle(new T3.Vector3(0,1,0),hash2(i,8)*6.28);sc.set(.07+v*.065,.035+v*.025,.06+hash2(i,9)*.06);M.compose(ps,q,sc);stones.setMatrixAt(i,M);
+    const k=.82+hash2(i,11)*.25;c.setRGB(k,k*.96,k*.88);stones.setColorAt(i,c)}g.add(stones);
+  // Two slightly irregular planted lines on each bed, with gaps and varied height.
+  const plants=[];for(let b=0;b<4;b++)for(const side of [-1,1])for(let row=0;row<13;row++){
+    if(hash2(b*41+row,side+9)<.075)continue;
+    plants.push([beds[b]+side*.125+(hash2(row,b*7+side)-.5)*.055,-1.22+row*.202+(hash2(row*3,b+side)-.5)*.075,
+      .79+hash2(row+b*19,side+31)*.42,hash2(row*11,b*17+side)*6.28])}
+  const im=new T3.InstancedMesh(cardGeo(.23,.47,3),mat('farmWheat',{map:TX.wheat,alphaTest:.42,side:T3.DoubleSide,roughness:1},{key:'grass',vBegin:WIND_GRASS}),plants.length);
+  plants.forEach((p,i)=>{ps.set(p[0],.12,p[1]);q.setFromAxisAngle(new T3.Vector3(0,1,0),p[3]);sc.set(p[2],p[2],p[2]);M.compose(ps,q,sc);im.setMatrixAt(i,M);
+    const k=hash2(i,43);c.setRGB(.83+k*.2,.86+k*.12,.77+k*.15);im.setColorAt(i,c)});
   im.castShadow=true;im.receiveShadow=true;im.customDepthMaterial=depthFor(TX.wheat);g.add(im)},
 barracks(g,T,team,U){plinth(g,2.95,2.95);mesh(box(2.7,.02,2.7),mat('dirt2',{color:0x8a7050,map:TX.grain}),0,.02,0,g,false);const B=MAT.brick;
   mesh(box(2.8,.65,.2),B,0,.33,-1.3,g);mesh(box(.2,.65,2.8),B,-1.3,.33,0,g);mesh(box(.2,.65,2.8),B,1.3,.33,0,g);mesh(box(.95,.65,.2),B,-.92,.33,1.3,g);mesh(box(.95,.65,.2),B,.92,.33,1.3,g);
