@@ -793,8 +793,18 @@ function humanProto(key,o){if(HUM[key])return HUM[key];const pb=PB(),{B,add}=pb;
   if(!o.bare)add('chest',geo('collar',()=>new T3.TorusGeometry(.07,.016,6,20)),trim,'cloth',[0,.21,.005],[Math.PI/2,0,0]);
   if(!o.bare&&!o.robe)add('chest',box(.03,.26,.005),trim,'cloth',[0,.08,.128*S]);
   if(o.apron){add('spine',box(.3,.5,.018),0x4a2c18,'cloth',[0,-.02,.125*S],[.06,0,0]);add('chest',box(.03,.3,.12),0x3a2010,'cloth',[.09,.1,.02],[0,0,.25])}
+  if(o.apron){for(const s of [-1,1]){add('spine',box(.016,.38,.008),0xa87e46,'cloth',[s*.135,-.01,.139*S]);add('spine',sph(.012,6,4),0xc39850,'metal',[s*.12,.16,.145*S])}add('spine',box(.2,.085,.012),0x60402a,'cloth',[0,-.14,.145*S])}
+  if(o.armor){ // overlapping lamellae, shoulder plates and a belted diagonal baldric
+    for(let row=0;row<3;row++)for(let col=-2;col<=2;col++){
+      const shade=(row+Math.abs(col))%2?0xa58d64:0xc0a578;
+      add('chest',box(.061,.077,.023),shade,'metal',[col*.064,.135-row*.072,.137*S],[.04,0,-col*.035]);
+    }
+    add('chest',box(.028,.39,.015),0x513726,'cloth',[0,.065,.16*S],[0,0,-.55]);
+    for(const s of [-1,1])add('sh'+(s===1?'L':'R'),sph(.09*S,12,8),0xa88c61,'metal',[0,-.02,0],0,[1.5,.55,1.15]);
+  }
+  if(o.heroTrim){for(const s of [-1,1])add('chest',box(.012,.25,.01),0xd4ad62,'metal',[s*.13,.06,.12*S],[0,0,s*.2]);add('hips',box(.09,.045,.014),0xd4ad62,'metal',[0,.09,.145*S])}
   if(o.robe)add('chest',box(.05,.24,.006),trim,'cloth',[0,.08,.13*S]);
-  if(o.quiver){add('chest',cylg(.055,.045,.52,10),0x5a3620,'cloth',[.09,.05,-.15],[.2,0,-.35]);for(let i=0;i<4;i++)add('chest',cylg(.006,.006,.25,4),0xe8dcc0,'cloth',[.14+i*.012,.33,-.2+i*.01],[.2,0,-.35])}
+  if(o.quiver){add('chest',cylg(.055,.045,.52,10),0x5a3620,'cloth',[.09,.05,-.15],[.2,0,-.35]);add('chest',box(.022,.4,.013),0x684328,'cloth',[-.03,.04,.14*S],[0,0,.65]);for(let i=0;i<4;i++){add('chest',cylg(.006,.006,.25,4),0xe8dcc0,'cloth',[.14+i*.012,.33,-.2+i*.01],[.2,0,-.35]);add('chest',coneg(.024,.065,5),i%2?0xa58352:0xe7d8ac,'cloth',[.14+i*.012,.47,-.2+i*.01])}}
   // neck & head
   add('neck',cylg(.048,.054,.12,12),skin,sk,[0,.04,0]);
   add('head',sph(.1,20,16),skin,sk,[0,.1,0],0,[.93,1.08,1.05]);add('head',sph(.072,14,10),skin,sk,[0,.04,.03],0,[1,.8,1]);
@@ -815,10 +825,13 @@ function humanProto(key,o){if(HUM[key])return HUM[key];const pb=PB(),{B,add}=pb;
   // arms
   for(const [s,n] of [[1,'L'],[-1,'R']]){add('sh'+n,sph(.052*S,12,10),o.bare?skin:tun,cl);add('sh'+n,limbG(.056*S,.043*S,.29,.12,.65),o.bare?skin:sleeve,cl);
     add('el'+n,limbG(.044*S,.033*S,.255,.1,.72),o.bare||o.shortSleeve?skin:sleeve,o.bare?'spot':o.shortSleeve?'skin':'cloth');if(!o.bare&&!o.shortSleeve)add('el'+n,cylg(.04*S,.042*S,.03,10),trim,'cloth',[0,-.23,0]);
+    if(o.armor)add('el'+n,cylg(.046*S,.047*S,.1,10),0x71543a,'cloth',[0,-.2,0]);
     add('wr'+n,box(.055,.085,.03),skin,sk,[0,-.045,.006]);add('wr'+n,capg(.014,.035,6),skin,sk,[s*-.03,-.035,.02],[.4,0,s*.5]);
     add('th'+n,limbG(.082*S,.058*S,.44,.1,.75),o.bare?skin:pants,cl);add('kn'+n,sph(.058*S,10,8),o.bare?skin:pants,cl);
     add('kn'+n,limbG(.058*S,.042*S,.44,.12,.72),o.bare?skin:pants,cl);add('kn'+n,cylg(.05*S,.047*S,.22,12),boots,'cloth',[0,-.33,0]);
-    add('an'+n,sph(.052,12,10),boots,'cloth',[0,-.035,.045],0,[1.05,.72,2.3])}
+    add('an'+n,sph(.052,12,10),boots,'cloth',[0,-.035,.045],0,[1.05,.72,2.3]);
+    if(o.armor)add('kn'+n,sph(.065*S,10,8),0x9b8661,'metal',[0,0,.03],0,[1,.7,.5]);
+    if(o.heroTrim)add('an'+n,box(.095,.02,.16),0xc5a05b,'metal',[0,-.025,.05])}
   // tools & weapons (each its own bone so they can be shown or hidden)
   const W=(name,par,x,y,z)=>B(name,par,x,y,z);
   W('w_spear','wrR',0,-.06,.01);add('w_spear',cylg(.017,.017,2.3,6),0x4a3220,'wood',[0,0,.45],[Math.PI/2,0,0]);add('w_spear',coneg(.036,.2,6),0xc8d0d8,'metal',[0,0,1.7],[Math.PI/2,0,0]);add('w_spear',box(.004,.05,.12),0xc8d0d8,'metal',[0,0,1.52]);
@@ -842,11 +855,11 @@ function humanProto(key,o){if(HUM[key])return HUM[key];const pb=PB(),{B,add}=pb;
 function humanSpec(type,team){const T=TEAMC[team];
   switch(type){
   case 'villager':return{tunic:0xb9a37a,trim:T.main,pants:0x5a4a38,hat:'cap',hatc:0x6e4f33,beard:0x3a2a1c,hair:0x2a1c12,shortSleeve:1,tools:['w_axe','w_pick','w_hoe','w_hammer','w_basket']};
-  case 'spearman':return{tunic:T.main,trim:0xd4a642,pants:0x2e2a26,hat:team===1?'helmD':'helm',beard:0x2a1c12,shieldC:T.main,tools:['w_spear','shield'],wk:'spear'};
+  case 'spearman':return{tunic:T.main,trim:0xd4a642,pants:0x2e2a26,hat:team===1?'helmD':'helm',beard:0x2a1c12,shieldC:T.main,armor:1,tools:['w_spear','shield'],wk:'spear'};
   case 'archer':return{tunic:T.lite,trim:T.dark,pants:0x3a3024,hat:'kulah',hatc:T.dark,beard:0x2a1c12,quiver:1,tools:['w_bow'],wk:'bow'};
-  case 'kaveh':return{tunic:0x6a4a30,trim:0x2d1d12,pants:0x2e2219,hat:'cap',hatc:0x3e2616,beard:0x1e1208,hair:0x1e1208,apron:1,shortSleeve:1,bulk:1.08,tools:['w_banner'],wk:'banner',scale:1.08};
-  case 'fereydun':return{tunic:0xe8dcb2,trim:0xc9982f,pants:0x4a3a2a,hat:'crown',beard:0x3a2616,hair:0x3a2616,cape:T.main,tools:['w_mace'],wk:'mace',scale:1.12};
-  case 'serpent':return{tunic:0x5a1c1c,trim:0x1a1010,pants:0x231515,boots:0x1a1010,hat:'helmD',beard:0x140c0c,shieldC:0x6a1414,tools:['w_spear','shield'],wk:'spear'};
+  case 'kaveh':return{tunic:0x6a4a30,trim:0x2d1d12,pants:0x2e2219,hat:'cap',hatc:0x3e2616,beard:0x1e1208,hair:0x1e1208,apron:1,heroTrim:1,shortSleeve:1,bulk:1.08,tools:['w_banner'],wk:'banner',scale:1.08};
+  case 'fereydun':return{tunic:0xe8dcb2,trim:0xc9982f,pants:0x4a3a2a,hat:'crown',beard:0x3a2616,hair:0x3a2616,cape:T.main,heroTrim:1,tools:['w_mace'],wk:'mace',scale:1.12};
+  case 'serpent':return{tunic:0x5a1c1c,trim:0x1a1010,pants:0x231515,boots:0x1a1010,hat:'helmD',beard:0x140c0c,shieldC:0x6a1414,armor:1,tools:['w_spear','shield'],wk:'spear'};
   case 'bowman':return{tunic:0x6e2a22,trim:0x1a1010,pants:0x231515,hat:'hood',hatc:0x241010,beard:0x140c0c,quiver:1,tools:['w_bow'],wk:'bow'};
   case 'div':return{bare:1,skin:0x7a6a88,tunic:0x7a6a88,loin:0x6a1818,hat:'horns',beard:0x1e1626,hair:0x1e1626,bald:0,bulk:1.35,tools:['w_club'],wk:'club',scale:1.55,skirt:true};
   case 'zahhak':return{tunic:0x2a1733,trim:0xd4a642,robe:1,cape:0x5a0f1c,beard:0x0e0808,hair:0x0e0808,hat:'crown',tools:['w_sword'],wk:'sword',serpents:1,scale:1.45}}}
@@ -917,18 +930,21 @@ function unitModel(type,team){
 function toolFor(e){const k=e.workKind;return k==='tree'?'w_axe':k==='mine'?'w_pick':k==='farm'?'w_hoe':k==='bush'?'w_basket':k==='build'?'w_hammer':null}
 function animUnit(R,e,t,dt){
   if(R.kind==='sim'){const s=R.sim;const fl=Math.sin(t*5.5+(e.id||0));s.wings[0].rotation.z=-fl*.6;s.wings[1].rotation.z=fl*.6;s.body.position.y=Math.sin(t*2)*.08;s.tails.forEach((p,i)=>{p.rotation.x=Math.sin(t*3+i)*.12});return}
-  const d=DEF[e.type],J=R.J,P=P0();const mv=e.moving,work=e.anim==='work'&&!mv,atk=e.state==='attack'&&e.inRange&&!mv;
-  const vms=(d.spd/TILE)/(.48*R.scale);const run=clamp((vms-1.5)/1.8,0,1);const p=clamp(1-(e.cd||0)/d.rof,0,1);
+  const d=DEF[e.type],J=R.J,P=P0();const actualSpeed=e.visualSpeed===undefined?(e.moving?d.spd:0):e.visualSpeed;
+  const moving=!!e.moving&&actualSpeed>2;R.moveBlend=lerp(R.moveBlend||0,moving?1:0,1-Math.exp(-dt*(moving?9:12)));
+  const mv=R.moveBlend>.025,work=e.anim==='work'&&!e.moving,atk=e.state==='attack'&&e.inRange&&!e.moving;
+  const vms=(actualSpeed/TILE)/(.48*R.scale);const run=clamp((vms-1.5)/1.8,0,1);const p=clamp(1-(e.cd||0)/d.rof,0,1);
   if(R.rider){// horse + seated rider
-    const H=R.H;const g=mv?1:0;R.hA=lerp(R.hA||0,g,Math.min(1,dt*5));R.hph=((R.hph||0)+dt*(mv?2.1:0))%1;const A=R.hA,hp=R.hph;
-    for(const [n,off,front] of [['HL',0,0],['HR',.1,0],['FL',.5,1],['FR',.6,1]]){const ph=2*Math.PI*(hp+off);H['u'+n].rotation.x=-A*.55*Math.sin(ph)-(1-A)*.02;H['l'+n].rotation.x=(front?1:-1)*A*(.55+.55*Math.sin(ph+1.8))*.9}
-    H.body.rotation.x=A*.06*Math.sin(2*Math.PI*hp);H.body.position.y=1.18+A*.05*Math.abs(Math.sin(2*Math.PI*hp));H.neck.rotation.x=.55-A*.1*Math.sin(2*Math.PI*hp+1)+(1-A)*Math.sin(t*.7+R.sd)*.06;H.tail.rotation.x=.3+Math.sin(t*2+R.sd)*.1;H.tail.rotation.z=Math.sin(t*1.3)*.15;
+    const H=R.H;const A=R.moveBlend;R.hph=((R.hph||0)+dt*A*(1.4+run*1.15))%1;const hp=R.hph;
+    for(const [n,off,front] of [['HL',.5,0],['HR',0,0],['FL',0,1],['FR',.5,1]]){const ph=2*Math.PI*(hp+off);H['u'+n].rotation.x=-A*(.34+run*.27)*Math.sin(ph)-(1-A)*.02;H['l'+n].rotation.x=(front?1:-1)*A*(.38+.5*Math.sin(ph+1.8))}
+    H.body.rotation.x=A*.055*Math.sin(2*Math.PI*hp);H.body.position.y=1.18+A*(.025+run*.045)*Math.abs(Math.sin(2*Math.PI*hp));H.neck.rotation.x=.55-A*.09*Math.sin(2*Math.PI*hp+1)+(1-A)*Math.sin(t*.7+R.sd)*.06;H.tail.rotation.x=.3+Math.sin(t*2+R.sd)*.1;H.tail.rotation.z=Math.sin(t*1.3)*.15;
     P.hipY=0;P.lThX=P.rThX=62*D2R;P.lThZ=P.rThZ=.42;P.lKn=P.rKn=80*D2R;P.lAn=P.rAn=.1;P.spRx=.06+A*.05;P.hdRx=-.05;
     if(atk){const q=P0();poseThrust(q,p,false);P.rShX=q.rShX;P.rEl=q.rEl;P.rWrX=q.rWrX;P.rShZ=q.rShZ;P.chRy=q.chRy*.6}else{P.rShX=.18;P.rEl=1.45;P.rWrX=0}P.lShX=.9;P.lEl=1.3;P.lShZ=.3}
-  else if(mv){R.ph=(R.ph+dt*vms/(1.7+run*.6))%1;poseWalk(P,R.ph,run);
+  else if(mv){const step=e.stepDistance===undefined?dt*actualSpeed:e.stepDistance;R.ph=(R.ph+Math.min(step,d.spd*dt*1.4)/TILE/(.48*R.scale)/(1.7+run*.6))%1;poseWalk(P,R.ph,run);
     if(R.wk==='spear'||R.wk==='banner'){P.rShX=.15+Math.sin(R.ph*Math.PI*2)*.04;P.rEl=1.45;P.rWrX=0;if(R.wk==='spear'){P.lShX=.7;P.lEl=1.2;P.lShZ=.3}}
     if(R.wk==='club'){P.rShX=.6;P.rEl=1.9;P.rWrX=1.2}
-    if(e.carry>0){P.lShX=P.rShX=-.1;P.lEl=P.rEl=1.9;P.lShZ=P.rShZ=.05;P.spRx+=.08}}
+    if(e.carry>0){P.lShX=P.rShX=-.1;P.lEl=P.rEl=1.9;P.lShZ=P.rShZ=.05;P.spRx+=.08}
+    const idle=P0();poseIdle(idle,t,R.sd);for(const k in P)P[k]=lerp(idle[k],P[k],R.moveBlend)}
   else if(work){const k=e.workKind;const pw=R.wph||0;R.wph=((R.wph||0)+dt*(k==='farm'?.75:k==='bush'?.6:k==='build'?1.2:.8))%1;{const hitAt=k==='bush'?.5:k==='farm'||k==='build'?.56:.6;if(e.x!==undefined&&((pw<hitAt&&R.wph>=hitAt)||(R.wph<pw&&hitAt>pw)))sfx(k==='tree'?'chop':k==='mine'?'pick':k==='farm'?'hoe':k==='bush'?'harvest':'hammer',e.x,e.y,.8)}
     if(k==='tree')poseSwing2(P,R.wph,'chop');else if(k==='mine')poseSwing2(P,R.wph,'pick');else if(k==='farm')poseSwing2(P,R.wph,'hoe');else if(k==='bush')poseHarvest(P,R.wph);else poseHammer(P,R.wph)}
   else if(atk||e.state==='attack'){const w=R.wk;if(w==='spear')poseThrust(P,p,!atk);else if(w==='bow')poseBow(P,p,atk);else poseSwing1(P,p,w==='tool'?'club':w,!atk);if(e.type==='villager'&&atk)poseSwing1(P,p,'sword',false)}
@@ -1228,7 +1244,8 @@ const _sp=new T3.Sphere(new T3.Vector3(),1.4);
 function sync(dt,t){const live=new Set();
   for(const e of ents){if(e.kind==='res'&&e.type==='tree')continue;live.add(e.id);let o=objs.get(e.id);if(!o)o=makeObj(e);if(!o)continue;
     if(e.kind==='unit'){o.root.visible=!e.fallen&&shown(e);if(!o.root.visible)continue;const X=e.x/TILE,Z=e.y/TILE;
-      const dx=e.x-o.px,dz=e.y-o.py;let ty=o.yaw;if(dx*dx+dz*dz>.02)ty=Math.atan2(dx,dz);else if(e.tgx!==undefined&&(e.inRange||e.anim==='work'))ty=Math.atan2(e.tgx-e.x,e.tgy-e.y);
+      const dx=e.x-o.px,dz=e.y-o.py;const travel=Math.hypot(dx,dz);e.stepDistance=e.moving?Math.min(travel,DEF[e.type].spd*dt*1.4):0;e.visualSpeed=dt>0?e.stepDistance/dt:0;
+      let ty=o.yaw;if(dx*dx+dz*dz>.02)ty=Math.atan2(dx,dz);else if(e.tgx!==undefined&&(e.inRange||e.anim==='work'))ty=Math.atan2(e.tgx-e.x,e.tgy-e.y);
       o.yaw=lerpAng(o.yaw,ty,Math.min(1,dt*9));o.px=e.x;o.py=e.y;o.root.rotation.y=o.yaw;
       const gy=heightAt(X,Z);o.root.position.set(X,e.fly?Math.max(gy,WL)+2.3:Math.max(gy,WL-.12),Z);_sp.center.set(X,gy+.5,Z);if(FR.intersectsSphere(_sp)){o.root.visible=true;animUnit(o.R,e,t,o.skip?dt*2:dt)}else o.root.visible=false}
     else if(e.kind==='bld'){if(o.lvl!==bldLevel(e.type,e.team)){scene.remove(o.root);objs.delete(e.id);o=makeObj(e)}o.root.visible=shown(e);const s=e.done?1:.06+.94*e.bp;o.root.scale.set(1,s,1);
