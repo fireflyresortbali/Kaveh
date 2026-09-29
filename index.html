@@ -715,6 +715,20 @@ function tileCanvas(a,b,g){const c=cvs(128,128),x=c.getContext('2d');x.fillStyle
 function woodCanvas(){const c=cvs(128,128),x=c.getContext('2d');for(let i=0;i<8;i++){x.fillStyle=rgb(0x7a5534,(hash2(i,3)-.5)*.25);x.fillRect(i*16,0,16,128);x.fillStyle='rgba(40,20,10,.5)';x.fillRect(i*16,0,1,128)}noisy(x,128,128,18,7);return c}
 function fieldCanvas(){const c=cvs(256,256),x=c.getContext('2d');x.fillStyle='#6d5134';x.fillRect(0,0,256,256);for(let r=0;r<16;r++){x.fillStyle='#5a4128';x.fillRect(0,r*16+10,256,5);for(let k=0;k<64;k++){x.fillStyle=k%3?'#b8a246':'#8d9a3e';x.fillRect(k*4+hash2(k,r)*2,r*16+2,2,8)}}noisy(x,256,256,18,9);return c}
 function paveCanvas(){const c=cvs(128,128),x=c.getContext('2d');x.fillStyle='#8a7658';x.fillRect(0,0,128,128);for(let j=0;j<4;j++)for(let i=0;i<4;i++){x.fillStyle=rgb(0xc4ad86,(hash2(i,j)-.5)*.14);x.fillRect(i*32+1,j*32+1,30,30)}noisy(x,128,128,16,3);return c}
+function panelCanvas(kind){const W=128,H=192,c=cvs(W,H),x=c.getContext('2d');
+  x.fillStyle='#e9cf9e';x.fillRect(0,0,W,H);x.fillStyle='#1d6f84';x.fillRect(8,8,W-16,H-8);
+  x.fillStyle='#2aa6a0';x.fillRect(12,12,W-24,H-12);
+  for(let j=0;j<16;j++)for(let i=0;i<9;i++){const cx=16+i*12+(j%2)*6,cy=16+j*12;x.fillStyle=(i+j)%2?'#f1e2b6':'#1d4f86';x.beginPath();for(let k=0;k<8;k++){const a=k/8*6.283,r=k%2?2:4.4;x.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r)}x.fill()}
+  const ax=30,aw=W-60,ay=46;const arch=()=>{x.beginPath();x.moveTo(ax,H);x.lineTo(ax,ay+34);x.quadraticCurveTo(ax+2,ay+6,ax+aw/2,ay-8);x.quadraticCurveTo(ax+aw-2,ay+6,ax+aw,ay+34);x.lineTo(ax+aw,H);x.closePath()};
+  x.save();x.translate(-6,-6);x.scale(1+12/aw*0,1);x.restore();
+  x.lineWidth=12;x.strokeStyle='#f1e2b6';arch();x.stroke();x.lineWidth=5;x.strokeStyle='#c9982f';arch();x.stroke();
+  if(kind==='door'){const g=x.createLinearGradient(0,ay,0,H);g.addColorStop(0,'#3a1a0c');g.addColorStop(1,'#c9782e');x.fillStyle=g;arch();x.fill();x.fillStyle='#5a2e14';x.fillRect(ax+10,ay+40,aw-20,H-ay-40);x.strokeStyle='#e8b060';x.lineWidth=2;x.strokeRect(ax+10,ay+40,aw-20,H-ay-40);x.beginPath();x.moveTo(W/2,ay+40);x.lineTo(W/2,H);x.stroke();for(const s2 of [-1,1]){x.fillStyle='#e8c870';x.beginPath();x.arc(W/2+s2*6,ay+95,2.5,0,7);x.fill()}}
+  else{x.fillStyle='#10263e';arch();x.fill();x.save();arch();x.clip();x.strokeStyle='rgba(232,200,112,.75)';x.lineWidth=1.5;for(let i=-10;i<20;i++){x.beginPath();x.moveTo(ax+i*9,ay-10);x.lineTo(ax+i*9+80,H);x.stroke();x.beginPath();x.moveTo(ax+i*9+80,ay-10);x.lineTo(ax+i*9,H);x.stroke()}x.restore()}
+  noisy(x,W,H,8,21);return c}
+function bandCanvas(){const W=256,H=32,c=cvs(W,H),x=c.getContext('2d');x.fillStyle='#1d4f86';x.fillRect(0,0,W,H);x.fillStyle='#e9cf9e';x.fillRect(0,0,W,3);x.fillRect(0,H-3,W,3);
+  for(let i=0;i<16;i++){const cx=8+i*16,cy=16;x.fillStyle='#2aa6a0';x.beginPath();x.arc(cx,cy,7,0,7);x.fill();x.fillStyle='#f1e2b6';for(let k=0;k<4;k++){const a=k*1.5708;x.beginPath();x.arc(cx+Math.cos(a)*3.4,cy+Math.sin(a)*3.4,2.6,0,7);x.fill()}x.fillStyle='#c9982f';x.beginPath();x.arc(cx,cy,1.8,0,7);x.fill()}noisy(x,W,H,6,22);return c}
+function carpetCanvas(){const W=64,H=96,c=cvs(W,H),x=c.getContext('2d');x.fillStyle='#8a1a22';x.fillRect(0,0,W,H);x.strokeStyle='#e0b050';x.lineWidth=3;x.strokeRect(5,5,W-10,H-10);x.strokeStyle='#1c2a50';x.lineWidth=2;x.strokeRect(11,11,W-22,H-22);
+  x.fillStyle='#d9a441';x.beginPath();x.moveTo(W/2,24);x.lineTo(W-18,H/2);x.lineTo(W/2,H-24);x.lineTo(18,H/2);x.fill();x.fillStyle='#1c2a50';x.beginPath();x.arc(W/2,H/2,7,0,7);x.fill();noisy(x,W,H,10,23);return c}
 function iwanCanvas(kind){const c=cvs(256,320),x=c.getContext('2d');const red=kind==='red';
   x.fillStyle=red?'#2a1418':'#1f3a6e';x.fillRect(0,0,256,320);
   x.strokeStyle=red?'#8a1f1f':'#46b9ac';x.lineWidth=10;x.strokeRect(10,10,236,310);x.strokeStyle=red?'#c9982f':'#e8c870';x.lineWidth=3;x.strokeRect(22,22,212,300);
@@ -747,8 +761,8 @@ function makeTextures(){
   TX.rock=tex(grayCanvas(128,(i,j)=>fbmP(i/16,j/16,8,4)*.8+.35),[2,2],false);
   TX.fabric=tex(grayCanvas(128,(i,j)=>.78+((i%4<2)^(j%4<2)?.07:0)+fbmP(i/16,j/16,8,3)*.18+hash2(i,j)*.06),[3,3],false);
   TX.spot2=tex((()=>{const c=cvs(128,128),x=c.getContext('2d');x.fillStyle='#ffffff';x.fillRect(0,0,128,128);const R=mulberry32(3);for(let i=0;i<30;i++){x.fillStyle='rgba(255,236,190,.9)';x.beginPath();x.ellipse(R()*128,R()*128,3+R()*5,2+R()*3,R()*3,0,7);x.fill();x.fillStyle='rgba(40,20,50,.35)';x.beginPath();x.ellipse(R()*128,R()*128,2+R()*4,2+R()*3,R()*3,0,7);x.fill()}return c})(),[2,2]);
-  TX.tent=[0,1,2].map(t=>tex(tentCanvas(t),[2,1]));TX.waterN=waterNormal();
-  for(const k of ['iwan','iwanR','door','banner','plume']){TX[k].wrapS=TX[k].wrapT=T3.ClampToEdgeWrapping}makeGroundTextures()}
+  TX.tent=[0,1,2].map(t=>tex(tentCanvas(t),[2,1]));TX.panelW=tex(panelCanvas('win'));TX.panelD=tex(panelCanvas('door'));TX.band=tex(bandCanvas(),[1,1]);TX.carpet=tex(carpetCanvas());TX.waterN=waterNormal();
+  for(const k of ['iwan','iwanR','door','banner','plume','panelW','panelD','carpet']){TX[k].wrapS=TX[k].wrapT=T3.ClampToEdgeWrapping}makeGroundTextures()}
 // ---------- materials
 const MC={};
 function mat(k,o,ex){if(MC[k])return MC[k];const m=new T3.MeshStandardMaterial(Object.assign({roughness:.85,metalness:0},o));patch(m,ex);return MC[k]=m}
@@ -768,7 +782,9 @@ const MF={
   spot:()=>mat('spot',{map:TX.spot,roughness:.7}),leaf:()=>mat('leaf',{color:0x3f5f26,roughness:.9}),pom:()=>mat('pom',{color:0xb01c2c,roughness:.45}),
   pool:()=>mat('pool',{color:0x2d7f8a,roughness:.1,metalness:.3}),snake:()=>mat('snake',{color:0x1c2a1e,roughness:.4,metalness:.2}),eye:()=>bmat('eye',{color:0xff3020}),
   adobe:()=>mat('adobe',{map:TX.plaster,color:0xe9c9a0,roughness:.96}),adobeL:()=>mat('adobeL',{map:TX.plaster,color:0xfff0da,roughness:.9}),clay:()=>mat('clay',{color:0xa65a34,roughness:.8,map:TX.grain}),
-  sack:()=>mat('sack',{color:0xd9c7a0,map:TX.fabric,roughness:.95}),log:()=>mat('log',{color:0xa88058,map:TX.wood,roughness:.85}),dirt:()=>mat('dirtS',{color:0x8f7550,map:TX.grain,roughness:1})};
+  sack:()=>mat('sack',{color:0xd9c7a0,map:TX.fabric,roughness:.95}),log:()=>mat('log',{color:0xa88058,map:TX.wood,roughness:.85}),sand:()=>mat('sand',{map:TX.stoneL,color:0xf6dcae,roughness:.88}),sandW:()=>mat('sandW',{map:TX.plaster,color:0xf3d6a4,roughness:.9}),panelW:()=>mat('panelW',{map:TX.panelW,roughness:.45,metalness:.05}),panelD:()=>mat('panelD',{map:TX.panelD,roughness:.5,emissive:0x5a2a08,emissiveIntensity:.35}),
+  band:()=>mat('band',{map:TX.band,roughness:.4}),carpet:()=>mat('carpet',{map:TX.carpet,roughness:.95}),water:()=>mat('waterS',{color:0x3aa6a8,roughness:.08,metalness:.25}),lily:()=>mat('lily',{color:0x4f8a34,roughness:.7}),cypress:()=>mat('cypress',{color:0x2c4a24,roughness:.95,map:TX.grain}),
+  dirt:()=>mat('dirtS',{color:0x8f7550,map:TX.grain,roughness:1})};
 const MAT=new Proxy({},{get:(o,k)=>o[k]||(o[k]=MF[k]())});
 const G={};const geo=(k,f)=>G[k]||(G[k]=f());
 function mesh(g,m,x,y,z,p,cast){const o=new T3.Mesh(g,m);o.position.set(x||0,y||0,z||0);o.castShadow=cast!==false;o.receiveShadow=true;if(p)p.add(o);return o}
@@ -1035,30 +1051,35 @@ tc(g,T,team,U){plinth(g,3.95,3.95);mesh(box(3.4,.06,3.4),MAT.pave,0,.03,0,g,fals
   mesh(box(1.9,1.4,1.3),MAT.plaster,0,.7,-.85,g);mesh(box(2.0,.1,1.4),MAT.stoneL,0,1.43,-.85,g);mesh(box(1.2,1.62,.16),MAT.plaster,0,.81,-.16,g);facade(g,.95,1.28,0,.64,-.075,MAT.iwan);
   mesh(box(.12,1.62,.18),MAT.tileT,-.62,.81,-.16,g);mesh(box(.12,1.62,.18),MAT.tileT,.62,.81,-.16,g);
   dome(g,0,1.48,-.9,.55,MAT.tileT);U.glows.push(glow(g,0,.35,-.02,0xffa040,.8))},
-house(g,T,team,U){plinth(g,1.9,1.9);const A=MAT.adobe,AL=MAT.adobeL;
-  // Yazd-style mud-brick house: rooms at the back, a walled courtyard in front, a windcatter and a small roof dome.
-  mesh(box(1.64,1.0,.92),A,0,.5,-.42,g);mesh(box(1.72,.07,1.0),AL,0,1.03,-.42,g);
-  for(const x of [-.82,.82])mesh(box(.07,.12,1.0),AL,x,1.1,-.42,g);mesh(box(1.72,.12,.07),AL,0,1.1,-.9,g);
-  facade(g,.34,.52,0,.26,.045,MAT.door);mesh(box(.5,.07,.05),MAT.tileT,0,.58,.06,g,false);mesh(box(.44,.04,.05),AL,0,.63,.06,g,false);
-  for(const x of [-.52,.52]){facade(g,.15,.2,x,.64,.045,MAT.dark);mesh(box(.21,.03,.04),AL,x,.53,.06,g,false)}
-  const dm=new T3.Mesh(geo('hdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),A);dm.scale.set(.3,.26,.3);dm.position.set(-.38,1.06,-.5);dm.castShadow=true;g.add(dm);mesh(cylg(.3,.31,.06,20),AL,-.38,1.07,-.5,g);
-  mesh(box(.34,.82,.34),A,.48,1.43,-.6,g);mesh(box(.42,.07,.42),AL,.48,1.87,-.6,g);
-  for(const z of [-.425,-.775])for(let i=0;i<3;i++)mesh(box(.05,.4,.012),MAT.dark,.38+i*.1,1.55,z,g,false);
-  for(const x of [.305,.655])for(let i=0;i<3;i++)mesh(box(.012,.4,.05),MAT.dark,x,1.55,-.7+i*.1,g,false);
-  mesh(box(1.52,.02,.8),MAT.pave,0,.02,.44,g,false);
-  mesh(box(.08,.48,.86),A,-.8,.24,.46,g);mesh(box(.08,.48,.86),A,.8,.24,.46,g);
-  for(const x of [-.53,.53])mesh(box(.62,.48,.08),A,x,.24,.86,g);mesh(box(.3,.1,.1),AL,0,.52,.86,g);
-  for(const [x,z,w,d] of [[-.8,.46,.12,.9],[.8,.46,.12,.9],[-.53,.86,.66,.12],[.53,.86,.66,.12]])mesh(box(w,.04,d),AL,x,.5,z,g,false);
-  facade(g,.26,.44,0,.22,.83,MAT.door);
-  mesh(cylg(.035,.045,.5,6),MAT.dwood,-.48,.27,.42,g);const cr=mesh(sph(.24,12,9),MAT.leaf,-.48,.66,.42,g);cr.scale.set(1,.8,1);for(let i=0;i<5;i++)mesh(sph(.035,6,5),MAT.pom,-.48+Math.cos(i*1.3)*.2,.6+hash2(i,3)*.15,.42+Math.sin(i*1.3)*.2,g,false);
-  for(const [x,z,r] of [[.5,.6,.09],[.62,.48,.07],[.4,.66,.06]]){mesh(cylg(r*.7,r,r*2.2,10),MAT.clay,x,.04+r*1.1,z,g);mesh(cylg(r*.55,r*.7,.03,10),MAT.clay,x,.06+r*2.2,z,g,false)}
-  const aw=mesh(box(.54,.025,.24),cloth(T.main),0,.72,.17,g);aw.rotation.x=.38;g.children.forEach((c,i)=>{if(i>=5)c.position.y+=.05})},
-store(g,T,team,U){plinth(g,1.9,1.9);const A=MAT.adobe,AL=MAT.adobeL;
+house(g,T,team,U){plinth(g,1.9,1.9,MAT.sand);const S=MAT.sand,W=MAT.sandW,Y=.05;
+  // Persian courtyard house: tiled pavilion on a raised terrace, portico with a carpet, stairs, pool garden, low crenellated wall, cypresses.
+  const P=(w,h,x,y,z,m,ry)=>facade(g,w,h,x,y,z,m,ry);
+  mesh(box(1.7,.02,.8),MAT.pave,0,Y+.01,.46,g,false);
+  for(const [x,z,w,d] of [[0,-.9,1.84,.08],[-.9,0,.08,1.84],[.9,0,.08,1.84],[.3,.9,1.24,.08],[-.84,.9,.16,.08]]){mesh(box(w,.24,d),W,x,Y+.12,z,g);const n=Math.round(Math.max(w,d)/.14);for(let i=0;i<n;i++){const t=(i+.5)/n-.5;mesh(box(.07,.07,.07),W,x+(w>d?t*w:0),Y+.275,z+(d>w?t*d:0),g)}}
+  for(const x of [-.74,-.44]){mesh(box(.07,.42,.1),S,x,Y+.21,.9,g)}mesh(box(.38,.07,.1),S,-.59,Y+.44,.9,g);P(.23,.34,-.59,Y+.17,.95,MAT.panelD);
+  mesh(box(1.76,.32,.98),S,0,Y+.16,-.41,g);P(1.02,.1,.3,Y+.2,.081,MAT.band);
+  for(let i=0;i<5;i++)mesh(box(.32,.064*(i+1),.1),S,-.56,Y+.032*(i+1),.13-i*.0+(.4-i*.1)-.25,g);
+  const TY=Y+.32;mesh(box(1.12,.66,.58),W,.24,TY+.33,-.56,g);
+  P(.3,.52,.24,TY+.26,-.265,MAT.panelD);for(const x of [-.08,.56])P(.22,.4,x,TY+.23,-.265,MAT.panelW);
+  for(const s2 of [-1,1])for(const z of [-.66,-.46])P(.16,.34,.24+s2*.565,TY+.25,z,MAT.panelW,s2*Math.PI/2);
+  mesh(box(1.2,.07,.66),S,.24,TY+.69,-.56,g);mesh(box(1.1,.02,.56),MAT.tileT,.24,TY+.735,-.56,g,false);P(1.2,.07,.24,TY+.69,-.228,MAT.band);
+  const dg=geo('hdome2',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2));
+  for(const x of [.02,.46]){mesh(cylg(.14,.15,.07,18),S,x,TY+.78,-.56,g);const d=new T3.Mesh(dg,MAT.tileT);d.scale.set(.14,.16,.14);d.position.set(x,TY+.81,-.56);d.castShadow=true;g.add(d);mesh(coneg(.02,.08,6),MAT.gold,x,TY+1.0,-.56,g)}
+  for(const [x,z] of [[-.78,-.32],[-.36,-.32],[-.78,-.78],[-.36,-.78]])mesh(cylg(.025,.03,.46,8),S,x,TY+.23,z,g);
+  mesh(box(.52,.06,.56),S,-.57,TY+.49,-.55,g);mesh(box(.46,.02,.5),MAT.tileT,-.57,TY+.525,-.55,g,false);P(.52,.06,-.57,TY+.49,-.268,MAT.band);
+  mesh(box(.36,.012,.4),MAT.carpet,-.57,TY+.006,-.55,g,false);for(const z of [-.7,-.4])mesh(box(.1,.05,.08),cloth(0xa8262e),-.72,TY+.03,z,g);
+  mesh(box(.66,.07,.38),S,.36,Y+.035,.5,g);mesh(box(.58,.02,.3),MAT.water,.36,Y+.065,.5,g,false);
+  for(const [x,z,r] of [[.2,.45,.045],[.28,.58,.035],[.48,.42,.04],[.52,.56,.03]])mesh(cylg(r,r,.01,10),MAT.lily,x,Y+.078,z,g,false);
+  for(const [x,z,w,d] of [[.36,.76,.7,.1],[-.86+.1,.3,.1,.5],[.84-.02,.4,.1,.6]]){mesh(box(w,.08,d),S,x,Y+.04,z,g);const n=Math.max(2,Math.round(Math.max(w,d)/.14));for(let i=0;i<n;i++){const t=(i+.5)/n-.5;const b2=mesh(sph(.065,8,6),MAT.leaf,x+(w>d?t*w:0),Y+.12,z+(d>w?t*d:0),g);b2.scale.set(1,.8,1)}}
+  for(const [x,z] of [[-.34,.2],[-.78,.2]]){mesh(cylg(.045,.035,.08,8),MAT.clay,x,Y+.04,z,g);mesh(sph(.06,8,6),MAT.leaf,x,Y+.12,z,g)}
+  for(const [x,z,h] of [[-.8,-.8,.95],[.8,-.82,1.1],[.82,.08,.8]]){mesh(cylg(.02,.025,.12,5),MAT.dwood,x,Y+.3,z,g);const c2=mesh(coneg(.1,h,8),MAT.cypress,x,Y+.3+h/2,z,g);mesh(sph(.1,8,6),MAT.cypress,x,Y+.36,z,g)}
+  flagOn(g,.72,TY+.72,-.8,team,U.flags)},
+store(g,T,team,U){plinth(g,1.9,1.9,MAT.sand);const A=MAT.sandW,AL=MAT.sand;
   // Bazaar-style storehouse: an arched hall under two brick domes, with the village's goods stacked in the yard.
   mesh(box(1.64,.95,.12),A,0,.475,-.84,g);for(const x of [-.76,.76])mesh(box(.12,.95,1.0),A,x,.475,-.4,g);
   mesh(box(1.64,.14,1.0),A,0,1.02,-.4,g);mesh(box(1.72,.06,1.08),AL,0,1.1,-.4,g);
-  mesh(archFaceGeo(1.64,.95,1.0,.8,.12),A,0,0,.04,g);mesh(box(1.4,.02,.9),MAT.dark,0,.015,-.38,g,false);facade(g,1.4,.9,0,.45,-.77,MAT.dark);
-  for(const x of [-.4,.4]){const dm=new T3.Mesh(geo('sdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),MAT.brick);dm.scale.set(.34,.3,.34);dm.position.set(x,1.19,-.42);dm.castShadow=true;g.add(dm);mesh(cylg(.35,.36,.08,20),AL,x,1.17,-.42,g);mesh(sph(.035,6,5),AL,x,1.5,-.42,g,false)}
+  mesh(archFaceGeo(1.64,.95,1.0,.8,.12),A,0,0,.04,g);facade(g,1.64,.09,0,1.04,.1,MAT.band);for(const x of [-.67,.67])facade(g,.2,.62,x,.4,.165,MAT.panelW);mesh(box(1.4,.02,.9),MAT.dark,0,.015,-.38,g,false);facade(g,1.4,.9,0,.45,-.77,MAT.dark);
+  for(const x of [-.4,.4]){const dm=new T3.Mesh(geo('sdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),MAT.tileT);dm.scale.set(.34,.3,.34);dm.position.set(x,1.19,-.42);dm.castShadow=true;g.add(dm);mesh(cylg(.35,.36,.08,20),AL,x,1.17,-.42,g);mesh(sph(.035,6,5),AL,x,1.5,-.42,g,false)}
   for(let i=0;i<4;i++){const s2=mesh(sph(.13,10,8),MAT.sack,-.52+(i%2)*.2,.12+(i>1?.17:0),-.45+(i>1?.04:0),g);s2.scale.set(1,.8,1.1)}
   for(let i=0;i<3;i++)mesh(box(.24,.2,.24),MAT.wood,.42+(i%2)*.1,.1+(i>1?.2:0),-.52+(i===1?.26:0),g);
   const aw=mesh(box(1.2,.025,.3),cloth(T.main),0,.9,.2,g);aw.rotation.x=.42;for(const x of [-.58,.58])mesh(cylg(.022,.022,.86,6),MAT.dwood,x,.43,.34,g);
@@ -1101,13 +1122,13 @@ temple(g,T,team,U){plinth(g,2.9,2.9);mesh(box(2.5,.3,2.5),MAT.stoneL,0,.15,0,g);
   mesh(box(1.92,.25,1.92),MAT.plaster,0,1.78,0,g);mesh(box(2.0,.06,2.0),MAT.stoneL,0,1.93,0,g);dome(g,0,1.96,0,.8,MAT.plaster);
   mesh(box(.34,.4,.34),MAT.stoneL,0,.5,0,g);mesh(cylg(.2,.16,.1,10),MAT.darksteel,0,.74,0,g);
   const fl=new T3.Group();fl.position.y=.78;g.add(fl);[0xff5010,0xff9a20,0xffe070].forEach((c,i)=>{const m=new T3.Mesh(coneg(.13-i*.03,.5-i*.1,8),new T3.MeshBasicMaterial({color:c,transparent:true,opacity:.85,blending:T3.AdditiveBlending,depthWrite:false}));m.position.y=.2-i*.03;fl.add(m)});U.fire=fl;U.glows.push(glow(g,0,1.0,0,0xff8a30,1.8))},
-stable(g,T,team,U){plinth(g,2.95,2.95);const A=MAT.adobe,AL=MAT.adobeL;
+stable(g,T,team,U){plinth(g,2.95,2.95,MAT.sand);const A=MAT.sandW,AL=MAT.sand;
   // Caravanserai stable: three arched stalls under a flat roof, and a fenced paddock with the horses in front.
   mesh(box(2.7,1.15,.14),A,0,.575,-1.33,g);for(const x of [-1.3,1.3])mesh(box(.14,1.15,1.1),A,x,.575,-.85,g);
-  mesh(box(2.7,.16,1.12),A,0,1.23,-.84,g);mesh(box(2.8,.07,1.2),AL,0,1.33,-.84,g);merlonsLine(g,-1.35,-1.4,1.35,-1.4,1.43,AL);
+  mesh(box(2.7,.16,1.12),A,0,1.23,-.84,g);facade(g,2.7,.12,0,1.23,-.275,MAT.band);mesh(box(2.8,.07,1.2),AL,0,1.33,-.84,g);merlonsLine(g,-1.35,-1.4,1.35,-1.4,1.43,AL);
   for(const x of [-.86,0,.86]){mesh(archFaceGeo(.88,1.15,.6,.86,.12),A,x,0,-.34,g);facade(g,.6,.85,x,.43,-1.25,MAT.dark);mesh(box(.54,.02,.8),MAT.hay,x,.02,-.8,g,false)}
   for(const x of [-.43,.43])mesh(box(.14,1.15,.8),A,x,.575,-.85,g);
-  mesh(box(.4,.26,.3),MAT.hay,1.12,1.49,-.62,g);
+  
   mesh(box(2.8,.02,1.55),MAT.dirt,0,.02,.55,g,false);
   const posts=new T3.InstancedMesh(cylg(.035,.04,.46,6),MAT.dwood,22);const M=new T3.Matrix4();let n=0;
   for(let i=0;i<8;i++){const x=-1.35+i*2.7/7;M.makeTranslation(x,.23,1.34);if(Math.abs(x)>.3)posts.setMatrixAt(n++,M)}
@@ -1117,7 +1138,7 @@ stable(g,T,team,U){plinth(g,2.95,2.95);const A=MAT.adobe,AL=MAT.adobeL;
   mesh(box(.7,.16,.2),MAT.wood,.75,.1,.1,g);mesh(box(.62,.02,.13),MAT.pool,.75,.18,.1,g,false);
   for(const [x,z] of [[-.95,.95],[-1.1,.7]])mesh(cylg(.16,.16,.26,12),MAT.hay,x,.13,z,g).rotation.x=Math.PI/2;
   const hs=[[-.2,.75,.5,.2],[.55,.6,-2.3,-.25]];for(const [x,z,ry,lean] of hs){const H=instantiate(horseProto());H.root.scale.setScalar(.48);H.root.position.set(x,.03,z);H.root.rotation.y=ry;if(H.neck)H.neck.rotation.x=lean>0?.9:.2;g.add(H.root)}
-  for(const x of [-.86,0,.86]){const dm=new T3.Mesh(geo('sdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),MAT.adobe);dm.scale.set(.3,.24,.3);dm.position.set(x,1.36,-.84);dm.castShadow=true;g.add(dm);mesh(sph(.03,6,5),AL,x,1.62,-.84,g,false)}
+  for(const x of [-.86,0,.86]){const dm=new T3.Mesh(geo('sdome',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2)),MAT.tileT);dm.scale.set(.3,.24,.3);dm.position.set(x,1.36,-.84);dm.castShadow=true;g.add(dm);mesh(sph(.03,6,5),AL,x,1.62,-.84,g,false)}
   flagOn(g,-1.2,1.36,-1.2,team,U.flags,true);g.children.forEach((c,i)=>{if(i>=5)c.position.y+=.05})},
 tower(g,T,team,U){plinth(g,1.9,1.9);mesh(cylg(.6,.7,2.35,22),MAT.brick,0,1.17,0,g);mesh(cylg(.74,.66,.16,22),MAT.plaster,0,2.4,0,g);merlonsRing(g,0,0,.68,2.55,MAT.brick,12);
   for(const y of [.9,1.7])facade(g,.07,.3,0,y,.66,MAT.dark);flagOn(g,0,2.45,0,team,U.flags,true)},
@@ -1149,7 +1170,15 @@ const UPG={
    for(const s2 of [[-1,-1],[1,-1],[-1,1],[1,1]]){const x=s2[0]*1.72,z=s2[1]*1.72;mesh(cylg(.44,.46,.5,18),S,x,.25,z,g);mesh(cylg(.3,.34,.55,16),MAT.brick,x,1.82,z,g);mesh(coneg(.46,.62,16),MAT.tileT,x,2.4,z,g);mesh(sph(.05,8,6),MAT.gold,x,2.74,z,g)}
    for(const x of [-.55,.55]){mesh(cylg(.2,.22,1.5,14),S,x,.75,1.86,g);mesh(coneg(.27,.4,14),MAT.tileT,x,1.7,1.86,g)}mesh(box(1.3,.22,.3),S,0,1.2,1.86,g);
    U.flags.length=0;for(const s2 of [[-1,-1],[1,-1],[-1,1],[1,1]])flagOn(g,s2[0]*1.72,2.76,s2[1]*1.72,team,U.flags)}};
-function bldModel(type,team,lvl){const g=new T3.Group();const U={flags:[],glows:[],fire:null};BUILD[type](g,TEAMC[team],team,U);if((lvl||1)>=2&&UPG[type]){g.children.filter(c=>c.userData.fl).forEach(c=>g.remove(c));UPG[type](g,TEAMC[team],team,U)}return{root:g,U}}
+const BAKE_T=new Set(['house','store','stable','barracks','temple','tower','tc']);const BAKED={};
+function bakeGroup(g,key){g.updateMatrixWorld(true);const inv=new T3.Matrix4().copy(g.matrixWorld).invert();const list=[];
+  g.traverse(o=>{if(o.isMesh&&!o.isInstancedMesh&&!o.isSkinnedMesh&&!o.material.transparent){let p=o.parent,skip=false;while(p&&p!==g){if(p.userData.fl)skip=true;p=p.parent}if(!skip)list.push(o)}});
+  if(!BAKED[key]){const by=new Map();for(const o of list){const k=o.material.uuid;if(!by.has(k))by.set(k,{m:o.material,items:[],shadow:o.castShadow});by.get(k).items.push(o)}
+    const out=[];for(const {m,items,shadow} of by.values()){let n=0;const geos=items.map(o=>{let gg=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();const M=new T3.Matrix4().multiplyMatrices(inv,o.matrixWorld);gg.applyMatrix4(M);n+=gg.attributes.position.count;return gg});
+      const P=new Float32Array(n*3),N=new Float32Array(n*3),UV=new Float32Array(n*2);let off=0;for(const gg of geos){const c=gg.attributes.position.count;P.set(gg.attributes.position.array,off*3);if(gg.attributes.normal)N.set(gg.attributes.normal.array,off*3);if(gg.attributes.uv)UV.set(gg.attributes.uv.array,off*2);off+=c}
+      const r=new T3.BufferGeometry();r.setAttribute('position',new T3.BufferAttribute(P,3));r.setAttribute('normal',new T3.BufferAttribute(N,3));r.setAttribute('uv',new T3.BufferAttribute(UV,2));r.computeBoundingSphere();out.push({m,geo:r,shadow})}BAKED[key]=out}
+  for(const o of list)o.parent.remove(o);for(const b of BAKED[key]){const mm=new T3.Mesh(b.geo,b.m);mm.castShadow=b.shadow;mm.receiveShadow=true;g.add(mm)}}
+function bldModel(type,team,lvl){const g=new T3.Group();const U={flags:[],glows:[],fire:null};BUILD[type](g,TEAMC[team],team,U);if((lvl||1)>=2&&UPG[type]){g.children.filter(c=>c.userData.fl).forEach(c=>g.remove(c));UPG[type](g,TEAMC[team],team,U)}if(BAKE_T.has(type))bakeGroup(g,type+team+'_'+(lvl||1));return{root:g,U}}
 function goldRockTex(){if(TX.goldRock)return;const S=256;const c=cvs(S,S),x=c.getContext('2d'),e=cvs(S,S),ex=e.getContext('2d');const im=x.createImageData(S,S);
   for(let j=0;j<S;j++)for(let i=0;i<S;i++){const n=fbmP(i/32,j/32,8,4),m=fbmP(i/8,j/8,32,2);const g=.55+n*.5;const k=(j*S+i)*4;im.data[k]=118*g+m*20;im.data[k+1]=98*g+m*16;im.data[k+2]=78*g+m*10;im.data[k+3]=255}x.putImageData(im,0,0);
   ex.fillStyle='#000';ex.fillRect(0,0,S,S);const R=mulberry32(55);
