@@ -1,5 +1,5 @@
-Warning: truncated output (original token count: 71541)
-Total output lines: 2039
+Warning: truncated output (original token count: 71632)
+Total output lines: 2041
 
 <!doctype html>
 <html lang="en">
@@ -977,7 +977,7 @@ function poseWalk(P,p,run){const L=p,R=(p+.5)%1,A=1+run*.2,K=1+run*.45;
   P.lThX=kf(G_HIP,L)*A*D2R;P.rThX=kf(G_HIP,R)*A*D2R;P.lKn=kf(G_KNEE,L)*K*D2R;P.rKn=kf(G_KNEE,R)*K*D2R;P.lAn=kf(G_ANK,L)*D2R;P.rAn=kf(G_ANK,R)*D2R;P.lThZ=P.rThZ=.03;
   P.hipY=-(.016+run*.022)*Math.cos(4*Math.PI*p)-run*.035;P.hipRy=-.09*Math.cos(2*Math.PI*p);P.hipRz=.035*Math.sin(4*Math.PI*p);P.hipRx=.02+run*.04;
   P.spRx=.03+run*.09;P.chRy=.075*Math.cos(2*Math.PI*p);P.hdRy=-P.chRy*.8;P.hdRx=-.03-run*.05;
-  const al=kf(G_HIP,R)*.8…11541 tokens truncated…x.fill()}x.fillStyle='#1a0e08';x.beginPath();x.arc(fx,fy,2.4,0,7);x.fill()}})}
+  const al=kf(G_HIP,R)*.8…11632 tokens truncated…x.fill()}x.fillStyle='#1a0e08';x.beginPath();x.arc(fx,fy,2.4,0,7);x.fill()}})}
 function reedCv(){return alphaCv(64,128,(x)=>{const R=mulberry32(17);for(let i=0;i<16;i++){const bx=4+R()*56,h=70+R()*56,l=(R()-.5)*16;x.strokeStyle=R()<.5?'#5a6a30':'#7a7a40';x.lineWidth=2;x.beginPath();x.moveTo(bx,128);x.quadraticCurveTo(bx+l*.4,128-h*.6,bx+l,128-h);x.stroke();if(R()<.35){x.fillStyle='#5a3a1e';x.beginPath();x.ellipse(bx+l*.85,128-h*.85,2.6,8,0,0,7);x.fill()}}})}
 function tileTex(size,f,seed){const c=cvs(size,size),x=c.getContext('2d'),im=x.createImageData(size,size),D=im.data;for(let j=0;j<size;j++)for(let i=0;i<size;i++){const k=(j*size+i)*4;const r=f(i,j);D[k]=clamp(r[0],0,255);D[k+1]=clamp(r[1],0,255);D[k+2]=clamp(r[2],0,255);D[k+3]=255}x.putImageData(im,0,0);return[c,x]}
 function wrapDraw(x,S,fn){for(const ox of [-S,0,S])for(const oy of [-S,0,S]){x.save();x.translate(ox,oy);fn();x.restore()}}
