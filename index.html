@@ -295,9 +295,8 @@ button{font:inherit;color:inherit}
   </div></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 <script>
-(()=>{
+const startKaveh=()=>{(()=>{
 'use strict';
 const T3=THREE;T3.ColorManagement.legacyMode=false;
 const MOBILE=matchMedia('(pointer:coarse)').matches||Math.min(innerWidth,innerHeight)<520;
@@ -2087,6 +2086,11 @@ document.addEventListener('pointerdown',()=>auInit(),{capture:true});document.ad
   }catch(err){$('#lmsg').textContent='Could not start: '+err.message;console.error(err)}
 })();
 })();
+};
+if(window.THREE)startKaveh();else{
+  const engineSources=['https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js','https://unpkg.com/three@0.149.0/build/three.min.js','https://cdnjs.cloudflare.com/ajax/libs/three.js/r149/three.min.js'];let engineIndex=0;
+  const loadEngine=()=>{if(engineIndex>=engineSources.length){document.querySelector('#lmsg').textContent='Could not start: the 3D engine could not load. Check your connection and reload.';return}const script=document.createElement('script');script.src=engineSources[engineIndex++];script.onload=startKaveh;script.onerror=loadEngine;document.head.appendChild(script)};loadEngine();
+}
 </script>
 </body>
 </html>
