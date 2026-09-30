@@ -879,15 +879,19 @@ function humanProto(key,o){if(HUM[key])return HUM[key];const pb=PB(),{B,add}=pb;
   }
   if(o.heroTrim){for(const s of [-1,1])add('chest',box(.012,.25,.01),0xd4ad62,'metal',[s*.13,.06,.12*S],[0,0,s*.2]);add('hips',box(.09,.045,.014),0xd4ad62,'metal',[0,.09,.145*S])}
   if(o.blacksmith){
-    // Kaveh's worn smithing leathers, blue mantle and forged shoulder plate.
+    // Worn blacksmith leather, crossed harness straps and the blue shoulder plate.
     for(const s of [-1,1])add('spine',box(.12,.36,.035),s===1?0x31527c:0x47372a,'clothD',[s*.1,-.04,-.13],[.12,0,s*.1]);
-    add('chest',box(.2,.07,.045),0x31527c,'clothD',[.09,.17,.02],[0,0,-.38]);
-    add('shL',box(.24,.09,.22),0x496b9d,'metal',[0,.01,.015],[0,0,-.16]);
-    add('shL',box(.19,.018,.18),0x927d63,'metal',[0,-.047,.02],[0,0,-.16]);
-    add('chest',box(.024,.31,.018),0xb09a79,'metal',[-.035,.02,.157*S],[0,0,.48]);
-    add('hips',box(.24,.07,.035),0x69452e,'cloth',[0,.045,.118]);
-    add('hips',box(.055,.1,.05),0x887352,'metal',[.08,-.03,.14]);
-    add('hips',cylg(.012,.012,.16,8),0x9b8661,'metal',[-.12,-.18,.16],[0,0,.15]);
+    add('chest',box(.3,.31,.045),0x42362f,'clothD',[0,.015,.13*S]);
+    add('chest',box(.034,.39,.035),0x694a35,'clothD',[.015,.025,.164*S],[0,0,-.56]);
+    add('chest',box(.034,.39,.035),0x694a35,'clothD',[-.015,.025,.164*S],[0,0,.56]);
+    add('chest',box(.19,.04,.02),0x8c6745,'clothD',[0,.12,.16*S]);
+    add('chest',sph(.043,12,10),0x8f2935,'metal',[0,.12,.18*S]);
+    add('shR',box(.25,.1,.22),0x496b9d,'metal',[0,.005,.015],[0,0,.12]);
+    add('shR',box(.2,.018,.18),0x8491a2,'metal',[0,-.052,.02],[0,0,.12]);
+    add('hips',box(.3,.065,.045),0x69452e,'cloth',[0,.055,.12]);
+    add('hips',box(.065,.09,.055),0xb09a79,'metal',[0,.055,.15]);
+    add('hips',box(.06,.2,.035),0x75553b,'clothD',[.15,-.11,.05],[0,0,-.08]);
+    for(const n of ['L','R'])for(const y of [-.055,-.13,-.205])add('el'+n,geo('quiltSeam',()=>new T3.TorusGeometry(.039,.0035,5,14)),0xc8bcaa,'cloth',[0,y,0],[Math.PI/2,0,0]);
   }
   if(o.royalBull){
     // Fereydun's crimson mantle, royal jewel and bull boss shield.
@@ -910,7 +914,21 @@ function humanProto(key,o){if(HUM[key])return HUM[key];const pb=PB(),{B,add}=pb;
   for(const s of [-1,1]){add('head',sph(.013,8,6),0xf0ece4,'skin',[s*.034,.112,.086]);add('head',sph(.007,6,4),0x1a0f08,'glow',[s*.034,.112,.097]);add('head',box(.03,.006,.01),o.bare?0x2a1e30:0x5a3a24,'cloth',[s*.034,.129,.092],[0,0,s*-.15]);add('head',sph(.024,8,6),skin,sk,[s*.095,.1,.004],0,[.45,1,.8])}
   add('head',box(.03,.005,.01),0x6a2a22,'cloth',[0,.057,.094]);
   if(!o.bald)add('head',geo('hairc',()=>new T3.SphereGeometry(.104,20,12,0,Math.PI*2,0,Math.PI*.55)),hair,'cloth',[0,.108,-.008],[-.18,0,0],[.97,1.1,1.1]);
-  if(o.beard){add('head',sph(.062,12,10),o.beard,'cloth',[0,.012,.058],0,[.95,1.05,.62]);add('head',geo('must',()=>new T3.TorusGeometry(.03,.007,5,10,Math.PI)),o.beard,'cloth',[0,.064,.096],[0,0,Math.PI])}
+  if(o.beard&&o.blacksmith){
+    add('head',sph(.065,14,10),o.beard,'cloth',[0,.008,.057],[0,0,0],[.95,.82,.72]);
+    add('head',profG('kavehFullBeard',[[.045,.03],[.072,.005],[.07,-.05],[.057,-.105],[.032,-.16],[.002,-.19]],16),o.beard,'clothD',[0,.005,.06]);
+    for(const side of [-1,1])add('head',sph(.028,10,8),o.beard,'cloth',[side*.023,.047,.093],[0,0,side*.25],[1.25,.65,.8]);
+  }else if(o.beard){add('head',sph(.062,12,10),o.beard,'cloth',[0,.012,.058],0,[.95,1.05,.62]);add('head',geo('must',()=>new T3.TorusGeometry(.03,.007,5,10,Math.PI)),o.beard,'cloth',[0,.064,.096],[0,0,Math.PI])}
+  if(o.blacksmith){
+    // Exposed swept-back silver hair, fine comb lines and a narrow blue band.
+    add('head',sph(.104,18,12),0xb7b2a8,'cloth',[0,.155,-.022],[0,0,0],[.98,.7,.9]);
+    add('head',geo('kavehHeadband',()=>new T3.TorusGeometry(.105,.011,6,28)),0x345984,'cloth',[0,.105,.002],[Math.PI/2,0,0]);
+    for(let i=-4;i<=4;i++){
+      const x=i*.018,curve=new T3.CatmullRomCurve3([new T3.Vector3(x,.17,.04),new T3.Vector3(x*.92,.205,.005),new T3.Vector3(x*.72,.21,-.045),new T3.Vector3(x*.5,.17,-.105)]);
+      add('head',new T3.TubeGeometry(curve,10,.0035,5,false),0xd0c9b9,'cloth');
+    }
+    for(const side of [-1,1])add('head',sph(.027,10,8),0xb9b3a6,'cloth',[side*.092,.042,-.018],[0,0,side*.12],[.72,1.75,1.05]);
+  }
   const hc=o.hatc||0x6e4f33;
   if(o.hat==='cap'){add('head',profG('capc2',[[0,-.02],[.11,0],[.108,.05],[.094,.1],[.06,.135],[0,.148]],18),hc,'cloth',[0,.125,-.006],[-.08,0,0]);add('head',geo('capR',()=>new T3.TorusGeometry(.108,.013,6,20)),hc,'cloth',[0,.128,-.006],[Math.PI/2-.08,0,0])}
   else if(o.hat==='helm'||o.hat==='helmD'){const mc=o.hat==='helm'?0xa8b0b8:0x2e2a2c;add('head',geo('helmc',()=>new T3.SphereGeometry(.112,20,12,0,Math.PI*2,0,Math.PI*.52)),mc,'metal',[0,.1,0],0,[1,1.2,1.05]);add('head',coneg(.018,.1,8),mc,'metal',[0,.24,0]);
@@ -958,7 +976,7 @@ function humanSpec(type,team){const T=TEAMC[team];
   case 'villager':return{tunic:0xb9a37a,trim:T.main,pants:0x5a4a38,hat:'cap',hatc:0x6e4f33,beard:0x3a2a1c,hair:0x2a1c12,shortSleeve:1,tools:['w_axe','w_pick','w_hoe','w_hammer','w_basket']};
   case 'spearman':return{tunic:0x244464,sleeve:0x742e43,trim:0xd4ae65,pants:0x342b27,boots:0x392719,hat:'crown',beard:0x33251c,hair:0x211912,cape:0x702b40,robe:1,regalia:1,shieldC:0x782e42,tools:['w_spear','shield'],wk:'spear'};
   case 'archer':return{tunic:T.lite,trim:T.dark,pants:0x3a3024,hat:'kulah',hatc:T.dark,beard:0x2a1c12,quiver:1,tools:['w_bow'],wk:'bow'};
-  case 'kaveh':return{tunic:0x665b50,sleeve:0xaaa394,trim:0x493728,pants:0x332a23,hat:'headwrap',hatc:0xb3aa98,beard:0xa6a397,hair:0xb2aa9b,apron:1,armor:1,heroTrim:1,blacksmith:1,bulk:1.17,tools:['w_banner'],wk:'banner',scale:1.1};
+  case 'kaveh':return{tunic:0x51463d,sleeve:0xc0b7a8,trim:0x493728,pants:0x332a23,skin:0xb27d5e,bald:1,beard:0xb7b2a8,hair:0xb2aa9b,apron:1,heroTrim:1,blacksmith:1,bulk:1.12,tools:['w_banner'],wk:'banner',scale:1.1};
   case 'fereydun':return{tunic:0x806044,trim:0xd2ad62,pants:0x4a3a2a,hat:'crown',beard:0x302119,hair:0x211813,cape:0x782936,armor:1,heroTrim:1,royalBull:1,shieldC:0x713641,tools:['w_mace','shield'],wk:'mace',scale:1.18};
   case 'serpent':return{tunic:0x5a1c1c,trim:0x1a1010,pants:0x231515,boots:0x1a1010,hat:'helmD',beard:0x140c0c,shieldC:0x6a1414,armor:1,tools:['w_spear','shield'],wk:'spear'};
   case 'bowman':return{tunic:0x6e2a22,trim:0x1a1010,pants:0x231515,hat:'hood',hatc:0x241010,beard:0x140c0c,quiver:1,tools:['w_bow'],wk:'bow'};
