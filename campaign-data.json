@@ -1,0 +1,498 @@
+[
+  {
+    "id": 1,
+    "act": "Act I: The First Kings",
+    "title": "Kayumars",
+    "economy": "Build Kayumars’s mountain settlement around a cave in the mountainside. Start with homes, a store, a farm, five villagers, six defenders and supplies. Expand with houses, farms, a training ground, walls and timber watchtowers.",
+    "mission": "Prepare at your own pace: reach 8 villagers and 8 defenders and build a watchtower. After Siamak falls, defend your people against three demon waves. Ariel fights alongside your army.",
+    "maxAge": 1
+  },
+  {
+    "id": 2,
+    "act": "Act I: The First Kings",
+    "title": "Hushang",
+    "economy": "Fire is discovered, which unlocks the Temple and Glory. Iron unlocks the Blacksmith.",
+    "mission": "Destroy the Black Demon’s lair.",
+    "maxAge": 2
+  },
+  {
+    "id": 3,
+    "act": "Act I: The First Kings",
+    "title": "Tahmuras",
+    "economy": "Unlock taming animals: sheep, dogs, falcons.",
+    "mission": "Capture 7 demon chiefs alive. They become workers and teach writing (unlocks the Library).",
+    "maxAge": 2
+  },
+  {
+    "id": 4,
+    "act": "Act I: The First Kings",
+    "title": "Jamshid",
+    "economy": "A big city builder: unlock cloth, stone buildings, medicine, ships.",
+    "mission": "Build Jamshid’s Palace (Wonder). When it’s done, the king turns proud, loses his Glory and the city rebels. Escape.",
+    "maxAge": 3
+  },
+  {
+    "id": 5,
+    "act": "Act I: The First Kings",
+    "title": "Zahhak, the Snake King",
+    "economy": "Ariel joins two kind cooks who secretly save one young man each day. Build a hidden mountain village; each rescued man becomes a villager.",
+    "mission": "Grow to 40 villagers without the king’s soldiers finding you.",
+    "maxAge": 2
+  },
+  {
+    "id": 6,
+    "act": "Act I: The First Kings",
+    "title": "Kaveh the Blacksmith",
+    "economy": "Start in Kaveh’s shop. Build forges and recruit rebels. Forge Fereydun’s bull-headed mace.",
+    "mission": "Storm the Snake King’s palace and chain him inside Mount Damavand.",
+    "maxAge": 3
+  },
+  {
+    "id": 7,
+    "act": "Act I: The First Kings",
+    "title": "Fereydun’s Three Sons",
+    "economy": "Build Iraj’s kingdom and send gift caravans to his two brothers.",
+    "mission": "The brothers kill Iraj (scripted). Save his baby daughter.",
+    "maxAge": 3
+  },
+  {
+    "id": 8,
+    "act": "Act I: The First Kings",
+    "title": "Revenge for Iraj",
+    "economy": "Full base, with two heroes.",
+    "mission": "Destroy both brothers’ Town Centers.",
+    "maxAge": 3
+  },
+  {
+    "id": 9,
+    "act": "Act II: The House of Sam",
+    "title": "Zal and the Simurgh",
+    "economy": "A camp at the foot of a giant mountain. Spend wood and gold on bridges and ladders up the cliff.",
+    "mission": "Reach the Simurgh’s nest and bring baby Zal home. The Simurgh becomes your ally.",
+    "maxAge": 2
+  },
+  {
+    "id": 10,
+    "act": "Act II: The House of Sam",
+    "title": "Zal and Rudabeh",
+    "economy": "Zal’s city. Build a Market and trade with Kabul.",
+    "mission": "Collect gold for gifts and build an Observatory so the stargazers approve the marriage. Stop the king’s army from destroying Kabul.",
+    "maxAge": 3
+  },
+  {
+    "id": 11,
+    "act": "Act II: The House of Sam",
+    "title": "Birth of Rostam",
+    "economy": "Defend the city.",
+    "mission": "Collect 300 Glory to call the Simurgh and save Rudabeh during a dangerous birth.",
+    "maxAge": 3
+  },
+  {
+    "id": 12,
+    "act": "Act II: The House of Sam",
+    "title": "King Nowzar",
+    "economy": "A big base against a much bigger enemy army.",
+    "mission": "Evacuate villagers to safety. The king dies (scripted).",
+    "maxAge": 3
+  },
+  {
+    "id": 13,
+    "act": "Act II: The House of Sam",
+    "title": "Rostam and Rakhsh",
+    "economy": "Build stables. A giant white elephant attacks at night.",
+    "mission": "Find the horse Rakhsh among wild horses, kill the elephant, destroy the enemy camp.",
+    "maxAge": 3
+  },
+  {
+    "id": 14,
+    "act": "Act II: The House of Sam",
+    "title": "The New King",
+    "economy": "Build a forward base near the mountains.",
+    "mission": "Escort the new king home, then defeat the enemy army.",
+    "maxAge": 3
+  },
+  {
+    "id": 15,
+    "act": "Act III: King Kavus",
+    "title": "The Demon Land",
+    "economy": "Start with a big army and base.",
+    "mission": "Midway, the White Demon blinds your army: the map goes dark. Rebuild while almost blind.",
+    "maxAge": 3
+  },
+  {
+    "id": 16,
+    "act": "Act III: King Kavus",
+    "title": "Rostam’s Seven Trials",
+    "economy": "Ariel builds a supply camp after each trial.",
+    "mission": "Lion, desert, dragon, witch, guide, demon general, White Demon. Free the king.",
+    "maxAge": 4
+  },
+  {
+    "id": 17,
+    "act": "Act III: King Kavus",
+    "title": "The Captured King",
+    "economy": "A base in enemy land.",
+    "mission": "Fight three enemy kingdoms and free the king from a fortress.",
+    "maxAge": 4
+  },
+  {
+    "id": 18,
+    "act": "Act III: King Kavus",
+    "title": "The Flying Throne",
+    "economy": "Build an eagle house and gather meat. You’re secretly building the villain’s trap.",
+    "mission": "The throne crashes. Find the king in the forest.",
+    "maxAge": 3
+  },
+  {
+    "id": 19,
+    "act": "Act III: King Kavus",
+    "title": "The Royal Hunt",
+    "economy": "A hunting lodge with lots of animals.",
+    "mission": "An enemy ambush: defend, then retreat.",
+    "maxAge": 3
+  },
+  {
+    "id": 20,
+    "act": "Act III: King Kavus",
+    "title": "Rostam and Sohrab",
+    "economy": "Defend the White Castle.",
+    "mission": "Three days of duels, then race to get the healing potion. You can never make it in time.",
+    "maxAge": 4
+  },
+  {
+    "id": 21,
+    "act": "Act IV: Siavash",
+    "title": "Walk through Fire",
+    "economy": "Gather 2 mountains of wood while the queen’s spies burn your piles.",
+    "mission": "The prince rides through fire to prove he’s innocent.",
+    "maxAge": 3
+  },
+  {
+    "id": 22,
+    "act": "Act IV: Siavash",
+    "title": "Siavash’s City",
+    "economy": "Build a city from nothing. Peace treaty: no attacking allowed.",
+    "mission": "Finish the city (Wonder) while enemies sabotage it.",
+    "maxAge": 4
+  },
+  {
+    "id": 23,
+    "act": "Act IV: Siavash",
+    "title": "Death of Siavash",
+    "economy": "The city falls.",
+    "mission": "Escape with the pregnant princess.",
+    "maxAge": 4
+  },
+  {
+    "id": 24,
+    "act": "Act IV: Siavash",
+    "title": "Rostam’s Revenge",
+    "economy": "A war base.",
+    "mission": "Destroy 3 enemy cities.",
+    "maxAge": 4
+  },
+  {
+    "id": 25,
+    "act": "Act V: Kay Khosrow",
+    "title": "Searching for the Prince",
+    "economy": "A small hidden camp. Seasons change; winter reduces food.",
+    "mission": "Find the lost prince among shepherds.",
+    "maxAge": 2
+  },
+  {
+    "id": 26,
+    "act": "Act V: Kay Khosrow",
+    "title": "The River Crossing",
+    "economy": "Gather wood for rafts.",
+    "mission": "Get everyone across the river while chased.",
+    "maxAge": 3
+  },
+  {
+    "id": 27,
+    "act": "Act V: Kay Khosrow",
+    "title": "The Demon Fortress",
+    "economy": "A race: an AI rival builds a base too.",
+    "mission": "Capture the fortress first. The winner becomes king.",
+    "maxAge": 4
+  },
+  {
+    "id": 28,
+    "act": "Act V: Kay Khosrow",
+    "title": "Forud",
+    "economy": "A base near a mountain castle.",
+    "mission": "Send a warning before your general attacks the king’s own brother. It fails.",
+    "maxAge": 4
+  },
+  {
+    "id": 29,
+    "act": "Act V: Kay Khosrow",
+    "title": "The Giant Kamus",
+    "economy": "Defend a mountain.",
+    "mission": "Survive until Rostam arrives.",
+    "maxAge": 4
+  },
+  {
+    "id": 30,
+    "act": "Act V: Kay Khosrow",
+    "title": "The Emperor of China",
+    "economy": "A big base.",
+    "mission": "A huge battle against war elephants.",
+    "maxAge": 4
+  },
+  {
+    "id": 31,
+    "act": "Act V: Kay Khosrow",
+    "title": "The Wild Ass Demon",
+    "economy": "Protect large herds.",
+    "mission": "A demon disguised as a wild donkey attacks them. Kill it.",
+    "maxAge": 4
+  },
+  {
+    "id": 32,
+    "act": "Act V: Kay Khosrow",
+    "title": "Bizhan and Manizheh",
+    "economy": "A trading post. Collect gold and jewels for a fake merchant caravan.",
+    "mission": "Sneak into enemy land and rescue Bizhan from a pit.",
+    "maxAge": 4
+  },
+  {
+    "id": 33,
+    "act": "Act V: Kay Khosrow",
+    "title": "The Twelve Duels",
+    "economy": "Base against base.",
+    "mission": "Win 11 of 12 hero duels.",
+    "maxAge": 4
+  },
+  {
+    "id": 34,
+    "act": "Act V: Kay Khosrow",
+    "title": "The Great War",
+    "economy": "The largest map.",
+    "mission": "Destroy the enemy capital.",
+    "maxAge": 4
+  },
+  {
+    "id": 35,
+    "act": "Act V: Kay Khosrow",
+    "title": "The End of Afrasiyab",
+    "economy": "Base at a holy fire.",
+    "mission": "Capture the enemy king. Then the king disappears into a snowstorm.",
+    "maxAge": 4
+  },
+  {
+    "id": 36,
+    "act": "Act VI: Goshtasp and Esfandiyar",
+    "title": "Prince in Rome",
+    "economy": "Start with nothing in a foreign land.",
+    "mission": "Kill a giant wolf and a dragon to win the princess and an army.",
+    "maxAge": 3
+  },
+  {
+    "id": 37,
+    "act": "Act VI: Goshtasp and Esfandiyar",
+    "title": "The New Faith",
+    "economy": "Build Temples and plant a holy tree.",
+    "mission": "Survive a religious war.",
+    "maxAge": 4
+  },
+  {
+    "id": 38,
+    "act": "Act VI: Goshtasp and Esfandiyar",
+    "title": "Esfandiyar’s Seven Trials",
+    "economy": "Supply camps after each trial.",
+    "mission": "Capture the Brass Fortress.",
+    "maxAge": 4
+  },
+  {
+    "id": 39,
+    "act": "Act VI: Goshtasp and Esfandiyar",
+    "title": "Rostam vs Esfandiyar",
+    "economy": "A base in Rostam’s homeland.",
+    "mission": "Choose a side. Both endings are sad.",
+    "maxAge": 4
+  },
+  {
+    "id": 40,
+    "act": "Act VI: Goshtasp and Esfandiyar",
+    "title": "Death of Rostam",
+    "economy": "A base near Kabul.",
+    "mission": "You arrive too late. Take revenge on Kabul.",
+    "maxAge": 4
+  },
+  {
+    "id": 41,
+    "act": "Act VII: The End of the Old Kings",
+    "title": "The Baby in the River",
+    "economy": "A small village by a river.",
+    "mission": "A queen puts her baby in a box on the river. Follow it and save it.",
+    "maxAge": 3
+  },
+  {
+    "id": 42,
+    "act": "Act VII: The End of the Old Kings",
+    "title": "Darab",
+    "economy": "The village grows into a kingdom.",
+    "mission": "Win back the throne.",
+    "maxAge": 4
+  },
+  {
+    "id": 43,
+    "act": "Act VII: The End of the Old Kings",
+    "title": "Dara vs Alexander",
+    "economy": "A losing war.",
+    "mission": "Slow Alexander down, then evacuate.",
+    "maxAge": 4
+  },
+  {
+    "id": 44,
+    "act": "Act VII: The End of the Old Kings",
+    "title": "Alexander’s Journeys",
+    "economy": "A huge build.",
+    "mission": "Build the Great Iron Wall (Wonder) and find the Water of Life.",
+    "maxAge": 4
+  },
+  {
+    "id": 45,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "Ardashir",
+    "economy": "Escape and build a new kingdom.",
+    "mission": "Defeat the old king.",
+    "maxAge": 3
+  },
+  {
+    "id": 46,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "The Giant Worm",
+    "economy": "Mine lead and copper.",
+    "mission": "Disguise as merchants and pour melted lead into the worm’s mouth.",
+    "maxAge": 4
+  },
+  {
+    "id": 47,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "Shapur",
+    "economy": "Rebuild an army from one village.",
+    "mission": "Defeat the Roman Emperor.",
+    "maxAge": 4
+  },
+  {
+    "id": 48,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "The Cruel King",
+    "economy": "Very high taxes drain your resources.",
+    "mission": "Keep your people alive until a magic horse kills the king.",
+    "maxAge": 3
+  },
+  {
+    "id": 49,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "Bahram and the Lions",
+    "economy": "A base with Arab allies.",
+    "mission": "March on the capital and grab the crown from between two lions.",
+    "maxAge": 4
+  },
+  {
+    "id": 50,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "Bahram’s Adventures",
+    "economy": "Lower taxes, hold festivals, bring musicians from India.",
+    "mission": "A happy economy level.",
+    "maxAge": 4
+  },
+  {
+    "id": 51,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "The Night Attack",
+    "economy": "Make your town look empty.",
+    "mission": "A hidden army launches a surprise night attack.",
+    "maxAge": 4
+  },
+  {
+    "id": 52,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "King Piruz",
+    "economy": "Two parts.",
+    "mission": "First a defeat, then a general’s revenge.",
+    "maxAge": 4
+  },
+  {
+    "id": 53,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "The Famine",
+    "economy": "No food. Granaries and hard choices.",
+    "mission": "Survive the starvation and a revolution.",
+    "maxAge": 3
+  },
+  {
+    "id": 54,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "The Wise Minister",
+    "economy": "Build the Great Palace Arch (Wonder).",
+    "mission": "Solve the chess puzzle and invent backgammon.",
+    "maxAge": 4
+  },
+  {
+    "id": 55,
+    "act": "Act VIII: The Sasanian Kings",
+    "title": "The Great King’s Wars",
+    "economy": "A large base.",
+    "mission": "War on several fronts.",
+    "maxAge": 4
+  },
+  {
+    "id": 56,
+    "act": "Act IX: The Last Light",
+    "title": "12,000 vs 300,000",
+    "economy": "A small army.",
+    "mission": "Hold a narrow pass against a giant army.",
+    "maxAge": 4
+  },
+  {
+    "id": 57,
+    "act": "Act IX: The Last Light",
+    "title": "The General’s Rebellion",
+    "economy": "The villain splits the kingdom.",
+    "mission": "Civil war.",
+    "maxAge": 4
+  },
+  {
+    "id": 58,
+    "act": "Act IX: The Last Light",
+    "title": "The King’s Escape",
+    "economy": "Build an alliance in Rome.",
+    "mission": "Come back with a Roman army.",
+    "maxAge": 4
+  },
+  {
+    "id": 59,
+    "act": "Act IX: The Last Light",
+    "title": "Khosrow and Shirin",
+    "economy": "A palace economy with a court-favor meter.",
+    "mission": "Court plots and betrayal.",
+    "maxAge": 4
+  },
+  {
+    "id": 60,
+    "act": "Act IX: The Last Light",
+    "title": "The Son’s Betrayal",
+    "economy": "Ariel slowly loses health as his power fades.",
+    "mission": "Survive the prince’s coup.",
+    "maxAge": 4
+  },
+  {
+    "id": 61,
+    "act": "Act IX: The Last Light",
+    "title": "Kings Fall Every Day",
+    "economy": "A new king every few minutes, and each one changes the rules.",
+    "mission": "Hold the kingdom together.",
+    "maxAge": 4
+  },
+  {
+    "id": 62,
+    "act": "Act IX: The Last Light",
+    "title": "The Last King",
+    "economy": "The biggest defense of the game.",
+    "mission": "You lose (scripted). The last king dies, the Glory leaves Iran, and Ariel becomes mortal.",
+    "maxAge": 4
+  }
+]
