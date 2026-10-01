@@ -10,6 +10,9 @@ try{
   for(const l of CAMPAIGN_LEVELS){
     await startMemory(l.id);closeModal();beginStage();paused=false;
     check(ents.some(e=>e.type==='ariel'),'Ariel in level '+l.id);
+    sync(0,now);check(ents.filter(e=>e.kind==='unit'&&!e.dead).every(e=>objs.has(e.id)),'units render after transition '+l.id);
+    if(l.id===2){const r=unitModel('companion',0);check(!!r.J.cape&&!!r.cape,'later companion has cape joint and mesh');disposeVisual(r.root)}
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     if(l.id===2){check(ghost===null&&ghostType===null&&!scene.children.includes(window.__oldGhost),'level 1 placement preview cleared in level 2');check(bldModel('house',0).root.children.length>=10,'level 1 hut model not reused in level 2')}
     if(l.id===1){check(bldModel('house',0).root.children.length<=4,'level 1 keeps primitive hut');ghost=bldModel('house',0).root;ghostType='house';scene.add(ghost);window.__oldGhost=ghost}
     if(l.id>1){const forms=ents.filter(e=>LANDSCAPE_TYPES.has(e.type));const signature=forms.map(e=>e.type+':'+e.tx+','+e.ty).join('|');check(forms.length>=5,'landforms populate map '+l.id);check(!mapLayouts.has(signature),'map layout differs in level '+l.id);mapLayouts.add(signature)}
@@ -94,5 +97,6 @@ try{
   result.passed=true;
 }catch(e){result.error=e.stack;result.passed=false}
 document.body.insertAdjacentHTML('beforeend','<pre id="ariel-test-result" style="position:fixed;inset:0;z-index:9999;background:#142b2a;color:white;overflow:auto;padding:30px">'+esc(JSON.stringify({...result,checks:result.checks.length},null,2))+'</pre>');
+window.__campaignResult=result;
 await fetch('/report',{method:'POST',body:JSON.stringify(result)});
 })();

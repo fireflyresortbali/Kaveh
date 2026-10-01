@@ -238,9 +238,12 @@ node --check tests/campaign-runtime.js
 node build-campaign.cjs
 ```
 
-CI checks every tracked `.js`, `.cjs`, and `.mjs` file, then runs the campaign build
-in its disposable checkout. It does not enforce generated-file freshness or run a
-browser. A passing CI check is syntax/build evidence only.
+Follow [Routine performance testing](PERFORMANCE-TESTING.md) for commands, cadence,
+pass/fail rules and evidence handling. CI runs syntax, generated-campaign freshness,
+diagnostic regressions and a real Chrome smoke/acceptance run. Its desktop timing
+is diagnostic; passing CI is not mobile-device qualification. Configure the new
+**Desktop performance regressions** status as required only after observing it on
+a real PR; this document does not change branch-protection settings.
 
 For gameplay changes, start `node tests/runtime-server.cjs` in the task checkout.
 Open `http://127.0.0.1:8779/` in a disposable browser profile, separate from normal

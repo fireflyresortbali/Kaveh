@@ -1,0 +1,121 @@
+{
+  "android-01": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Setup/exploratory attempt, retained outside reference set"
+  },
+  "android-02": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "failed",
+    "baselineEligible": false,
+    "reason": "Excluded: system dialog confirmed in ios-08 or fullscreen tutorial in android02/03; prior same-session iOS passes excluded conservatively"
+  },
+  "android-03": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "failed",
+    "baselineEligible": false,
+    "reason": "Excluded: system dialog confirmed in ios-08 or fullscreen tutorial in android02/03; prior same-session iOS passes excluded conservatively"
+  },
+  "android-04": {
+    "automatedChecksPassed": true,
+    "selectedReference": true,
+    "visualReview": "passed",
+    "baselineEligible": true,
+    "reason": "Clean final screenshot inspected; complete final suite"
+  },
+  "android-05": {
+    "automatedChecksPassed": true,
+    "selectedReference": true,
+    "visualReview": "passed",
+    "baselineEligible": true,
+    "reason": "Clean final screenshot inspected; complete final suite"
+  },
+  "android-06": {
+    "automatedChecksPassed": true,
+    "selectedReference": true,
+    "visualReview": "passed",
+    "baselineEligible": true,
+    "reason": "Clean final screenshot inspected; complete final suite"
+  },
+  "ios-01": {
+    "automatedChecksPassed": false,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Setup/exploratory attempt, retained outside reference set"
+  },
+  "ios-02": {
+    "automatedChecksPassed": false,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Setup/exploratory attempt, retained outside reference set"
+  },
+  "ios-03": {
+    "automatedChecksPassed": false,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Setup/exploratory attempt, retained outside reference set"
+  },
+  "ios-04": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Excluded: system dialog confirmed in ios-08 or fullscreen tutorial in android02/03; prior same-session iOS passes excluded conservatively"
+  },
+  "ios-05": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Excluded: system dialog confirmed in ios-08 or fullscreen tutorial in android02/03; prior same-session iOS passes excluded conservatively"
+  },
+  "ios-06": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Excluded: system dialog confirmed in ios-08 or fullscreen tutorial in android02/03; prior same-session iOS passes excluded conservatively"
+  },
+  "ios-07": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "not qualified",
+    "baselineEligible": false,
+    "reason": "Excluded: system dialog confirmed in ios-08 or fullscreen tutorial in android02/03; prior same-session iOS passes excluded conservatively"
+  },
+  "ios-08": {
+    "automatedChecksPassed": true,
+    "selectedReference": false,
+    "visualReview": "failed",
+    "baselineEligible": false,
+    "reason": "Excluded: system dialog confirmed in ios-08 or fullscreen tutorial in android02/03; prior same-session iOS passes excluded conservatively"
+  },
+  "ios-09": {
+    "automatedChecksPassed": false,
+    "selectedReference": true,
+    "visualReview": "passed",
+    "baselineEligible": false,
+    "reason": "Clean screenshot; failed stability assertion retained for investigation"
+  },
+  "ios-10": {
+    "automatedChecksPassed": true,
+    "selectedReference": true,
+    "visualReview": "passed",
+    "baselineEligible": true,
+    "reason": "Clean final screenshot inspected; complete final suite"
+  },
+  "ios-11": {
+    "automatedChecksPassed": true,
+    "selectedReference": true,
+    "visualReview": "passed",
+    "baselineEligible": true,
+    "reason": "Clean final screenshot inspected; complete final suite"
+  }
+}

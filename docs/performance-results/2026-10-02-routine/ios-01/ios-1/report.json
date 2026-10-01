@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "valid": false,
+  "startedAt": "2026-10-01T21:20:47.490Z",
+  "platform": "ios",
+  "device": "C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4",
+  "host": {
+    "platform": "darwin",
+    "release": "27.0.0",
+    "arch": "arm64",
+    "cpu": "Apple M4 Pro",
+    "totalMemoryBytes": 25769803776,
+    "loadAverage": [
+      46.888671875,
+      17.759765625,
+      10.732421875
+    ],
+    "node": "v24.19.0"
+  },
+  "events": [],
+  "limitations": [
+    "Emulators use Mac resources: not phone FPS, GPU timing, battery or thermal qualification.",
+    "Instrumented, random gameplay with adaptive resolution; compare only matching scenarios and settings.",
+    "Renderer resources are counts, not GPU bytes. Native app memory excludes separate web/GPU processes.",
+    "Local HTTP test shell; not bundled offline release, store build, device floor, touch or audio acceptance."
+  ],
+  "runtime": {
+    "dataPath": "/Users/alireza/Library/Developer/CoreSimulator/Devices/C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4/data",
+    "dataPathSize": 2181865472,
+    "logPath": "/Users/alireza/Library/Logs/CoreSimulator/C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4",
+    "udid": "C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4",
+    "lastUsedAt": "2026-10-01T21:20:40Z",
+    "isAvailable": true,
+    "logPathSize": 528384,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16",
+    "state": "Booted",
+    "name": "Kaveh ALG61 iPhone 16",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-27-0",
+    "xcode": "Xcode 27.0\nBuild version 27A266a"
+  },
+  "shell": {
+    "file": "/var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-alg61-shells/ios/KavehBench.app",
+    "bundle": "io.algorstudio.kavehbench",
+    "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk",
+    "minimumOS": "18.0",
+    "target": "arm64 simulator",
+    "executableSha256": "4be757abb405b54ad322b9fc6c7ce019fefd39d5108a12a3505e88ffe223a2cd"
+  },
+  "toolingSha256": {
+    "run.cjs": "0e4ca5a91cf41fcde5369f2d8186fc29485c0c4705604065c1d110e80971b252",
+    "scenario.js": "cf1b90dfe45354e87b6bac8e0882eaf93dc1fef99b1232e12ee75f82fd4d47c9",
+    "report.cjs": "2917c2a45f0aee4f38aa63a91bca403b466ddb8e534bdca48be128bee1e6c0b2",
+    "build-shells.cjs": "52a0eef607f27e9dbd1ce0ef310815925193a0074be1ff57b43f78560529eaff",
+    "native/Bench.swift": "ee5b104ac4594d7185aa3be3b7673068d01e1389f8d15bb5eaaef9e3f94b0a3f",
+    "native/BenchActivity.java": "99952d2c78e57b80269c284965f1e36e4c9349b2dac2505ed80078a6fee57905",
+    "native/AndroidManifest.xml": "a174ad905ba24b1f06af26d55f5877e0f329db99e350d3f969472d9db0f71824",
+    "native/BackgroundTests.swift": "68a67da019a13095b053c640be69c07943ab37df716aa8356381673320ca770b",
+    "native/BenchDriver.xcodeproj/project.pbxproj": "363ddd828b78a55dba8e5dcfbc4e31356f1487b6850cfe92ca9493ce246a788e",
+    "native/BenchDriver.xcodeproj/xcshareddata/xcschemes/BenchDriver.xcscheme": "3b89684103e7c10b23185ea803e6dcb86a5047021a54ded1b4f291047f9c96d1"
+  },
+  "engine": {
+    "version": "0.149.0",
+    "sha256": "8a5f7249903b54d30f79f708699d2fed2d6a1d0741a4cd41377d1f01bb5a2271",
+    "delivery": "local test server"
+  },
+  "nativeSampleError": "Command failed: ps -p undefined -o pid,ppid,%cpu,rss,vsz,comm\nps: Invalid process id: undefined\n",
+  "finishedAt": "2026-10-01T21:24:34.170Z",
+  "failure": "Error: Command failed: xcrun simctl install C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4 /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-alg61-shells/ios/KavehBench.app\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1141:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)"
+}

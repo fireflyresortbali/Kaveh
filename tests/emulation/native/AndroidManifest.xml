@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="io.algorstudio.kavehbench" android:versionCode="1" android:versionName="1.0">
+  <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="35" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <application android:label="Kaveh Bench" android:allowBackup="false" android:usesCleartextTraffic="true" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Material.NoActionBar">
+    <activity android:name=".BenchActivity" android:exported="true" android:screenOrientation="landscape" android:configChanges="orientation|screenSize|keyboardHidden" android:launchMode="singleTask">
+      <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+    </activity>
+  </application>
+</manifest>

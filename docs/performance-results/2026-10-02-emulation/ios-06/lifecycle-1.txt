@@ -1,0 +1,40 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/emulation/native/BenchDriver.xcodeproj -scheme BenchDriver -destination "platform=iOS Simulator,id=C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4" -derivedDataPath /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-alg61-driver -parallel-testing-enabled NO -resultBundlePath /private/tmp/kaveh-alg61-runs/ios-06/lifecycle-1.xcresult
+
+Writing result bundle at path:
+	/private/tmp/kaveh-alg61-runs/ios-06/lifecycle-1.xcresult
+
+2026-10-02 03:52:22.764960+0800 BenchDriver-Runner[36555:11681906] [Default] Running tests...
+    t =      nans Interface orientation changed to Landscape Right
+Test Suite 'All tests' started at 2026-10-02 03:52:25.267.
+Test Suite 'BenchDriver.xctest' started at 2026-10-02 03:52:25.267.
+Test Suite 'BackgroundTests' started at 2026-10-02 03:52:25.268.
+Test Case '-[BenchDriver.BackgroundTests testCycle]' started.
+    t =     0.01s Start Test at 2026-10-02 03:52:25.276
+    t =     0.03s Set Up
+    t =     0.04s Open com.apple.Preferences
+    t =     0.04s     Activate com.apple.Preferences
+    t =     0.17s         Interface orientation changed to Portrait
+    t =     0.17s         Wait for com.apple.Preferences to idle
+    t =     0.23s Wait for io.algorstudio.kavehbench to become Running Background
+objc[36555]: Class UIAccessibilityLoaderWebShared is implemented in both /private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.Eb0cq2/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x10b130398) and /private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.Eb0cq2/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10b268310). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =     4.04s Open io.algorstudio.kavehbench
+    t =     4.05s     Activate io.algorstudio.kavehbench
+    t =     4.06s         Interface orientation changed to Landscape Right
+    t =     4.08s         Wait for io.algorstudio.kavehbench to idle
+    t =     4.13s Wait for io.algorstudio.kavehbench to become Running Foreground
+    t =     4.13s Tear Down
+Test Case '-[BenchDriver.BackgroundTests testCycle]' passed (4.156 seconds).
+Test Suite 'BackgroundTests' passed at 2026-10-02 03:52:29.432.
+	 Executed 1 test, with 0 failures (0 unexpected) in 4.156 (4.164) seconds
+Test Suite 'BenchDriver.xctest' passed at 2026-10-02 03:52:29.432.
+	 Executed 1 test, with 0 failures (0 unexpected) in 4.156 (4.165) seconds
+Test Suite 'All tests' passed at 2026-10-02 03:52:29.433.
+	 Executed 1 test, with 0 failures (0 unexpected) in 4.156 (4.166) seconds
+
+Test session results, code coverage, and logs:
+	/tmp/kaveh-alg61-runs/ios-06/lifecycle-1.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

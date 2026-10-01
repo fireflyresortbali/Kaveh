@@ -1,3 +1,6 @@
 *.zip
 kavehs-banner.html
 FULL-GAME-*.html
+
+# Local routine logs; attach selected evidence to the PR, never overwrite baselines.
+/perf-results/

@@ -23,12 +23,34 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '24'
-      - name: Check tracked JavaScript syntax
+      - name: Run fast performance regressions and build freshness
+        run: node tests/performance/check.cjs quick
+
+  desktop-performance:
+    name: Desktop performance regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Run real browser smoke and acceptance checks
         shell: bash
         run: |
           set -euo pipefail
-          while IFS= read -r -d '' file; do
-            node --check "$file"
-          done < <(git ls-files -z -- '*.js' '*.cjs' '*.mjs')
-      - name: Build campaign and parse embedded scripts
-        run: node build-campaign.cjs
+          export PERF_CHROME="$(command -v google-chrome)"
+          test -x "$PERF_CHROME"
+          node tests/performance/check.cjs desktop perf-results/ci
+      - name: Keep performance evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: desktop-performance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: perf-results/ci/
+          if-no-files-found: error
+          retention-days: 30

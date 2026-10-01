@@ -1,0 +1,122 @@
+[
+  {
+    "run": "android-04",
+    "node": "v24.19.0",
+    "valid": true,
+    "htmlSha256": "3cf2b7bbea002e58b559a5b04c859a5a286d2f3a488a3608bc4341f450b70651",
+    "pageReadyMs": 2437.600000000006,
+    "rafP95Ms": 16.799999999999272,
+    "submitP95Ms": 3.1999999999825377,
+    "drawCallsP95": 1193,
+    "trianglesP95": 2709642,
+    "intervalsOver50ms": 0,
+    "bufferBefore": [
+      1233,
+      554
+    ],
+    "bufferAfter": [
+      1233,
+      554
+    ]
+  },
+  {
+    "run": "android-05",
+    "node": "v24.19.0",
+    "valid": true,
+    "htmlSha256": "3cf2b7bbea002e58b559a5b04c859a5a286d2f3a488a3608bc4341f450b70651",
+    "pageReadyMs": 2347.7999999999993,
+    "rafP95Ms": 16.700000000000728,
+    "submitP95Ms": 3,
+    "drawCallsP95": 1193,
+    "trianglesP95": 2709642,
+    "intervalsOver50ms": 0,
+    "bufferBefore": [
+      1233,
+      554
+    ],
+    "bufferAfter": [
+      1233,
+      554
+    ]
+  },
+  {
+    "run": "android-06",
+    "node": "v24.19.0",
+    "valid": true,
+    "htmlSha256": "3cf2b7bbea002e58b559a5b04c859a5a286d2f3a488a3608bc4341f450b70651",
+    "pageReadyMs": 2224.600000000006,
+    "rafP95Ms": 16.700000000000728,
+    "submitP95Ms": 3.1999999999970896,
+    "drawCallsP95": 1193,
+    "trianglesP95": 2709642,
+    "intervalsOver50ms": 0,
+    "bufferBefore": [
+      1233,
+      554
+    ],
+    "bufferAfter": [
+      1233,
+      554
+    ]
+  },
+  {
+    "run": "ios-09",
+    "node": "v24.19.0",
+    "valid": false,
+    "htmlSha256": "3cf2b7bbea002e58b559a5b04c859a5a286d2f3a488a3608bc4341f450b70651",
+    "pageReadyMs": 1970,
+    "rafP95Ms": 18,
+    "submitP95Ms": 3,
+    "drawCallsP95": 1170,
+    "trianglesP95": 2287242,
+    "intervalsOver50ms": 0,
+    "bufferBefore": [
+      990,
+      503
+    ],
+    "bufferAfter": [
+      990,
+      503
+    ]
+  },
+  {
+    "run": "ios-10",
+    "node": "v24.19.0",
+    "valid": true,
+    "htmlSha256": "3cf2b7bbea002e58b559a5b04c859a5a286d2f3a488a3608bc4341f450b70651",
+    "pageReadyMs": 1546,
+    "rafP95Ms": 17,
+    "submitP95Ms": 3,
+    "drawCallsP95": 1170,
+    "trianglesP95": 2287242,
+    "intervalsOver50ms": 0,
+    "bufferBefore": [
+      990,
+      503
+    ],
+    "bufferAfter": [
+      990,
+      503
+    ]
+  },
+  {
+    "run": "ios-11",
+    "node": "v24.19.0",
+    "valid": true,
+    "htmlSha256": "3cf2b7bbea002e58b559a5b04c859a5a286d2f3a488a3608bc4341f450b70651",
+    "pageReadyMs": 1381,
+    "rafP95Ms": 18,
+    "submitP95Ms": 3,
+    "drawCallsP95": 1170,
+    "trianglesP95": 2287242,
+    "intervalsOver50ms": 0,
+    "bufferBefore": [
+      990,
+      503
+    ],
+    "bufferAfter": [
+      990,
+      503
+    ]
+  }
+]

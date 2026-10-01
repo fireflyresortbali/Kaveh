@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "valid": false,
+  "startedAt": "2026-10-01T20:40:23.959Z",
+  "sourceHash": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+  "profile": "mobile",
+  "node": "v24.19.0",
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "27.0.0",
+    "cpu": "Apple M4 Pro"
+  },
+  "commit": "a6a25b2d1e31656526954545a29dae8d9d7e59bc",
+  "physicalMobile": false,
+  "visualReview": "pending — inspect every screen.png, including failures",
+  "trials": [
+    {
+      "name": "android-1",
+      "report": "android-1/report.json",
+      "valid": true,
+      "exitCode": 0,
+      "failures": []
+    },
+    {
+      "name": "android-2",
+      "report": "android-2/report.json",
+      "valid": false,
+      "exitCode": 1,
+      "failures": [
+        "Child command failed (exit 1)",
+        "Missing, incomplete or failing report",
+        "Incomplete native scenarios"
+      ]
+    },
+    {
+      "name": "android-3",
+      "report": "android-3/report.json",
+      "valid": false,
+      "exitCode": 1,
+      "failures": [
+        "Child command failed (exit 1)",
+        "Missing, incomplete or failing report",
+        "Incomplete native scenarios"
+      ]
+    }
+  ],
+  "finishedAt": "2026-10-01T21:11:39.818Z"
+}

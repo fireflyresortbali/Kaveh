@@ -1,0 +1,5 @@
+Command failed: xcrun simctl install C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4 /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-alg61-shells/ios/KavehBench.app
+
+STDOUT:
+
+STDERR:

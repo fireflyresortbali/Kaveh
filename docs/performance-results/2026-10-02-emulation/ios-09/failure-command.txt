@@ -1,0 +1,6 @@
+Warmed mission resources grow: 1
+requireCheck@http://127.0.0.1:59108/:3192:75
+@http://127.0.0.1:59108/:3255:19
+STDOUT:
+
+STDERR:

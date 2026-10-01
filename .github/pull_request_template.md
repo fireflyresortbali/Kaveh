@@ -13,6 +13,8 @@ For workflow-only changes, explain why gameplay preview/playtesting is not appli
 
 - Revision reviewed (commit or uncommitted snapshot, plus mapping to this PR head):
 - Checks run and actual results:
+- Performance profiles (`quick`, `desktop`, plus required deeper profiles), evidence links and source hashes:
+- Skipped performance profiles and reason; any failed trial and next action:
 - Reviewer session and findings/fix outcomes:
 - Remaining findings or limitations:
 - Human playtest result:
