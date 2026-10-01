@@ -41,6 +41,37 @@ unrelated studio administration, canvas, or personal-accountability routines her
    lock: a competing owner/session means resolve ownership before overlapping edits.
    Worktrees isolate files, not product conflicts. Sequence overlapping changes.
 
+## Dependencies and ready work
+
+- Before selecting or starting work, read acceptance criteria and native Linear
+  `blocks`/`blockedBy` relations across the three projects. Ask: which concrete
+  output is missing, and can this task start or finish correctly without it?
+- A confirmed hard dependency uses a native relation: if B needs A, **A blocks B**
+  (`B.blockedBy = A`). Record the required output, start/finish gate, evidence,
+  exact unblock condition, and upstream owner/next action in B's dependency table.
+  Add only the needed relation; preserve existing relations and reread after writing.
+- Similar subject matter, higher priority, parent/subtask structure, and shared
+  files alone do not prove a blocker. Use `relatedTo` and a coordination note for
+  independent work; record uncertain dependencies as suspected, not confirmed links.
+  If uncertainty affects correctness, resolve it before dependent implementation.
+- Recheck dependencies before work, at handoff, before review/merge, and when upstream
+  scope/status changes. Verify the actual required artifact, decision, or merged
+  code; a Done label alone is not sufficient. Do not delete true relations simply
+  because they are satisfied. Record satisfaction evidence in the dependency table.
+- Only recommend Ready for Agent when scope is agreed and start prerequisites are
+  satisfied. A finish dependency may allow a clearly bounded independent part to
+  proceed; record that boundary. Never claim completion/merge readiness while the
+  required input remains missing. Blocked means no agreed useful work can proceed.
+- Detect self-links and cycles before adding relations; do not create them. Propose
+  splitting out a shared prerequisite or clarify the product decision with a human.
+  Missing relation visibility means the graph is unverified, not cycle-free.
+- Maintain confirmed dependencies involving the assigned issue automatically; ask
+  before removing/changing another owner's disputed relation or changing their
+  status, ownership, priority, or scope. Never waive a requirement just to unblock.
+  The coordinator audits and recommends; it does not silently rewrite the graph.
+- Follow the dependency decision procedure and examples in the team guide. Include
+  dependency reasoning and satisfaction evidence in the independent review packet.
+
 ## Implement and verify
 
 - Never silently stash, reset, overwrite, clean, or commit someone else's work.

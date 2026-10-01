@@ -98,6 +98,122 @@ ownership cannot be checked. Never claim the issue was created/claimed/updated.
 Once access returns, reconcile against current Linear state, sync once, record that
 it was synced, and retire the temporary note after preserving needed evidence.
 
+## Deciding what blocks what
+
+Use Linear's native **blocks / blocked by** relations so dependencies are visible
+on both issues. A sentence saying “wait for art” is not enough. The dependent issue
+must say which artifact or decision it needs and how we know that input is ready.
+This is a coordination procedure maintained by agents when invoked, not a background
+scheduler or an enforced lock. The existing Blocked status alone does not encode
+which issue is responsible.
+
+### Decision procedure for each issue
+
+1. Read its intended behavior and acceptance criteria, linked designs/decisions,
+   relevant code/interfaces, and existing relations in all three game projects.
+   Identify actual inputs: a merged interface, tested save format, accepted asset
+   contract, measured device budget, or human product decision.
+2. For each missing input, ask: **Can we start this work correctly without it? Can
+   we finish and verify it without it?** If neither depends on it, there is no hard
+   dependency. An input already available needs satisfaction evidence, not a new
+   waiting state. Do not infer dependencies from issue titles or priority alone.
+3. Classify the relationship below. Reuse the issue that owns the input. If no issue
+   exists, record the concrete missing input first; create a narrowly scoped issue
+   only for an established requirement, not speculative work. Leave unknown ownership
+   explicit and ask the team; don't automatically assign it to the other person.
+4. For a confirmed dependency where B needs A, add **A blocks B** by adding A to
+   B's `blockedBy` relations (or the equivalent native UI action). Do not overwrite
+   unrelated links. Before adding, follow existing downstream `blocks` links from B:
+   if A is reachable, the new A → B edge would create a cycle. Reject self-links too.
+   If the graph cannot be read completely, leave the proposal unconfirmed. Reread
+   after writing to catch conflicting concurrent changes; Linear is not a lock.
+5. Add the dependency table to B's description using a targeted update, preserving
+   other content. Record output, gate, evidence, unblock condition, and next action.
+   Link directly to the upstream issue; its assignee remains the owner of that work.
+6. Check whether B has agreed useful work independent of this missing input. If so,
+   name the boundary or split a useful independent subtask and continue only there.
+   Otherwise mark your own assigned issue Blocked, state the next action, and suggest
+   another ready task. Do not change another agent's active status without agreement.
+
+| Classification | What the agent records | Can work proceed? |
+| --- | --- | --- |
+| Confirmed: blocks starting | Native blocking relation + start gate and evidence | Only independently agreed work outside the gate |
+| Confirmed: blocks finishing | Native blocking relation + finish gate and evidence | Independent work can proceed; completion/integration waits |
+| Suspected | “Needs dependency clarification” note, evidence gap and question; no confirmed blocking relation | Investigate or do independent work; don't build on the uncertain assumption |
+| Coordination only | Related link and agreed interface/file coordination | Yes, in separate worktrees within agreed boundaries |
+
+Start/finish gates and evidence are description fields, not invented Linear custom
+statuses. Both confirmed kinds use native blocking relations. Ready for Agent means
+acceptance criteria and start gates are settled; it may still have a documented
+finish gate. In Progress means useful agreed work is happening. Needs Review can
+describe an intermediate artifact, but must explicitly say when completion is still
+blocked. No completion or merge-readiness claim while required finish gates are open.
+
+### Dependency record template
+
+Keep one row per direct prerequisite on the dependent issue. Use “None confirmed;
+checked <date>” when appropriate rather than leaving dependency review implicit.
+
+| Prerequisite | Required output and reason | Gate | Evidence and unblock condition | State / next action |
+| --- | --- | --- | --- | --- |
+| <issue link and current upstream owner, or owner unknown> | <what this issue consumes and why> | <start / finish> | <requirement/code/decision link; exact artifact and acceptance needed> | <waiting / satisfied / needs clarification; evidence link or owner action> |
+
+Record suspected dependencies separately with the question that would confirm or
+rule them out. A priority, a shared parent, the same file, or a similar subject is
+not evidence of a hard prerequisite. A missing human decision can be tracked as a
+decision issue with a clear owner and question, rather than disguised as code work.
+
+### Examples for this game
+
+- **Save migration → loading old saves:** if loading requires the new agreed format,
+  record the format/migration issue as a prerequisite. The unblock condition names
+  the merged format contract and passing old-save compatibility fixture, not just
+  “save task Done.”
+- **Character art → final character integration:** a documented placeholder may
+  permit movement work now. Accepted model/animation files and the import contract
+  block final visual integration, not every part of the character system. Without
+  an agreed interface/placeholder, ask before assuming that parallel work is safe.
+- **Sound settings and building placement:** shared UI files may require coordination,
+  but do not create a blocking link if neither feature needs the other's output.
+- **Technical roadmap:** ALG-46 currently lists ALG-39 through ALG-45 as prerequisites.
+  The coordinator must inspect their deliverables and roadmap acceptance criteria
+  before saying the roadmap is complete. Drafting a roadmap can still be useful.
+  This observed example does not authorize changing those existing links/statuses.
+
+### Recheck, unblock, and recommend next work
+
+The implementing agent checks its issue at planning/start, handoff, review, and
+merge. When completing or changing an upstream deliverable, inspect its downstream
+links and record what output changed and where to find it. The downstream owner
+verifies the exact unblock condition; status alone is not enough. For code, normally
+verify the required revision is merged into the downstream base and relevant tests
+pass. For design/art/decisions, verify the accepted version is available and matches
+the agreed contract. A deliberate dependency branch needs an explicit handoff and
+verification before final integration.
+
+Mark the row satisfied with evidence and retain true native dependency links for
+traceability. Satisfaction may occur before a broad upstream issue is Done; in that
+case link the accepted partial output and note why the remaining upstream work is
+irrelevant. If this makes the graph misleading, propose a smaller prerequisite issue
+rather than pretending all upstream work finished. Recheck satisfied rows if an
+upstream issue is reopened or its delivered contract changes. Canceled or Duplicate
+does not satisfy an input: resolve the replacement or an explicit scope decision.
+
+If all blockers clear, the owner can move its paused issue to Ready for Agent, or
+In Progress when actually resuming. Don't automatically launch work or change
+another person's status. Remove an erroneous/superseded relation only with recorded
+evidence and agreement if another owner set or disputes it. Circular dependencies
+need a proposed shared prerequisite, smaller tasks, or a human design decision;
+never quietly delete an edge to make the graph look ready.
+
+The coordinator reports: **Ready to start**, **Can progress but cannot finish**, and
+**Waiting**, with issue links, required outputs, owners/unknown owners, and next
+actions. Show stale or inconsistent records explicitly. Recommend existing agreed
+priorities first; among equally prioritized ready tasks, prefer one that unblocks
+more direct dependents, then the older ready task. An unset priority is unknown,
+not automatically urgent. These are recommendations, not automatic reprioritization
+or assignments. Ask humans when product urgency or scope is unresolved.
+
 ## Build, runtime checks, and previews
 
 The game has no package-manager install step. Use Node.js 24 for the baseline CI.
@@ -159,6 +275,7 @@ Independently review this task. Read AGENTS.md and docs/TEAM-WORKFLOW.md first.
 Repository/worktree: <absolute path; no other checkout may be edited>
 Issue and intended behavior: <link plus sufficient requirement text>
 Acceptance criteria: <criteria>
+Dependencies: <native links, start/finish gates, required outputs and readiness evidence>
 Base revision: <SHA>
 Review target: <head SHA, or base SHA + list and SHA-256 of every changed file>
 Changed paths: <tracked modifications/deletions and relevant untracked files>
@@ -168,6 +285,8 @@ Review round: <initial / fix round 1 / fix round 2>
 Inspect the full diff and surrounding code; inspect listed untracked files too.
 Check behavior, regressions, acceptance criteria, source/build consistency, and
 missing meaningful tests. Independently validate claims where practical. You may
+also check dependency direction, evidence, cycles and claimed readiness; report
+missing upstream evidence rather than accepting a Done label as proof. You may
 run checks that do not change reviewed files (use a disposable copy for builds).
 Do not edit, stage, commit, push, message other chats, or write to Linear/GitHub.
 Report each actionable finding with severity, file/line, failure scenario, and
@@ -198,6 +317,13 @@ systems, review/playtest readiness, and up to three recommended next actions.
 Use current source evidence and links. State missing/stale evidence; an In Progress
 label alone does not prove an agent is running. Check reviewed/tested revisions
 against PR heads. Distinguish uncommitted, pushed, merged, and published work.
+Audit native dependency links across all three projects using the dependency
+procedure in this guide. Separate ready-to-start work, work that can progress but
+cannot finish, and waiting work. For each blocker show the required output, owner
+or unknown owner, unblock condition, and next action. Flag cycles, missing evidence,
+and stale/suspected links. Recommend dependency corrections to the owners; do not
+silently rewrite links or statuses. Recommend next work using agreed priorities
+and direct-unblock impact, without changing priorities or assignments.
 Publish one concise dated update in the development project if there is a meaningful
 change; otherwise report no material change in chat. Do not rewrite others' updates.
 Do not launch agents, reassign work, change priorities, edit game files, commit,
@@ -257,6 +383,12 @@ Do not report this end-to-end rollout complete until those steps happen.
 | Two review-fix rounds exhausted | Summarize unresolved issues and ask; do not loop indefinitely |
 | Merge approved | Integrate current approved revision; do not publish implicitly |
 | Local preview for partner | Explain limitation and arrange their own checkout or approved sharing |
+| B requires A's output | A blocks B; B records the output, gate, evidence and unblock condition |
+| Same file, independent outcomes | Related/coordination note; no invented hard dependency |
+| Finish gate with agreed independent work | Continue only that work; completion/integration still waits |
+| Upstream says Done, output missing | Dependency stays unsatisfied; report evidence gap |
+| Proposed circular or unreadable dependency graph | Leave relation unconfirmed; resolve cycle/visibility first |
+| Upstream canceled, duplicated or reopened | Recheck replacement/output; do not automatically unblock |
 
 ## References
 
