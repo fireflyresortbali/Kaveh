@@ -45,6 +45,7 @@ jobs:
           set -euo pipefail
           export PERF_CHROME="$(command -v google-chrome)"
           test -x "$PERF_CHROME"
+          mkdir -p perf-results
           node tests/performance/check.cjs desktop perf-results/ci
       - name: Keep performance evidence, including failures
         if: always()
