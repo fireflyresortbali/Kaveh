@@ -558,7 +558,7 @@ function setupWorld(){resetStats();
 function kavehMult(e){if(e.team!==0)return 1;for(const k of ents)if(k.type==='kaveh'&&alive(k)&&Math.hypot(k.x-e.x,k.y-e.y)<5*TILE)return 1.2;return 1}
 function atkOf(e){let a=DEF[e.type].atk;if(e.kind==='unit'){a*=kavehMult(e);if(e.buffUntil>now)a*=1.6}return a}
 function mult(a,b){const d=DEF[a.type],bc=DEF[b.type].cls;let m=1;if(d.bonus&&d.bonus[bc])m*=d.bonus[bc];if(bc==='bld'&&d.rng&&!(d.bonus&&d.bonus.bld))m*=.3;if(b.type==='zahhak'&&d.cls!=='hero')m*=.35;return m}
-function dealDmg(a,b,base){if(!alive(b)||DEF[b.type].invul)return;b.hp-=base*mult(a,b);b.hitT=3;if(b.kind==='unit'){b.flinch=.32;b.flinchX=b.x-(a.x??b.x);b.flinchY=b.y-(a.y??b.y)}
+function dealDmg(a,b,base){if(!alive(b)||DEF[b.type].invul)return;b.hp-=base*mult(a,b);b.hitT=3;
   if(b.kind==='unit'&&alive(a)&&(a.kind==='unit'||a.kind==='bld')&&isEnemy(a,b)&&(b.state==='idle'||(b.state==='move'&&b.amove))&&DEF[b.type].atk&&!(b.team===0&&b.type==='villager')&&!(b.guard&&a.kind==='bld')){b.amoveKeep=b.state==='move';b.target=a.id;b.state='attack';b.path=null}
   const p=b.kind==='unit'?{x:b.x,y:b.y}:closestPt(b,a.x,a.y);fxs.push({t:'hit',x:p.x,y:p.y,life:.45,max:.45});if(b.hp<=0)kill(b,a)}
 function kill(e,by){if(e.dead||e.fallen)return;const d=DEF[e.type];
@@ -578,12 +578,10 @@ function findEnemy(e,R,unitsOnly){let best=null,bd=1e9;const cx=ecx(e),cy=ecy(e)
 const CELL=64,GW=Math.ceil(WW/CELL);const grid=Array.from({length:GW*GW},()=>[]);
 function buildGrid(){for(const c of grid)c.length=0;for(const e of ents){if(e.kind!=='unit'||e.dead||e.fallen)continue;grid[clamp(e.y/CELL|0,0,GW-1)*GW+clamp(e.x/CELL|0,0,GW-1)].push(e)}}
 function sidestep(u,v,o){if(!u.moving||u.dirx===undefined||u.state==='attack')return;const rx=v.x-u.x,ry=v.y-u.y;if(u.dirx*rx+u.diry*ry<=0)return;const cr=u.dirx*ry-u.diry*rx;const sg=cr>2?-1:1;const k=o*.9*sg;const nx=u.x-u.diry*k,ny=u.y+u.dirx*k;if(!isBlk(nx/TILE|0,ny/TILE|0)){u.x=nx;u.y=ny}}
-// Fighters plant their feet: movers flow around them instead of shoving them out of reach.
-function sepW(u){return u.moving?1:u.state==='attack'&&u.inRange?.12:.5}
 function separate(){for(const c of grid){for(let i=0;i<c.length;i++){const a=c[i];if(a.fly)continue;const gx=a.x/CELL|0,gy=a.y/CELL|0;
   for(let oy=0;oy<=1;oy++)for(let ox=-1;ox<=1;ox++){if(oy===0&&ox<0)continue;const nx=gx+ox,ny=gy+oy;if(nx<0||ny<0||nx>=GW||ny>=GW)continue;const cc=grid[ny*GW+nx];
     for(let j=(cc===c?i+1:0);j<cc.length;j++){const b=cc[j];if(b.fly||b===a)continue;const dx=b.x-a.x,dy=b.y-a.y,rr=(DEF[a.type].r+DEF[b.type].r)*1.2,d2=dx*dx+dy*dy;if(d2>=rr*rr)continue;
-      let d=Math.sqrt(d2),ux,uy;if(d<.5){const an=(a.id*2.399+b.id*.7)%6.283;ux=Math.cos(an);uy=Math.sin(an);d=.5}else{ux=dx/d;uy=dy/d}const o=(rr-d)*.5,px=ux*o,py=uy*o;const wa=sepW(a),wb=sepW(b);
+      let d=Math.sqrt(d2),ux,uy;if(d<.5){const an=(a.id*2.399+b.id*.7)%6.283;ux=Math.cos(an);uy=Math.sin(an);d=.5}else{ux=dx/d;uy=dy/d}const o=(rr-d)*.5,px=ux*o,py=uy*o;const wa=a.moving?1:.5,wb=b.moving?1:.5;
       const ax=a.x-px*wa,ay=a.y-py*wa;if(!isBlk(ax/TILE|0,ay/TILE|0)){a.x=ax;a.y=ay}const bx=b.x+px*wb,by=b.y+py*wb;if(!isBlk(bx/TILE|0,by/TILE|0)){b.x=bx;b.y=by}sidestep(a,b,o);sidestep(b,a,o);a.crowd=(a.crowd||0)+o*.05;b.crowd=(b.crowd||0)+o*.05}}}}}
 
 // ================= unit AI =================
@@ -598,8 +596,8 @@ function approach(e,t,dt){if(e.fly){const p=closestPt(t,e.x,e.y);moveStep(e,p.x,
     moveStep(e,t.x+dx/dist*standOff,t.y+dy/dist*standOff,dt);return}
   if(!e.path||e.pathFor!==t.id||e.repath<=0||(e.stuck||0)>.7){e.stuck=0;e.path=t.kind==='unit'?pathPoint(e,t.x,t.y):pathEnt(e,t);e.pathFor=t.id;e.repath=t.kind==='unit'?.8+Math.random()*.3:5}
   if(e.path.length)follow(e,dt);else{const p=closestPt(t,e.x,e.y);moveStep(e,p.x,p.y,dt)}}
-function orderMove(e,x,y,amove){e.moveT=0;e.crowd=0;e.state='move';e.dest={x,y};e.amove=!!amove;e.target=0;e.path=null;e.needPath=true;e.returning=false;e.anim=null;e.attackPending=false;e.holding=false}
-function orderAttack(e,t){e.state='attack';e.target=t.id;e.path=null;e.amove=false;e.anim=null;e.attackPending=false;e.holding=false}
+function orderMove(e,x,y,amove){e.moveT=0;e.crowd=0;e.state='move';e.dest={x,y};e.amove=!!amove;e.target=0;e.path=null;e.needPath=true;e.returning=false;e.anim=null;e.attackPending=false}
+function orderAttack(e,t){e.state='attack';e.target=t.id;e.path=null;e.amove=false;e.anim=null;e.attackPending=false}
 function orderGather(e,t){e.state='gather';e.target=t.id;e.gtype=t.type;e.path=null}
 function orderBuild(e,t){e.state='build';e.target=t.id;e.path=null}
 function nearestDrop(e){let best=null,bd=1e9;for(const b of ents){if(b.kind!=='bld'||b.team!==e.team||!b.done||b.dead||!DEF[b.type].drop)continue;const d=edist(e,b);if(d<bd){bd=d;best=b}}return best}
@@ -611,7 +609,7 @@ function spreadRes(e,t){const cap=RES_CAP[t.type]||5;if(gatherers(t,e)<cap)retur
 function reachR(e){return 6+Math.min(16,(e.crowd||0)*10+(e.stuck||0)*12)}
 function resType(t){return t.type==='farm'?'food':DEF[t.type].res}
 function updUnit(e,dt){const d=DEF[e.type];
-  e.moving=false;e.crowd=(e.crowd||0)*Math.exp(-dt*2);e.cd-=dt;e.repath-=dt;if(e.atkT>0)e.atkT-=dt;if(e.hitT>0)e.hitT-=dt;if(e.flinch>0)e.flinch-=dt;e.wasInRange=e.inRange;e.inRange=false;
+  e.moving=false;e.crowd=(e.crowd||0)*Math.exp(-dt*2);e.cd-=dt;e.repath-=dt;if(e.atkT>0)e.atkT-=dt;if(e.hitT>0)e.hitT-=dt;e.inRange=false;
   if(d.regen&&e.hp<d.hp)e.hp=Math.min(d.hp,e.hp+d.regen*dt);
   if(!e.fly&&isBlk(e.x/TILE|0,e.y/TILE|0,e.team)){const f=nearFree(e.x/TILE|0,e.y/TILE|0);if(f){e.x=f.x*TILE+16;e.y=f.y*TILE+16}}
   if(d.heal){e.healT=(e.healT||0)-dt;if(e.healT<=0){e.healT=1;for(const u of ents)if(u.kind==='unit'&&u.team===e.team&&alive(u)&&u!==e&&Math.hypot(u.x-e.x,u.y-e.y)<3.5*TILE&&u.hp<DEF[u.type].hp){u.hp=Math.min(DEF[u.type].hp,u.hp+d.heal);if(Math.random()<.4)fxs.push({t:'spark',x:u.x,y:u.y,life:.8,max:.8})}}}
@@ -624,8 +622,7 @@ function updUnit(e,dt){const d=DEF[e.type];
     const done=follow(e,dt);if((e.stuck||0)>.9){e.stuck=0;e.needPath=true}const near=e.dest&&Math.hypot(e.dest.x-e.x,e.dest.y-e.y)<(e.path&&e.path.length>1?0:12);e.moveT=(e.moveT||0)+dt;if(done||near||(e.dest&&e.moveT>2&&Math.hypot(e.dest.x-e.x,e.dest.y-e.y)<30&&e.crowd>.6)){e.state='idle';e.returning=false;e.amove=false;e.path=null}break}
   case 'attack':{const t=byId.get(e.target);
     if(!alive(t)||!isEnemy(e,t)||(e.team===0&&t.kind==='unit'&&!vis[(t.y/TILE|0)*MW+(t.x/TILE|0)]&&edist(e,t)>d.los*TILE)){e.target=0;e.attackPending=false;if(e.amoveKeep&&e.dest){e.state='move';e.amove=true;e.needPath=true;e.amoveKeep=false}else{e.state='idle';e.scanT=0}break}
-    // Hysteresis: once engaged, small crowd shoves do not break the duel.
-    const range=(d.rng?d.rng*TILE:5)+(e.wasInRange?(d.rng?TILE*.5:7):0);e.tgx=ecx(t);e.tgy=ecy(t);
+    const range=d.rng?d.rng*TILE:5;e.tgx=ecx(t);e.tgy=ecy(t);
     if(edist(e,t)<=range){e.path=null;e.inRange=true;
       if(e.cd<=0){e.cd=d.rof;e.attackPending=true}
       if(e.attackPending&&e.cd<=d.rof*.64){e.attackPending=false;
@@ -635,14 +632,7 @@ function updUnit(e,dt){const d=DEF[e.type];
       if(d.rng&&t.kind==='unit'&&!e.attackPending&&e.cd>0&&edist(e,t)<TILE*1.4){
         const dx=e.x-t.x,dy=e.y-t.y,dist=Math.max(1,Math.hypot(dx,dy));
         moveStep(e,e.x+dx/dist*TILE,e.y+dy/dist*TILE,dt)}}
-    else{if(e.guard&&Math.hypot(e.x-e.hx,e.y-e.hy)>12*TILE){e.target=0;orderMove(e,e.hx,e.hy);e.returning=true;break}
-      // Near the melee: fight whoever is already within reach, and if the foe is already surrounded,
-      // hold a ready stance and wait for a gap instead of shoving through the press of bodies.
-      if(!d.rng&&t.kind==='unit'&&edist(e,t)<TILE*1.5){e.altT=(e.altT||0)-dt;if(e.altT<=0){e.altT=.3;
-          const alt=findEnemy(e,TILE*.6,true);if(alt&&alt!==t){e.target=alt.id;e.path=null;e.holding=false;break}
-          let n=0;for(const u of ents)if(u!==e&&u.kind==='unit'&&u.target===t.id&&u.inRange&&!u.dead)n++;e.holding=n>=(DEF[t.type].r>=10?5:3)}
-        if(e.holding)break}else e.holding=false;
-      approach(e,t,dt)}break}
+    else{if(e.guard&&Math.hypot(e.x-e.hx,e.y-e.hy)>12*TILE){e.target=0;orderMove(e,e.hx,e.hy);e.returning=true;break}approach(e,t,dt)}break}
   case 'gather':{let t=byId.get(e.target);
     const bad=!t||t.dead||(t.kind==='res'&&t.amt<=0)||(t.type==='farm'&&t.worker&&t.worker!==e.id&&workingOn(t.worker,t.id));
     if(bad){const nt=findRes(e,e.gtype,10*TILE);if(nt){e.target=nt.id;e.path=null;t=nt}else{e.state=e.carry>0?'return':'idle';break}}
@@ -1247,7 +1237,7 @@ function animUnit(R,e,t,dt){
   const d=DEF[e.type],J=R.J,P=P0();const actualSpeed=e.visualSpeed===undefined?(e.moving?d.spd:0):e.visualSpeed;
   const moving=!!e.moving&&actualSpeed>2;R.moveBlend=lerp(R.moveBlend||0,moving?1:0,1-Math.exp(-dt*(moving?9:12)));
   const mv=R.moveBlend>.025,work=e.anim==='work'&&!e.moving,atk=e.state==='attack'&&e.inRange&&!e.moving;
-  const vms=(actualSpeed/TILE)/(.48*R.scale);const run=clamp((vms-1.5)/1.8,0,1);const p=clamp(1-(e.cd||0)/d.rof,0,1);let lunge=0;
+  const vms=(actualSpeed/TILE)/(.48*R.scale);const run=clamp((vms-1.5)/1.8,0,1);const p=clamp(1-(e.cd||0)/d.rof,0,1);
   if(R.rider){// horse + seated rider
     const H=R.H;const A=R.moveBlend;R.hph=((R.hph||0)+dt*A*(1.4+run*1.15))%1;const hp=R.hph;
     for(const [n,off,front] of [['HL',.5,0],['HR',0,0],['FL',0,1],['FR',.5,1]]){const ph=2*Math.PI*(hp+off);H['u'+n].rotation.x=-A*(.34+run*.27)*Math.sin(ph)-(1-A)*.02;H['l'+n].rotation.x=(front?1:-1)*A*(.38+.5*Math.sin(ph+1.8))}
@@ -1263,18 +1253,10 @@ function animUnit(R,e,t,dt){
     const idle=P0();poseIdle(idle,t,R.sd);for(const k in P)P[k]=lerp(idle[k],P[k],R.moveBlend)}
   else if(work){const k=e.workKind;const pw=R.wph||0;R.wph=((R.wph||0)+dt*(k==='farm'?.75:k==='bush'?.6:k==='build'?1.2:.8))%1;{const hitAt=k==='bush'?.5:k==='farm'||k==='build'?.56:.6;if(e.x!==undefined&&((pw<hitAt&&R.wph>=hitAt)||(R.wph<pw&&hitAt>pw)))sfx(k==='tree'?'chop':k==='mine'?'pick':k==='farm'?'hoe':k==='bush'?'harvest':'hammer',e.x,e.y,.8)}
     if(k==='tree')poseSwing2(P,R.wph,'chop');else if(k==='mine')poseSwing2(P,R.wph,'pick');else if(k==='farm')poseSwing2(P,R.wph,'hoe');else if(k==='bush')poseHarvest(P,R.wph);else poseHammer(P,R.wph)}
-  else if(atk||e.state==='attack'){const w=R.wk;if(w==='spear')poseThrust(P,p,!atk);else if(w==='bow')poseBow(P,p,atk);else poseSwing1(P,p,w==='tool'?'club':w,!atk);if(e.type==='villager'&&atk)poseSwing1(P,p,'sword',false);
-    if(w!=='bow'){// fighting stance: crouched, weight shifting on the balls of the feet, torso leaning into the foe
-      const bob=Math.sin(t*5.2+R.sd),sway=Math.sin(t*2.6+R.sd*2);
-      P.hipY+=-.05+bob*.014;P.lKn+=.18;P.rKn+=.16;P.lThX+=.1;P.rThX+=.06;P.spRx+=.1;P.hdRx-=.08;P.chRy+=sway*.07;P.hipRy+=sway*.05;P.lShX+=.12;
-      if(atk){// stride into the blow, then recover
-        const ln=sstep(.2,.36,p)*(1-sstep(.46,.82,p));lunge=ln*.17;P.lThX+=.42*ln;P.lKn+=.18*ln;P.rThX-=.3*ln;P.rKn+=.12*ln;P.spRx+=.16*ln;P.hipY-=.04*ln}}}
+  else if(atk||e.state==='attack'){const w=R.wk;if(w==='spear')poseThrust(P,p,!atk);else if(w==='bow')poseBow(P,p,atk);else poseSwing1(P,p,w==='tool'?'club':w,!atk);if(e.type==='villager'&&atk)poseSwing1(P,p,'sword',false)}
   else{poseIdle(P,t,R.sd);if(R.wk==='spear'){poseThrust(P,0,true);P.lThX=P.rThX=.02;P.lKn=P.rKn=.05;P.hipY=0;P.lThZ=P.rThZ=.06}else if(R.wk==='banner'){P.rShX=.12;P.rEl=1.5;P.rWrX=0}else if(R.wk==='club'){P.rShX=.6;P.rEl=1.95;P.rWrX=1.2}else if(R.wk==='mace'||R.wk==='sword'){P.rShX=.1;P.rEl=.3;P.rWrX=1.5}}
-  // recoil from a blow: head snaps back, torso rocks away from the attacker
-  const fl=clamp((e.flinch||0)/.32,0,1);if(fl>0&&!R.rider){const k=Math.sin(fl*Math.PI*.5);P.spRx-=.3*k;P.hdRx-=.25*k;P.chRy+=.18*k*Math.sin(R.sd*7);P.lShZ+=.2*k;P.rShZ+=.2*k;P.hipY-=.03*k;lunge-=.1*k}
-  // smooth toward target pose; combat snaps faster so strikes read as strikes
-  const a=Math.min(1,dt*(mv?16:atk||fl>0?24:11));const C=R.P;for(const k in P)C[k]+=(P[k]-C[k])*a;applyPose(J,C);
-  R.lunge=lerp(R.lunge||0,lunge,Math.min(1,dt*20));if(!R.rider)J.hips.position.z=R.lunge;
+  // smooth toward target pose
+  const a=Math.min(1,dt*(mv?16:11));const C=R.P;for(const k in P)C[k]+=(P[k]-C[k])*a;applyPose(J,C);
   // tools & carried goods
   if(R.type==='villager'){const tl=work?toolFor(e):atk?'w_axe':null;for(const n of ['w_axe','w_pick','w_hoe','w_hammer','w_basket'])J[n].visible=n===tl;if(tl==='w_basket')J.w_basket.visible=true}
   const c=e.carry>0?e.ctype:null;J.c_wood.visible=c==='wood';J.c_food.visible=c==='food';J.c_gold.visible=c==='gold';
@@ -1744,13 +1726,9 @@ function sync(dt,t){const live=new Set();
   for(const e of ents){if(e.kind==='res'&&e.type==='tree')continue;live.add(e.id);let o=objs.get(e.id);if(!o)o=makeObj(e);if(!o)continue;
     if(e.kind==='unit'){o.root.visible=!e.fallen&&shown(e);o.contact.visible=o.root.visible;if(!o.root.visible)continue;const X=e.x/TILE,Z=e.y/TILE;
       const dx=e.x-o.px,dz=e.y-o.py;const travel=Math.hypot(dx,dz);e.stepDistance=e.moving?Math.min(travel,DEF[e.type].spd*dt*1.4):0;e.visualSpeed=dt>0?e.stepDistance/dt:0;
-      // Face the foe while fighting; otherwise face the intended heading, never the direction of a crowd shove.
-      const nearFoe=e.state==='attack'&&e.tgx!==undefined&&(e.inRange||Math.hypot(e.tgx-e.x,e.tgy-e.y)<2*TILE);
-      let ty=o.yaw;if(nearFoe)ty=Math.atan2(e.tgx-e.x,e.tgy-e.y);else if(e.moving&&e.dirx!==undefined&&dx*dx+dz*dz>.02)ty=Math.atan2(e.dirx,e.diry);else if(e.tgx!==undefined&&e.anim==='work')ty=Math.atan2(e.tgx-e.x,e.tgy-e.y);
-      o.yaw=lerpAng(o.yaw,ty,Math.min(1,dt*(nearFoe?12:9)));o.px=e.x;o.py=e.y;o.root.rotation.y=o.yaw;
-      // Visual position follows the simulation closely when walking and softly when only jostled.
-      if(o.vx===undefined||Math.hypot(X-o.vx,Z-o.vz)>1.5){o.vx=X;o.vz=Z}else{const k=1-Math.exp(-dt*(e.moving?22:7));o.vx+=(X-o.vx)*k;o.vz+=(Z-o.vz)*k}
-      const VX=o.vx,VZ=o.vz,gy=heightAt(VX,VZ);o.root.position.set(VX,e.fly?Math.max(gy,WL)+2.3:Math.max(gy,WL-.12),VZ);o.contact.position.set(VX,Math.max(gy,WL)+.035,VZ);
+      let ty=o.yaw;if(e.state==='attack'&&e.inRange&&e.tgx!==undefined)ty=Math.atan2(e.tgx-e.x,e.tgy-e.y);else if(dx*dx+dz*dz>.02)ty=Math.atan2(dx,dz);else if(e.tgx!==undefined&&e.anim==='work')ty=Math.atan2(e.tgx-e.x,e.tgy-e.y);
+      o.yaw=lerpAng(o.yaw,ty,Math.min(1,dt*9));o.px=e.x;o.py=e.y;o.root.rotation.y=o.yaw;
+      const gy=heightAt(X,Z);o.root.position.set(X,e.fly?Math.max(gy,WL)+2.3:Math.max(gy,WL-.12),Z);o.contact.position.set(X,Math.max(gy,WL)+.035,Z);
       _sp.center.set(X,gy+.5,Z);if(FR.intersectsSphere(_sp)){o.root.visible=true;animUnit(o.R,e,t,o.skip?dt*2:dt)}else{o.root.visible=false;o.contact.visible=false}}
     else if(e.kind==='bld'){if(o.lvl!==bldLevel(e.type,e.team)){scene.remove(o.root);objs.delete(e.id);o=makeObj(e)}o.root.visible=shown(e);const s=e.done?1:.06+.94*e.bp;o.root.scale.set(1,s,1);
       const UU=o.U;UU.flags.forEach((f,i)=>{f.rotation.y=Math.sin(t*2.6+i*1.7+e.id)*.35});if(UU.fire){UU.fire.visible=e.done;UU.fire.children.forEach((c,i)=>{c.scale.set(1+Math.sin(t*13+i*2)*.12,1+Math.sin(t*9+i)*.25,1+Math.cos(t*11+i)*.12)})}
