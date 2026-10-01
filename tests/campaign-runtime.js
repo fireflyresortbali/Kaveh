@@ -10,6 +10,8 @@ try{
   for(const l of CAMPAIGN_LEVELS){
     await startMemory(l.id);closeModal();beginStage();paused=false;
     check(ents.some(e=>e.type==='ariel'),'Ariel in level '+l.id);
+    if(l.id===2){check(ghost===null&&ghostType===null&&!scene.children.includes(window.__oldGhost),'level 1 placement preview cleared in level 2');check(bldModel('house',0).root.children.length>=10,'level 1 hut model not reused in level 2')}
+    if(l.id===1){check(bldModel('house',0).root.children.length<=4,'level 1 keeps primitive hut');ghost=bldModel('house',0).root;ghostType='house';scene.add(ghost);window.__oldGhost=ghost}
     if(l.id>1){const forms=ents.filter(e=>LANDSCAPE_TYPES.has(e.type));const signature=forms.map(e=>e.type+':'+e.tx+','+e.ty).join('|');check(forms.length>=5,'landforms populate map '+l.id);check(!mapLayouts.has(signature),'map layout differs in level '+l.id);mapLayouts.add(signature)}
     check(l.id!==1||!ents.some(e=>e.type==='tc'),'cave start has no Town Center');
     const oldage=age;age=l.maxAge;check(!!ageRequirement(),'age cap enforced '+l.id);doAgeUp();check(age===l.maxAge,'cannot exceed cap '+l.id);age=oldage;

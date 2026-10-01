@@ -350,8 +350,8 @@ const frameStyle=document.createElement('style');frameStyle.textContent='.ariel-
 
 // Early settlement uses timber and hide structures, before monumental architecture.
 const settledHouse=BUILD.house,settledTower=BUILD.tower,settledWall=BUILD.wall;
-BUILD.house=(g,...a)=>{if(currentLevel().id!==1)return settledHouse(g,...a);cb(g,1.65,.7,1.65,0x9b8159,0,.35,0);const roof=cm(g,new T3.ConeGeometry(1.4,.9,4),0x6e6442,0,1.12,0);roof.rotation.y=Math.PI/4;cb(g,.5,.65,.04,0x30271c,0,.33,.84);};
-BUILD.tower=(g,...a)=>{if(currentLevel().id!==1)return settledTower(g,...a);
+BUILD.house=(g,...a)=>{if(currentLevel().id!==1)return settledHouse(g,...a);g.userData.variant='mountain';cb(g,1.65,.7,1.65,0x9b8159,0,.35,0);const roof=cm(g,new T3.ConeGeometry(1.4,.9,4),0x6e6442,0,1.12,0);roof.rotation.y=Math.PI/4;cb(g,.5,.65,.04,0x30271c,0,.33,.84);};
+BUILD.tower=(g,...a)=>{if(currentLevel().id!==1)return settledTower(g,...a);g.userData.variant='mountain';
   // Compact cylindrical mountain watchtower inspired by Iranian adobe and rubble-stone examples.
   const towerAlbedo=new T3.TextureLoader().load(TOWER_TEXTURE);towerAlbedo.colorSpace=T3.SRGBColorSpace;towerAlbedo.wrapS=towerAlbedo.wrapT=T3.RepeatWrapping;towerAlbedo.anisotropy=8;const masonry=patch(new T3.MeshStandardMaterial({color:0xd3bfa3,map:towerAlbedo,bumpMap:towerAlbedo,bumpScale:.055,roughness:1}));
   const rubble=patch(new T3.MeshStandardMaterial({color:0x68604e,map:TX.rock,roughness:1}));

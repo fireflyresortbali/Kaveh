@@ -841,7 +841,9 @@ const MF={
   adobe:()=>mat('adobe',{map:TX.plaster,color:0xe9c9a0,roughness:.96}),adobeL:()=>mat('adobeL',{map:TX.plaster,color:0xfff0da,roughness:.9}),clay:()=>mat('clay',{color:0xa65a34,roughness:.8,map:TX.grain}),
   sack:()=>mat('sack',{color:0xd9c7a0,map:TX.fabric,roughness:.95}),log:()=>mat('log',{color:0xa88058,map:TX.wood,roughness:.85}),sand:()=>mat('sand',{map:TX.stoneL,color:0xf6dcae,roughness:.88}),sandW:()=>mat('sandW',{map:TX.plaster,color:0xf3d6a4,roughness:.9}),panelW:()=>mat('panelW',{map:TX.panelW,roughness:.45,metalness:.05}),panelD:()=>mat('panelD',{map:TX.panelD,roughness:.5,emissive:0x5a2a08,emissiveIntensity:.35}),
   band:()=>mat('band',{map:TX.band,roughness:.4}),carpet:()=>mat('carpet',{map:TX.carpet,roughness:.95}),water:()=>mat('waterS',{color:0x3aa6a8,roughness:.08,metalness:.25}),lily:()=>mat('lily',{color:0x4f8a34,roughness:.7}),cypress:()=>mat('cypress',{color:0x2c4a24,roughness:.95,map:TX.grain}),
-  dirt:()=>mat('dirtS',{color:0x8f7550,map:TX.grain,roughness:1})};
+  dirt:()=>mat('dirtS',{color:0x8f7550,map:TX.grain,roughness:1}),
+  hWall:()=>mat('hWall',{map:TX.plaster,color:0xf4e2c4,roughness:.92}),hWin:()=>mat('hWin',{color:0x1e3a46,roughness:.35,emissive:0x5a3010,emissiveIntensity:.3}),hDoor:()=>mat('hDoor',{color:0x2b7c80,map:TX.wood,roughness:.6}),
+  autumnO:()=>mat('autumnO',{color:0xd98a2b,roughness:.85}),autumnY:()=>mat('autumnY',{color:0xe8b23c,roughness:.85}),autumnR:()=>mat('autumnR',{color:0xb8562a,roughness:.85})};
 const MAT=new Proxy({},{get:(o,k)=>o[k]||(o[k]=MF[k]())});
 const G={};const geo=(k,f)=>G[k]||(G[k]=f());
 function mesh(g,m,x,y,z,p,cast){const o=new T3.Mesh(g,m);o.position.set(x||0,y||0,z||0);o.castShadow=cast!==false;o.receiveShadow=true;if(p)p.add(o);return o}
@@ -1345,29 +1347,57 @@ tc(g,T,team,U){plinth(g,3.95,3.95);mesh(box(3.4,.06,3.4),MAT.pave,0,.03,0,g,fals
   mesh(box(1.9,1.4,1.3),MAT.plaster,0,.7,-.85,g);mesh(box(2.0,.1,1.4),MAT.stoneL,0,1.43,-.85,g);mesh(box(1.2,1.62,.16),MAT.plaster,0,.81,-.16,g);facade(g,.95,1.28,0,.64,-.075,MAT.iwan);
   mesh(box(.12,1.62,.18),MAT.tileT,-.62,.81,-.16,g);mesh(box(.12,1.62,.18),MAT.tileT,.62,.81,-.16,g);
   dome(g,0,1.48,-.9,.55,MAT.tileT);U.glows.push(glow(g,0,.35,-.02,0xffa040,.8))},
-house(g,T,team,U){plinth(g,1.9,1.9,MAT.sand);const S=MAT.sand,W=MAT.sandW,Y=.05;
-  // Persian courtyard house: tiled pavilion on a raised terrace, portico with a carpet, stairs, pool garden, low crenellated wall, cypresses.
-  const P=(w,h,x,y,z,m,ry)=>facade(g,w,h,x,y,z,m,ry);
-  mesh(box(1.7,.02,.8),MAT.pave,0,Y+.01,.46,g,false);
-  for(const [x,z,w,d] of [[0,-.9,1.84,.08],[-.9,0,.08,1.84],[.9,0,.08,1.84],[.3,.9,1.24,.08],[-.84,.9,.16,.08]]){mesh(box(w,.24,d),W,x,Y+.12,z,g);const n=Math.round(Math.max(w,d)/.14);for(let i=0;i<n;i++){const t=(i+.5)/n-.5;mesh(box(.07,.07,.07),W,x+(w>d?t*w:0),Y+.275,z+(d>w?t*d:0),g)}}
-  for(const x of [-.74,-.44]){mesh(box(.07,.42,.1),S,x,Y+.21,.9,g)}mesh(box(.38,.07,.1),S,-.59,Y+.44,.9,g);P(.23,.34,-.59,Y+.17,.95,MAT.panelD);
-  mesh(box(1.76,.32,.98),S,0,Y+.16,-.41,g);P(1.02,.1,.3,Y+.2,.081,MAT.band);
-  for(let i=0;i<5;i++)mesh(box(.32,.064*(i+1),.1),S,-.56,Y+.032*(i+1),.13-i*.0+(.4-i*.1)-.25,g);
-  const TY=Y+.32;mesh(box(1.12,.66,.58),W,.24,TY+.33,-.56,g);
-  P(.3,.52,.24,TY+.26,-.265,MAT.panelD);for(const x of [-.08,.56])P(.22,.4,x,TY+.23,-.265,MAT.panelW);
-  for(const s2 of [-1,1])for(const z of [-.66,-.46])P(.16,.34,.24+s2*.565,TY+.25,z,MAT.panelW,s2*Math.PI/2);
-  mesh(box(1.2,.07,.66),S,.24,TY+.69,-.56,g);mesh(box(1.1,.02,.56),MAT.tileT,.24,TY+.735,-.56,g,false);P(1.2,.07,.24,TY+.69,-.228,MAT.band);
-  const dg=geo('hdome2',()=>new T3.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI/2));
-  for(const x of [.02,.46]){mesh(cylg(.14,.15,.07,18),S,x,TY+.78,-.56,g);const d=new T3.Mesh(dg,MAT.tileT);d.scale.set(.14,.16,.14);d.position.set(x,TY+.81,-.56);d.castShadow=true;g.add(d);mesh(coneg(.02,.08,6),MAT.gold,x,TY+1.0,-.56,g)}
-  for(const [x,z] of [[-.78,-.32],[-.36,-.32],[-.78,-.78],[-.36,-.78]])mesh(cylg(.025,.03,.46,8),S,x,TY+.23,z,g);
-  mesh(box(.52,.06,.56),S,-.57,TY+.49,-.55,g);mesh(box(.46,.02,.5),MAT.tileT,-.57,TY+.525,-.55,g,false);P(.52,.06,-.57,TY+.49,-.268,MAT.band);
-  mesh(box(.36,.012,.4),MAT.carpet,-.57,TY+.006,-.55,g,false);for(const z of [-.7,-.4])mesh(box(.1,.05,.08),cloth(0xa8262e),-.72,TY+.03,z,g);
-  mesh(box(.66,.07,.38),S,.36,Y+.035,.5,g);mesh(box(.58,.02,.3),MAT.water,.36,Y+.065,.5,g,false);
-  for(const [x,z,r] of [[.2,.45,.045],[.28,.58,.035],[.48,.42,.04],[.52,.56,.03]])mesh(cylg(r,r,.01,10),MAT.lily,x,Y+.078,z,g,false);
-  for(const [x,z,w,d] of [[.36,.76,.7,.1],[-.86+.1,.3,.1,.5],[.84-.02,.4,.1,.6]]){mesh(box(w,.08,d),S,x,Y+.04,z,g);const n=Math.max(2,Math.round(Math.max(w,d)/.14));for(let i=0;i<n;i++){const t=(i+.5)/n-.5;const b2=mesh(sph(.065,8,6),MAT.leaf,x+(w>d?t*w:0),Y+.12,z+(d>w?t*d:0),g);b2.scale.set(1,.8,1)}}
-  for(const [x,z] of [[-.34,.2],[-.78,.2]]){mesh(cylg(.045,.035,.08,8),MAT.clay,x,Y+.04,z,g);mesh(sph(.06,8,6),MAT.leaf,x,Y+.12,z,g)}
-  for(const [x,z,h] of [[-.8,-.8,.95],[.8,-.82,1.1],[.82,.08,.8]]){mesh(cylg(.02,.025,.12,5),MAT.dwood,x,Y+.3,z,g);const c2=mesh(coneg(.1,h,8),MAT.cypress,x,Y+.3+h/2,z,g);mesh(sph(.1,8,6),MAT.cypress,x,Y+.36,z,g)}
-  flagOn(g,.72,TY+.72,-.8,team,U.flags)},
+house(g,T,team,U){plinth(g,1.9,1.9,MAT.sand);const Y=.05;
+  // Persian courtyard house: U-shaped flat-roofed mudbrick rooms with parapets around a paved court,
+  // pointed-arch windows and turquoise doors, an arcaded porch, octagonal pool, hedged beds and autumn trees.
+  const A=MAT.hWall,L=MAT.sandW,HW=MAT.hWin,HD=MAT.hDoor;
+  const archG=(w,h)=>geo(`hArch${w},${h}`,()=>{const s=new T3.Shape(),sp=h-w*.62;s.moveTo(-w/2,0);s.lineTo(w/2,0);s.lineTo(w/2,sp);s.quadraticCurveTo(w/2,sp+w*.42,0,h);s.quadraticCurveTo(-w/2,sp+w*.42,-w/2,sp);s.closePath();return new T3.ShapeGeometry(s,8)});
+  // Flat arch plate standing on (x,y,z), facing direction ry (0 = +Z), lifted `o` off the wall.
+  const plate=(w,h,x,y,z,ry,m,o)=>{const p=mesh(archG(w,h),m,x+Math.sin(ry)*o,y,z+Math.cos(ry)*o,g,false);p.rotation.y=ry;return p};
+  const win=(x,y,z,ry,w,h)=>{plate(w+.05,h+.04,x,y-.02,z,ry,L,.006);plate(w,h,x,y,z,ry,HW,.012);mesh(box(w+.07,.025,.035),L,x+Math.sin(ry)*.018,y-.02,z+Math.cos(ry)*.018,g).rotation.y=ry};
+  const door=(x,z,ry,w,h)=>{plate(w+.1,h+.08,x,Y,z,ry,L,.006);plate(w+.04,h+.03,x,Y,z,ry,MAT.tileT,.01);plate(w,h,x,Y,z,ry,HD,.014)};
+  // Room block with an overhanging roof lip and a low parapet ring.
+  const room=(x0,x1,z0,z1,h)=>{const w=x1-x0,d=z1-z0,x=(x0+x1)/2,z=(z0+z1)/2;mesh(box(w,h,d),A,x,Y+h/2,z,g);
+    mesh(box(w+.04,.035,d+.04),L,x,Y+h,z,g);mesh(box(w-.06,.02,d-.06),MAT.adobeL,x,Y+h+.025,z,g,false);
+    for(const [px,pz,pw,pd] of [[x,z0+.01,w+.04,.035],[x,z1-.01,w+.04,.035],[x0+.01,z,.035,d],[x1-.01,z,.035,d]])mesh(box(pw,.07,pd),L,px,Y+h+.05,pz,g)};
+  // Paved court with a stone kerb.
+  mesh(box(1.84,.02,1.84),MAT.pave,0,Y+.01,0,g,false);
+  // Back range: taller central hall with a deep iwan doorway, lower rooms either side.
+  room(-.38,.38,-.92,-.4,1.02);room(-.92,-.38,-.92,-.4,.76);room(.38,.92,-.92,-.4,.8);
+  plate(.42,.74,0,Y,-.4,0,L,.006);plate(.36,.68,0,Y,-.4,0,MAT.tileT,.01);plate(.3,.62,0,Y,-.4,0,MAT.dark,.014);plate(.18,.38,0,Y,-.4,0,HD,.018);
+  mesh(box(.44,.05,.05),L,0,Y+.8,-.38,g);for(const x of [-.29,.29])win(x,Y+.54,-.4,0,.09,.22);
+  // Windcatcher (badgir) above the hall, slotted on every face.
+  mesh(box(.2,.34,.2),A,-.18,Y+1.02+.17,-.72,g);mesh(box(.24,.04,.24),L,-.18,Y+1.38,-.72,g);
+  for(let i=0;i<4;i++){const ry=i*Math.PI/2;for(const s of [-.05,0,.05]){const sl=mesh(box(.025,.18,.01),MAT.dark,-.18+Math.sin(ry)*.1+Math.cos(ry)*s,Y+1.22,-.72+Math.cos(ry)*.1-Math.sin(ry)*s,g,false);sl.rotation.y=ry}}
+  // West wing with an arcaded porch facing the court.
+  room(-.92,-.52,-.4,.32,.7);win(-.72,Y+.24,.32,0,.12,.26);
+  for(const z of [-.22,.12])plate(.15,.36,-.52,Y,z,Math.PI/2,MAT.dark,.006);plate(.12,.3,-.52,Y,-.22,Math.PI/2,HD,.01);win(-.52,Y+.2,.12,Math.PI/2,.08,.16);
+  const arcade=geo('hArcade',()=>{const len=.72,h=.5,s=new T3.Shape();s.moveTo(-len/2,0);s.lineTo(len/2,0);s.lineTo(len/2,h);s.lineTo(-len/2,h);s.closePath();
+    for(let i=0;i<3;i++){const cx=-len/2+len*(i+.5)/3,w=.17,ah=.4,sp=ah-w*.62,p=new T3.Path();p.moveTo(cx-w/2,.0);p.lineTo(cx+w/2,0);p.lineTo(cx+w/2,sp);p.quadraticCurveTo(cx+w/2,sp+w*.42,cx,ah);p.quadraticCurveTo(cx-w/2,sp+w*.42,cx-w/2,sp);p.closePath();s.holes.push(p)}
+    return new T3.ExtrudeGeometry(s,{depth:.05,bevelEnabled:false,curveSegments:8})});
+  mesh(arcade,A,-.39,Y,-.04,g).rotation.y=Math.PI/2;mesh(box(.2,.04,.76),L,-.42,Y+.52,-.04,g);mesh(box(.16,.02,.72),MAT.adobeL,-.44,Y+.545,-.04,g,false);
+  mesh(box(.12,.012,.6),MAT.carpet,-.45,Y+.026,-.04,g,false);
+  // East wing: door and window onto the court, window to the front.
+  room(.56,.92,-.4,.14,.7);door(.56,-.26,-Math.PI/2,.13,.32);win(.56,Y+.24,.02,-Math.PI/2,.1,.22);win(.74,Y+.24,.14,0,.12,.26);
+  // Courtyard: octagonal turquoise pool with a fountain, potted plants by the doors.
+  const pool=mesh(cylg(.25,.26,.07,8),MAT.tileT,.06,Y+.035,.1,g);pool.rotation.y=Math.PI/8;
+  const wat=mesh(cylg(.21,.21,.02,8),MAT.water,.06,Y+.062,.1,g,false);wat.rotation.y=Math.PI/8;
+  mesh(cylg(.035,.045,.1,8),L,.06,Y+.1,.1,g);mesh(sph(.035,8,6),MAT.water,.06,Y+.16,.1,g,false);
+  for(const [x,z] of [[-.3,-.33],[.3,-.33],[.46,-.08]]){mesh(cylg(.04,.03,.07,8),MAT.clay,x,Y+.035,z,g);mesh(sph(.05,8,6),MAT.leaf,x,Y+.1,z,g)}
+  // Front garden: soil beds with clipped hedges and flowers either side of the path.
+  for(const [x0,x1,z0,z1] of [[-.9,-.12,.42,.84],[.28,.9,.42,.84]]){const w=x1-x0,d=z1-z0,x=(x0+x1)/2,z=(z0+z1)/2;
+    mesh(box(w,.05,d),L,x,Y+.025,z,g);mesh(box(w-.05,.02,d-.05),MAT.dirt,x,Y+.055,z,g,false);
+    mesh(box(w-.08,.09,.07),MAT.leaf,x,Y+.1,z0+.07,g);mesh(box(.07,.09,d-.16),MAT.leaf,x0+.07,Y+.1,z,g);mesh(box(.07,.09,d-.16),MAT.leaf,x1-.07,Y+.1,z,g);
+    for(let i=0;i<5;i++)mesh(sph(.025,6,4),i%2?MAT.pom:MAT.adobeL,x0+.16+i*(w-.32)/4,Y+.08,z+.05,g,false)}
+  // Low garden wall with a gate on the front edge.
+  for(const [x0,x1] of [[-.95,-.12],[.28,.95]]){const w=x1-x0;mesh(box(w,.15,.06),L,(x0+x1)/2,Y+.075,.91,g);mesh(box(w+.02,.025,.08),MAT.sand,(x0+x1)/2,Y+.16,.91,g)}
+  for(const x of [-.12,.28]){mesh(box(.08,.26,.08),L,x,Y+.13,.91,g);mesh(box(.1,.03,.1),MAT.sand,x,Y+.275,.91,g)}
+  mesh(box(.4,.012,.62),MAT.stoneL,.08,Y+.026,.6,g,false);
+  // Autumn trees spill over the corners like a walled garden.
+  const leafO=MAT.autumnO,leafY=MAT.autumnY,leafR=MAT.autumnR;
+  for(const [x,z,s] of [[-.68,.66,1],[.72,.64,.9]]){mesh(cylg(.018*s+.008,.028*s+.01,.4*s,6),MAT.dwood,x,Y+.2*s,z,g);
+    for(const [dx,dy,dz,r,m] of [[0,.5,0,.14,leafO],[.11,.44,.06,.1,leafY],[-.11,.42,-.04,.11,leafR],[.04,.62,-.05,.09,leafY],[-.07,.5,.1,.09,leafO],[.08,.53,-.1,.09,leafR],[-.04,.36,.08,.08,leafY],[.12,.56,.06,.07,leafO],[-.12,.58,-.02,.08,leafY]]){const c=mesh(sph(r*s,9,7),m,x+dx*s,Y+dy*s,z+dz*s,g);c.scale.y=.85}}
+  flagOn(g,.3,Y+1.07,-.78,team,U.flags)},
 store(g,T,team,U){
   // Compact Persian merchant storehouse: brick barrel vaults and a cargo court.
   // Reference: Encyclopaedia Iranica, BAZAR i. General (vaulted brick commercial storage).
@@ -1529,7 +1559,7 @@ function bakeGroup(g,key){g.updateMatrixWorld(true);const inv=new T3.Matrix4().c
       const P=new Float32Array(n*3),N=new Float32Array(n*3),UV=new Float32Array(n*2);let off=0;for(const gg of geos){const c=gg.attributes.position.count;P.set(gg.attributes.position.array,off*3);if(gg.attributes.normal)N.set(gg.attributes.normal.array,off*3);if(gg.attributes.uv)UV.set(gg.attributes.uv.array,off*2);off+=c}
       const r=new T3.BufferGeometry();r.setAttribute('position',new T3.BufferAttribute(P,3));r.setAttribute('normal',new T3.BufferAttribute(N,3));r.setAttribute('uv',new T3.BufferAttribute(UV,2));r.computeBoundingSphere();out.push({m,geo:r,shadow})}BAKED[key]=out}
   for(const o of list)o.parent.remove(o);for(const b of BAKED[key]){const mm=new T3.Mesh(b.geo,b.m);mm.castShadow=b.shadow;mm.receiveShadow=true;g.add(mm)}}
-function bldModel(type,team,lvl){const g=new T3.Group();const U={flags:[],glows:[],fire:null};BUILD[type](g,TEAMC[team],team,U);if((lvl||1)>=2&&UPG[type]){g.children.filter(c=>c.userData.fl).forEach(c=>g.remove(c));UPG[type](g,TEAMC[team],team,U)}if(BAKE_T.has(type))bakeGroup(g,type+team+'_'+(lvl||1));return{root:g,U}}
+function bldModel(type,team,lvl){const g=new T3.Group();const U={flags:[],glows:[],fire:null};BUILD[type](g,TEAMC[team],team,U);if((lvl||1)>=2&&UPG[type]){g.children.filter(c=>c.userData.fl).forEach(c=>g.remove(c));UPG[type](g,TEAMC[team],team,U)}if(BAKE_T.has(type))bakeGroup(g,type+team+'_'+(lvl||1)+(g.userData.variant||''));return{root:g,U}}
 function goldRockTex(){if(TX.goldRock)return;const S=256;const c=cvs(S,S),x=c.getContext('2d'),e=cvs(S,S),ex=e.getContext('2d');const im=x.createImageData(S,S);
   for(let j=0;j<S;j++)for(let i=0;i<S;i++){const n=fbmP(i/32,j/32,8,4),m=fbmP(i/8,j/8,32,2);const g=.55+n*.5;const k=(j*S+i)*4;im.data[k]=118*g+m*20;im.data[k+1]=98*g+m*16;im.data[k+2]=78*g+m*10;im.data[k+3]=255}x.putImageData(im,0,0);
   ex.fillStyle='#000';ex.fillRect(0,0,S,S);const R=mulberry32(55);
@@ -1727,7 +1757,7 @@ function resetScatterTrees(){for(const im of scatIM){im.instanceMatrix.array.set
 const objs=new Map();const fxObjs=new Map();const projObjs=[];const ringPool=[];let ringUsed=0;
 const contactGeo=new T3.PlaneGeometry(1,1).rotateX(-Math.PI/2);
 let contactMat=null;
-function clearWorld3D(){for(const [,o] of objs){scene.remove(o.root);if(o.contact)scene.remove(o.contact)}objs.clear();for(const [,o] of fxObjs)scene.remove(o);fxObjs.clear();if(scatIM.length)resetScatterTrees()}
+function clearWorld3D(){if(ghost){scene.remove(ghost);ghost=null;ghostType=null}for(const [,o] of objs){scene.remove(o.root);if(o.contact)scene.remove(o.contact)}objs.clear();for(const [,o] of fxObjs)scene.remove(o);fxObjs.clear();if(scatIM.length)resetScatterTrees()}
 function bldBase(e){const x0=e.tx,z0=e.ty;let s=0,mx=-99;for(const p of [[0,0],[e.w,0],[0,e.h],[e.w,e.h],[e.w/2,e.h/2]]){const h=heightAt(x0+p[0],z0+p[1]);s+=h;mx=Math.max(mx,h)}return Math.max(s/5,mx-.25)}
 function makeObj(e){let o;
   if(e.kind==='unit'){const R=unitModel(e.type,e.team);R.root.traverse(m=>{if(m.isMesh)m.castShadow=true});
@@ -2646,8 +2676,8 @@ const frameStyle=document.createElement('style');frameStyle.textContent='.ariel-
 
 // Early settlement uses timber and hide structures, before monumental architecture.
 const settledHouse=BUILD.house,settledTower=BUILD.tower,settledWall=BUILD.wall;
-BUILD.house=(g,...a)=>{if(currentLevel().id!==1)return settledHouse(g,...a);cb(g,1.65,.7,1.65,0x9b8159,0,.35,0);const roof=cm(g,new T3.ConeGeometry(1.4,.9,4),0x6e6442,0,1.12,0);roof.rotation.y=Math.PI/4;cb(g,.5,.65,.04,0x30271c,0,.33,.84);};
-BUILD.tower=(g,...a)=>{if(currentLevel().id!==1)return settledTower(g,...a);
+BUILD.house=(g,...a)=>{if(currentLevel().id!==1)return settledHouse(g,...a);g.userData.variant='mountain';cb(g,1.65,.7,1.65,0x9b8159,0,.35,0);const roof=cm(g,new T3.ConeGeometry(1.4,.9,4),0x6e6442,0,1.12,0);roof.rotation.y=Math.PI/4;cb(g,.5,.65,.04,0x30271c,0,.33,.84);};
+BUILD.tower=(g,...a)=>{if(currentLevel().id!==1)return settledTower(g,...a);g.userData.variant='mountain';
   // Compact cylindrical mountain watchtower inspired by Iranian adobe and rubble-stone examples.
   const towerAlbedo=new T3.TextureLoader().load(TOWER_TEXTURE);towerAlbedo.colorSpace=T3.SRGBColorSpace;towerAlbedo.wrapS=towerAlbedo.wrapT=T3.RepeatWrapping;towerAlbedo.anisotropy=8;const masonry=patch(new T3.MeshStandardMaterial({color:0xd3bfa3,map:towerAlbedo,bumpMap:towerAlbedo,bumpScale:.055,roughness:1}));
   const rubble=patch(new T3.MeshStandardMaterial({color:0x68604e,map:TX.rock,roughness:1}));
