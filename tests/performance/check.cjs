@@ -4,7 +4,7 @@ const {desktopFailures}=require('./validate.cjs');
 const {isComplete}=require('../emulation/report.cjs');
 const root=path.resolve(__dirname,'../..');
 const hash=()=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'index.html'))).digest('hex');
-const quickScripts=['build-campaign.cjs','tests/performance/diagnostic-regression.cjs','tests/performance/acceptance-timing-test.cjs','tests/performance/routine-test.cjs','tests/emulation/report-test.cjs','tests/emulation/scenario-test.cjs','tests/emulation/runner-test.cjs','tests/emulation/host-monitor-test.cjs'];
+const quickScripts=['build-campaign.cjs','tests/performance/diagnostic-regression.cjs','tests/performance/acceptance-timing-test.cjs','tests/performance/audio-lifecycle-test.cjs','tests/performance/routine-test.cjs','tests/emulation/report-test.cjs','tests/emulation/scenario-test.cjs','tests/emulation/runner-test.cjs','tests/emulation/host-monitor-test.cjs'];
 function plan(profile,platform,device){
   if(['desktop','stress','campaign'].includes(profile))return [{name:profile,script:'tests/performance/run-review.cjs',env:profile==='stress'?{PERF_STRESS:'1'}:profile==='campaign'?{PERF_CAMPAIGN:'1'}:{}},...(profile==='desktop'?[{name:'acceptance',script:'tests/performance/run-review.cjs',env:{PERF_ACCEPTANCE:'1'}}]:[])];
   if(profile==='mobile'&&['android','ios'].includes(platform)&&device)return Array.from({length:3},(_,i)=>({name:platform+'-'+(i+1),script:'tests/emulation/run.cjs',platform,device}));

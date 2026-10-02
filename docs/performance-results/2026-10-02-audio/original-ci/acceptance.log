@@ -1,0 +1,6 @@
+Error: Error: rapid hide/show preserves pending audio resume
+    at check (http://127.0.0.1:32989/:3050:41)
+    at until (http://127.0.0.1:32989/:3051:161)
+    at async window.__optimizationChecks (http://127.0.0.1:32989/:3087:3)
+    at evaluate (/home/runner/work/Kaveh/Kaveh/tests/performance/run-review.cjs:54:36)
+    at async /home/runner/work/Kaveh/Kaveh/tests/performance/run-review.cjs:69:64

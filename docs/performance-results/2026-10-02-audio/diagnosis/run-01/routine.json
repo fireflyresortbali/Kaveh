@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "valid": false,
+  "startedAt": "2026-10-02T06:20:27.262Z",
+  "sourceHash": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+  "profile": "desktop",
+  "node": "v24.19.0",
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "27.0.0",
+    "cpu": "Apple M4 Pro"
+  },
+  "commit": "463a9c8860a5144d323c0601e5e6f6cf52689171",
+  "physicalMobile": false,
+  "visualReview": "not applicable",
+  "trials": [
+    {
+      "name": "desktop",
+      "report": "desktop.json",
+      "valid": false,
+      "exitCode": 1,
+      "failures": [
+        "Child command failed (exit 1)",
+        "Missing, incomplete or failing report",
+        "Desktop source hash mismatch",
+        "Runtime errors or missing final snapshot",
+        "menu: invalid capture",
+        "menu: recurring idle rendering or simulation",
+        "paused: invalid capture",
+        "paused: recurring idle rendering or simulation",
+        "gameplay: invalid capture",
+        "Gameplay must render and simulate",
+        "Missing 10 effect cycles",
+        "Effects after warmup: geometries did not plateau",
+        "Effects after warmup: textures did not plateau",
+        "Effects after warmup: programs did not plateau",
+        "Wrong mission transition count",
+        "Invalid mission transitions",
+        "Mission 1 after first pair: geometries did not plateau",
+        "Mission 1 after first pair: textures did not plateau",
+        "Mission 1 after first pair: programs did not plateau",
+        "Mission 2 after first pair: geometries did not plateau",
+        "Mission 2 after first pair: textures did not plateau",
+        "Mission 2 after first pair: programs did not plateau"
+      ]
+    },
+    {
+      "name": "acceptance",
+      "report": "acceptance.json",
+      "valid": false,
+      "exitCode": 1,
+      "failures": [
+        "Child command failed (exit 1)",
+        "Missing, incomplete or failing report",
+        "Desktop source hash mismatch",
+        "Missing or failed 25-check acceptance suite"
+      ]
+    }
+  ],
+  "finishedAt": "2026-10-02T06:21:08.153Z"
+}

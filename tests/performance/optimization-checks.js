@@ -2,7 +2,7 @@
 window.__optimizationChecks=async function(){
   const checks=[],delay=ms=>new Promise(r=>setTimeout(r,ms));
   const check=(ok,label)=>{if(!ok)throw Error(label);checks.push(label)};
-  const until=async(predicate,label,timeoutMs=3000)=>{const deadline=performance.now()+timeoutMs;while(!predicate()&&performance.now()<deadline)await delay(25);check(predicate()&&performance.now()<=deadline,label)};
+  const until=async(predicate,label,timeoutMs=3000,diagnostic=null)=>{const deadline=performance.now()+timeoutMs;while(!predicate()&&performance.now()<deadline)await delay(25);const ready=predicate(),onTime=performance.now()<=deadline;if(!ready||!onTime){let detail='';try{if(diagnostic)detail=' '+JSON.stringify(diagnostic())}catch(error){detail=' diagnosticError='+String(error)}throw Error(label+detail)}check(true,label)};
   const count=()=>window.__perfReview.snapshot().completedMainRenders;
   const render=()=>{updateCamera(0);cullChunks();R3.render(scene,camera)};
   await window.__perfReview.start(1);await delay(200);
@@ -36,9 +36,15 @@ window.__optimizationChecks=async function(){
   window.dispatchEvent(new Event('pagehide'));n=count();time=now;await delay(100);
   window.dispatchEvent(new Event('pageshow'));
   await until(()=>count()>n&&now-time>0&&now-time<.5,'page resume restarts play without simulating the hidden interval',15000);
-  window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
-  window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
-  await until(()=>AU.ctx.state==='running','rapid hide/show preserves pending audio resume');
+  const rapidResumeAt=performance.now(),audioOps=[],ctx=AU.ctx,audioMethodDescriptors={suspend:Object.getOwnPropertyDescriptor(ctx,'suspend'),resume:Object.getOwnPropertyDescriptor(ctx,'resume')};let rapidAudioLifecycle=null;
+  const observeAudio=(method)=>{const original=ctx[method].bind(ctx);ctx[method]=function(...args){const op={method,calledMs:performance.now()-rapidResumeAt,stateAtCall:ctx.state};audioOps.push(op);let result;try{result=original(...args)}catch(error){op.error=String(error);throw error}Promise.resolve(result).then(()=>{op.settledMs=performance.now()-rapidResumeAt;op.stateAtSettle=ctx.state},error=>{op.settledMs=performance.now()-rapidResumeAt;op.error=String(error)});return result}};
+  try{
+    observeAudio('suspend');observeAudio('resume');
+    window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
+    window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
+    await until(()=>ctx.state==='running'&&AU.resumeAfterHidden===false,'rapid hide/show preserves pending audio resume',3000,()=>({elapsedMs:Math.round(performance.now()-rapidResumeAt),state:ctx.state,resumeAfterHidden:AU.resumeAfterHidden,appInactive,pageAway,activityEpoch,timerActive:!!AU.timer,ambientTimerActive:!!AU.ambientTimer,audioOps}));
+    rapidAudioLifecycle={elapsedMs:Math.round(performance.now()-rapidResumeAt),state:ctx.state,resumeAfterHidden:AU.resumeAfterHidden,activityEpoch,audioOps};
+  }finally{for(const method of ['suspend','resume']){if(audioMethodDescriptors[method])Object.defineProperty(ctx,method,audioMethodDescriptors[method]);else delete ctx[method]}}
   // Scheduler recovers from a stale timestamp without replaying old music.
   const step=AU.step;AU.nextT=AU.ctx.currentTime-3600;auTick();
   check(AU.step-step<=4&&AU.nextT>AU.ctx.currentTime,'audio scheduler cannot create a catch-up burst');
@@ -72,5 +78,5 @@ window.__optimizationChecks=async function(){
   }
   for(const renderer of ['story','portrait'])for(const key of ['geometries','textures','programs'])check(flat(auxiliary.slice(1),renderer,key),renderer+' '+key+' plateau across 20 warmed cycles');
   check(!window.__perfReview.snapshot().errors.length,'no browser/runtime errors during acceptance tests');
-  return {passed:true,checks,effects,auxiliary,visibilityTest:'synthetic handler events; real mobile lifecycle still requires device testing'};
+  return {passed:true,checks,effects,auxiliary,rapidAudioLifecycle,visibilityTest:'synthetic handler events; real mobile lifecycle still requires device testing'};
 };
