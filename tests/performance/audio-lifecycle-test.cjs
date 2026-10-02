@@ -6,20 +6,35 @@ const end=html.indexOf("\ndocument.addEventListener('visibilitychange',refreshAp
 assert.ok(start>=0&&end>start,'Production refreshAppActivity source was not found');
 const lifecycle=html.slice(start,end);
 const acceptance=fs.readFileSync(path.join(__dirname,'optimization-checks.js'),'utf8');
-const rapidPredicate=acceptance.match(/await until\((\(\)=>ctx\.state==='running'&&AU\.resumeAfterHidden===false)/)?.[1];
-assert.ok(rapidPredicate,'Rapid audio check must wait for the current resume continuation');
-const isRapidAudioReady=(state,resumeAfterHidden)=>vm.runInNewContext(rapidPredicate,{ctx:{state},AU:{resumeAfterHidden}})();
-assert.equal(isRapidAudioReady('running',true),false,'Old state-only condition would pass while lifecycle work is pending');
-assert.equal(isRapidAudioReady('running',false),true,'The shipped acceptance predicate passes after the current resume completes');
-assert.equal(isRapidAudioReady('suspended',true),false,'A stalled or rejected resume stays a failure');
-const untilLine=acceptance.split('\n').find(line=>line.startsWith('  const until=async('));
-assert.ok(untilLine&&untilLine.includes('JSON.stringify(diagnostic())'),'Acceptance failure must serialize its diagnostic snapshot');
+const untilObservedLine=acceptance.split('\n').find(line=>line.startsWith('  const untilObserved=async('));
+const readCompletionLine=acceptance.split('\n').find(line=>line.startsWith('  const readRapidResumeCompletion='));
+const recordCompletionLine=acceptance.split('\n').find(line=>line.startsWith('  const recordResumeCompletion='));
+assert.ok(untilObservedLine&&untilObservedLine.includes('value.completedAt>deadline'),'Observed completion must retain the strict original deadline');
+assert.ok(untilObservedLine.includes('JSON.stringify(diagnostic({elapsedMs:'),'Acceptance failure must serialize its diagnostic snapshot');
+assert.ok(readCompletionLine&&readCompletionLine.includes('rapidResumeCompletion.epoch===activityEpoch')&&readCompletionLine.includes("ctx.state==='running'")&&readCompletionLine.includes('AU.resumeAfterHidden===false'),'Readiness must match current epoch and healthy audio state');
+assert.ok(recordCompletionLine&&recordCompletionLine.includes('op.callEpoch===activityEpoch')&&recordCompletionLine.includes('!AU.resumeAfterHidden'),'Only the current, completed resume may record readiness');
 class MockAudioContext {
   constructor(initialState,suspendDelay,resumeDelay){this.state=initialState;this.delays={suspend:suspendDelay,resume:resumeDelay};this.trace=[];this.tail=Promise.resolve();}
   operation(kind){const entry={kind,calledAt:Date.now(),stateAtCall:this.state};this.trace.push(entry);const op=this.tail.then(()=>new Promise(resolve=>setTimeout(()=>{this.state=kind==='suspend'?'suspended':'running';entry.resolvedAt=Date.now();entry.stateAtResolve=this.state;resolve();},this.delays[kind])));this.tail=op;return op;}
   suspend(){return this.operation('suspend');} resume(){return this.operation('resume');}
 }
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+async function verifyCompletionSource(){
+  const completionEnv={queueMicrotask,performance:{now:()=>100},activityEpoch:7,appInactive:false,AU:{resumeAfterHidden:false},ctx:{state:'running'},rapidResumeCompletion:null};
+  vm.runInNewContext(recordCompletionLine+';'+readCompletionLine+';globalThis.__record=recordResumeCompletion;globalThis.__read=readRapidResumeCompletion',completionEnv);
+  completionEnv.__record({method:'resume',callEpoch:6});await new Promise(resolve=>queueMicrotask(resolve));
+  assert.equal(completionEnv.__read(),null,'Stale epoch resume does not signal completion');
+  completionEnv.__record({method:'resume',callEpoch:7});await new Promise(resolve=>queueMicrotask(resolve));
+  assert.ok(completionEnv.__read(),'Current epoch completion is accepted only while context is running and resume flag is clear');
+  completionEnv.AU.resumeAfterHidden=true;assert.equal(completionEnv.__read(),null,'An incomplete final continuation stays failed');
+  const continuationEnv={queueMicrotask,performance:{now:()=>200},activityEpoch:9,appInactive:false,AU:{resumeAfterHidden:true},ctx:{state:'suspended'},rapidResumeCompletion:null};
+  vm.runInNewContext(recordCompletionLine+';globalThis.__record=recordResumeCompletion',continuationEnv);
+  const audioPromise=Promise.resolve(),op={method:'resume',callEpoch:9};
+  const observedResume=()=>{audioPromise.then(()=>continuationEnv.__record(op));return audioPromise;};
+  await (async()=>{await observedResume();continuationEnv.ctx.state='running';if(continuationEnv.activityEpoch===op.callEpoch)continuationEnv.AU.resumeAfterHidden=false})();
+  assert.equal(continuationEnv.rapidResumeCompletion?.completedAt,200,'Completion microtask runs after the awaited current-epoch production continuation');
+  assert.equal(continuationEnv.rapidResumeCompletion?.epoch,9,'Recorded completion is tagged with its epoch');
+}
 async function waitFor(predicate,label){const deadline=Date.now()+1000;while(!predicate()&&Date.now()<deadline)await delay(2);assert.ok(predicate(),label);}
 async function run({name,initial='running',suspendDelay=0,resumeDelay=0,yieldBetweenEvents=false,inFlightResume=false}){
   const ctx=new MockAudioContext(initial,suspendDelay,resumeDelay),doc={hidden:false},AU={ctx,timer:1,ambientTimer:1,resumeAfterHidden:initial==='suspended',suspending:Promise.resolve()};
@@ -47,11 +62,13 @@ async function run({name,initial='running',suspendDelay=0,resumeDelay=0,yieldBet
   assert.ok(ctx.trace.some(x=>x.kind==='suspend'),`${name}: suspend recorded`);assert.ok(ctx.trace.some(x=>x.kind==='resume'),`${name}: resume recorded`);assert.equal(ctx.trace.at(-1).kind,'resume',`${name}: final queued audio operation resumes`);
   return {name,trace:ctx.trace.map(({kind,stateAtCall,stateAtResolve})=>({kind,stateAtCall,stateAtResolve})),epoch:activityEpoch};
 }
-(async()=>{const results=[];for(const config of [
+(async()=>{await verifyCompletionSource();const results=[];for(const config of [
   {name:'synchronous burst, suspend slow',suspendDelay:12,resumeDelay:1},{name:'synchronous burst, resume slow',suspendDelay:1,resumeDelay:12},
   {name:'microtask-separated burst',suspendDelay:4,resumeDelay:4,yieldBetweenEvents:true},{name:'already suspended before rapid burst',initial:'suspended',suspendDelay:5,resumeDelay:5}
   ,{name:'hide arrives during an in-flight resume',suspendDelay:1,resumeDelay:20,inFlightResume:true}
 ])results.push(await run(config));
-  const diagnostic=vm.runInNewContext(untilLine+';until',{performance:{now:()=>Date.now()},delay});
-  await assert.rejects(diagnostic(()=>false,'stalled resume',10,()=>({elapsedMs:11,state:'suspended',resumeAfterHidden:true,audioOps:[{method:'resume',error:'rejected'}]})),/stalled resume .*"state":"suspended".*"method":"resume"/);
-  console.log(JSON.stringify({passed:true,predicateSourceVerified:true,diagnosticSourceVerified:true,cases:results},null,2));})().catch(error=>{console.error(error);process.exitCode=1;});
+  async function checkObservedCompletion(completionAt,callbackAt,shouldPass,label){let clock=0,observed=null;const wait=vm.runInNewContext(untilObservedLine+';untilObserved',{performance:{now:()=>clock},delay:async()=>{clock=callbackAt;if(completionAt!==null)observed={completedAt:completionAt,epoch:7};},check:(ok,message)=>assert.ok(ok,message)});const task=wait(()=>observed,label,0,3000,details=>({elapsedMs:details.elapsedMs,completionMs:details.completionMs,state:completionAt===null?'suspended':'running',audioOps:[{method:'resume',settledAt:completionAt}]}));if(shouldPass)await task;else await assert.rejects(task,new RegExp(label+' .*"method":"resume"'));}
+  await checkObservedCompletion(2752,5286,true,'resume completed before delayed poll');
+  await checkObservedCompletion(3001,5286,false,'resume completed after deadline');
+  await checkObservedCompletion(null,5286,false,'stalled or rejected resume');
+  console.log(JSON.stringify({passed:true,currentEpochVerified:true,completionDeadlineCases:['on-time completion with late poll','late completion rejected','stalled/rejected resume rejected'],cases:results},null,2));})().catch(error=>{console.error(error);process.exitCode=1;});

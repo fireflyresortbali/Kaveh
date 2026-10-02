@@ -3,6 +3,8 @@ window.__optimizationChecks=async function(){
   const checks=[],delay=ms=>new Promise(r=>setTimeout(r,ms));
   const check=(ok,label)=>{if(!ok)throw Error(label);checks.push(label)};
   const until=async(predicate,label,timeoutMs=3000,diagnostic=null)=>{const deadline=performance.now()+timeoutMs;while(!predicate()&&performance.now()<deadline)await delay(25);const ready=predicate(),onTime=performance.now()<=deadline;if(!ready||!onTime){let detail='';try{if(diagnostic)detail=' '+JSON.stringify(diagnostic())}catch(error){detail=' diagnosticError='+String(error)}throw Error(label+detail)}check(true,label)};
+  const untilObserved=async(read,label,started,timeoutMs=3000,diagnostic=null)=>{const deadline=started+timeoutMs;let value=read();while(!value&&performance.now()<deadline){await delay(25);value=read()}if(!value||!Number.isFinite(value.completedAt)||value.completedAt>deadline){let detail='';try{if(diagnostic)detail=' '+JSON.stringify(diagnostic({elapsedMs:Math.round(performance.now()-started),completionMs:value?Math.round(value.completedAt-started):null}))}catch(error){detail=' diagnosticError='+String(error)}throw Error(label+detail)}check(true,label);return value};
+  const readRapidResumeCompletion=()=>rapidResumeCompletion&&rapidResumeCompletion.epoch===activityEpoch&&ctx.state==='running'&&AU.resumeAfterHidden===false?rapidResumeCompletion:null;
   const count=()=>window.__perfReview.snapshot().completedMainRenders;
   const render=()=>{updateCamera(0);cullChunks();R3.render(scene,camera)};
   await window.__perfReview.start(1);await delay(200);
@@ -36,14 +38,15 @@ window.__optimizationChecks=async function(){
   window.dispatchEvent(new Event('pagehide'));n=count();time=now;await delay(100);
   window.dispatchEvent(new Event('pageshow'));
   await until(()=>count()>n&&now-time>0&&now-time<.5,'page resume restarts play without simulating the hidden interval',15000);
-  const rapidResumeAt=performance.now(),audioOps=[],ctx=AU.ctx,audioMethodDescriptors={suspend:Object.getOwnPropertyDescriptor(ctx,'suspend'),resume:Object.getOwnPropertyDescriptor(ctx,'resume')};let rapidAudioLifecycle=null;
-  const observeAudio=(method)=>{const original=ctx[method].bind(ctx);ctx[method]=function(...args){const op={method,calledMs:performance.now()-rapidResumeAt,stateAtCall:ctx.state};audioOps.push(op);let result;try{result=original(...args)}catch(error){op.error=String(error);throw error}Promise.resolve(result).then(()=>{op.settledMs=performance.now()-rapidResumeAt;op.stateAtSettle=ctx.state},error=>{op.settledMs=performance.now()-rapidResumeAt;op.error=String(error)});return result}};
+  const rapidResumeAt=performance.now(),audioOps=[],ctx=AU.ctx,audioMethodDescriptors={suspend:Object.getOwnPropertyDescriptor(ctx,'suspend'),resume:Object.getOwnPropertyDescriptor(ctx,'resume')};let rapidResumeCompletion=null,rapidAudioLifecycle=null;
+  const recordResumeCompletion=op=>queueMicrotask(()=>{if(op.method==='resume'&&op.callEpoch===activityEpoch&&!appInactive&&!AU.resumeAfterHidden&&ctx.state==='running')rapidResumeCompletion={completedAt:performance.now(),epoch:op.callEpoch}});
+  const observeAudio=(method)=>{const original=ctx[method].bind(ctx);ctx[method]=function(...args){const op={method,callEpoch:activityEpoch,calledMs:performance.now()-rapidResumeAt,stateAtCall:ctx.state};audioOps.push(op);let result;try{result=original(...args)}catch(error){op.error=String(error);throw error}Promise.resolve(result).then(()=>{op.settledMs=performance.now()-rapidResumeAt;op.stateAtSettle=ctx.state;recordResumeCompletion(op)},error=>{op.settledMs=performance.now()-rapidResumeAt;op.error=String(error)});return result}};
   try{
     observeAudio('suspend');observeAudio('resume');
     window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
     window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
-    await until(()=>ctx.state==='running'&&AU.resumeAfterHidden===false,'rapid hide/show preserves pending audio resume',3000,()=>({elapsedMs:Math.round(performance.now()-rapidResumeAt),state:ctx.state,resumeAfterHidden:AU.resumeAfterHidden,appInactive,pageAway,activityEpoch,timerActive:!!AU.timer,ambientTimerActive:!!AU.ambientTimer,audioOps}));
-    rapidAudioLifecycle={elapsedMs:Math.round(performance.now()-rapidResumeAt),state:ctx.state,resumeAfterHidden:AU.resumeAfterHidden,activityEpoch,audioOps};
+    const completion=await untilObserved(readRapidResumeCompletion,'rapid hide/show preserves pending audio resume',rapidResumeAt,3000,diagnostic=>({...diagnostic,state:ctx.state,resumeAfterHidden:AU.resumeAfterHidden,appInactive,pageAway,activityEpoch,timerActive:!!AU.timer,ambientTimerActive:!!AU.ambientTimer,rapidResumeCompletion,audioOps}));
+    rapidAudioLifecycle={elapsedMs:Math.round(performance.now()-rapidResumeAt),completionMs:Math.round(completion.completedAt-rapidResumeAt),state:ctx.state,resumeAfterHidden:AU.resumeAfterHidden,activityEpoch,audioOps};
   }finally{for(const method of ['suspend','resume']){if(audioMethodDescriptors[method])Object.defineProperty(ctx,method,audioMethodDescriptors[method]);else delete ctx[method]}}
   // Scheduler recovers from a stale timestamp without replaying old music.
   const step=AU.step;AU.nextT=AU.ctx.currentTime-3600;auTick();

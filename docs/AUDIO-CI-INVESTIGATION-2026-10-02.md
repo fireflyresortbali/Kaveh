@@ -56,3 +56,28 @@ original CI failure is resolved. Run the corrected candidate on Linux GitHub CI
 and inspect the audio timeline. Any new failure must remain visible and guide an
 evidence-supported fix; do not retry until green. Independent review precedes the
 checkpoint/share gate; merge and release remain separately unapproved.
+
+## Instrumented Linux result at a72ad0c
+
+[GitHub run 36977658696](https://github.com/fireflyresortbali/Kaveh/actions/runs/36977658696)
+passed quick and strict resource checks but retained an audio acceptance failure.
+Its new trace shows final resume settled at **2,752.1 ms**; context was running,
+`resumeAfterHidden` was false and app/schedulers were active. The polling assertion
+ran only at **5,286 ms**. Thus this run failed because the observer was late despite
+a successful resume inside the 3-second budget. The exact source of the host delay
+is unproven; do not equate CPU render submission with GPU time or phone performance.
+The uninstrumented older failure still lacks its own state/timing evidence.
+
+The correction uses a recorded completion time for the current lifecycle
+operation, preserving the actual 3-second deadline from the rapid-event start.
+The recorder runs in a microtask after the production resume continuation and
+accepts only the current epoch with a cleared pending flag and running context.
+The assertion still requires that healthy current state when it observes the
+record. Generic wait/deadline behavior for other checks is unchanged.
+
+Actual-helper regression tests replay 2,752 ms completion observed at 5,286 ms
+and require a pass; completion at 3,001 ms and missing/rejected completion fail.
+They also exercise the shipped completion recorder/read predicate, rejecting stale
+epochs and unhealthy states. This distinguishes completion from polling latency
+without allowing audio itself to exceed the budget. Final quick and desktop
+results are in the accompanying archive; corrected Linux CI remains the next gate. [Retained CI evidence](performance-results/2026-10-02-audio-ci/ci-a72ad0c/).

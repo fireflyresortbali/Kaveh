@@ -1,0 +1,5 @@
+Error: Error: rapid hide/show preserves pending audio resume {"elapsedMs":5286,"state":"running","resumeAfterHidden":false,"appInactive":false,"pageAway":false,"activityEpoch":8,"timerActive":true,"ambientTimerActive":true,"audioOps":[{"method":"suspend","calledMs":0.29999999998835847,"stateAtCall":"running","settledMs":0.5999999999767169,"stateAtSettle":"suspended"},{"method":"suspend","calledMs":0.40000000002328306,"stateAtCall":"suspended","settledMs":0.5999999999767169,"stateAtSettle":"suspended"},{"method":"resume","calledMs":0.5999999999767169,"stateAtCall":"suspended","settledMs":2752.0999999999767,"stateAtSettle":"running"}]}
+    at until (http://127.0.0.1:35403/:3051:388)
+    at async window.__optimizationChecks (http://127.0.0.1:35403/:3091:5)
+    at evaluate (/home/runner/work/Kaveh/Kaveh/tests/performance/run-review.cjs:54:36)
+    at async /home/runner/work/Kaveh/Kaveh/tests/performance/run-review.cjs:69:64
