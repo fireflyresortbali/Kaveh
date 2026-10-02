@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "valid": false,
+  "startedAt": "2026-10-02T07:34:31.238Z",
+  "sourceHash": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+  "profile": "desktop",
+  "node": "v24.21.0",
+  "host": {
+    "platform": "linux",
+    "arch": "x64",
+    "release": "6.17.0-1022-azure",
+    "cpu": "AMD EPYC 9V74 80-Core Processor"
+  },
+  "commit": "cd38b4238a398c4b2d85eae524242b9977a3b3cd",
+  "physicalMobile": false,
+  "visualReview": "not applicable",
+  "trials": [
+    {
+      "name": "desktop",
+      "report": "desktop.json",
+      "valid": true,
+      "exitCode": 0,
+      "failures": []
+    },
+    {
+      "name": "acceptance",
+      "report": "acceptance.json",
+      "valid": false,
+      "exitCode": 1,
+      "failures": [
+        "Child command failed (exit 1)",
+        "Missing, incomplete or failing report",
+        "Missing or failed 25-check acceptance suite"
+      ]
+    }
+  ],
+  "finishedAt": "2026-10-02T07:40:13.799Z"
+}

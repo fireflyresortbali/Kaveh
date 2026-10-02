@@ -14,7 +14,7 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
   // Replace stale output immediately; even an interrupted run is visibly incomplete.
   persist();
   let profile,server,chrome,ws;
-  const pending=new Map(); let seq=0;
+  const pending=new Map(); let seq=0,acceptanceResolve=null;
   try {
     const executable=process.env.PERF_CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
     if(!fs.existsSync(executable)) throw Error('Set PERF_CHROME to a Chromium executable.');
@@ -39,24 +39,53 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
     ws=new WebSocket(tab.webSocketDebuggerUrl);
     await new Promise((resolve,reject)=>{ws.onopen=resolve;ws.onerror=reject;});
     ws.onmessage=event=>{
-      const m=JSON.parse(event.data),p=pending.get(m.id);
+      const m=JSON.parse(event.data);
+      if(m.method==='Runtime.bindingCalled'&&m.params?.name==='codexPerfProgress'){
+        try{
+          const progress=JSON.parse(m.params.payload);
+          if(report.phase==='optimization-acceptance'){
+            report.acceptanceProgress??=[];
+            const {result,...summary}=progress;
+            if(progress.kind==='complete'&&result)report.acceptance=result;
+            report.acceptanceProgress.push({...summary,receivedAt:new Date().toISOString()});
+            report.acceptanceLastProgress=summary;persist();
+            if(progress.kind==='complete'||progress.kind==='failure')acceptanceResolve?.(progress);
+          }
+        }catch(error){report.acceptanceProgressError=String(error);persist()}
+        return;
+      }
+      const p=pending.get(m.id);
       if(p){pending.delete(m.id);clearTimeout(p.timer);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result);}
     };
-    function cdp(method,params={}) {
+    function cdp(method,params={},timeoutMs=180000) {
       return new Promise((resolve,reject)=>{
         const id=++seq;
-        const timer=setTimeout(()=>{pending.delete(id);reject(Error('CDP timeout: '+method));},180000);
+        const timer=setTimeout(()=>{pending.delete(id);reject(Error('CDP timeout: '+method));},timeoutMs);
         pending.set(id,{resolve,reject,timer});ws.send(JSON.stringify({id,method,params}));
       });
     }
-    async function evaluate(expression) {
-      const r=await cdp('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true,userGesture:true});
+    async function evaluate(expression,timeoutMs) {
+      const r=await cdp('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true,userGesture:true},timeoutMs);
       if(r.exceptionDetails) throw Error(r.exceptionDetails.exception?.description||r.exceptionDetails.text);
       return r.result.value;
     }
+    async function runAcceptance(){
+      report.phase='optimization-acceptance';report.acceptanceProgress=[];
+      const deadline=Date.now()+8*60*1000;
+      const completed=new Promise(resolve=>{acceptanceResolve=resolve});
+      await evaluate(`(()=>{window.__optimizationResult=null;window.__optimizationError=null;window.__optimizationChecks().then(result=>{window.__optimizationResult=result;window.codexPerfProgress(JSON.stringify({kind:'complete',result}))}).catch(error=>{window.__optimizationError=String(error.stack||error);window.codexPerfProgress(JSON.stringify({kind:'failure',error:window.__optimizationError}))});return true})()`);
+      let terminal=null;
+      while(!terminal&&Date.now()<deadline){const remaining=deadline-Date.now();terminal=await Promise.race([completed,delay(Math.min(500,Math.max(1,remaining))).then(()=>null)]);}
+      if(!terminal||Date.now()>deadline)throw Error('Acceptance exceeded its 8 minute overall budget; last progress: '+JSON.stringify(report.acceptanceLastProgress||null));
+      if(terminal.kind==='failure')throw Error(terminal.error||'Acceptance failed without an error message');
+      if(!terminal.result&&!report.acceptance)throw Error('Acceptance completed without a result payload; last progress: '+JSON.stringify(report.acceptanceLastProgress||null));
+      report.acceptance=terminal.result||report.acceptance;
+      report.valid=report.acceptance.passed===true&&report.acceptance.checks?.length===25;
+      if(!report.valid)throw Error('Acceptance did not return all 25 passing checks');
+    }
     report.phase='startup';
     report.browser=await cdp('Browser.getVersion');
-    await cdp('Page.enable'); await cdp('Runtime.enable');
+    await cdp('Page.enable'); await cdp('Runtime.enable'); await cdp('Runtime.addBinding',{name:'codexPerfProgress'});
     await cdp('Page.navigate',{url});
     for(let i=0;;i++) {
       if(await evaluate('!!window.__perfReview')) break;
@@ -66,8 +95,7 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
     report.environment=await evaluate('window.__perfReview.ready()');
     report.webgl=await evaluate(`(()=>{const c=document.querySelector('#view');const gl=c.getContext('webgl2')||c.getContext('webgl');const x=gl.getExtension('WEBGL_debug_renderer_info');return{version:gl.getParameter(gl.VERSION),renderer:x?gl.getParameter(x.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)}})()`);
     if(process.env.PERF_ACCEPTANCE==='1'){
-      report.phase='optimization-acceptance';report.acceptance=await evaluate('window.__optimizationChecks()');
-      report.valid=report.acceptance.passed===true;if(!report.valid)process.exitCode=1;report.phase='complete';console.log(JSON.stringify({output,valid:report.valid,checks:report.acceptance.checks.length}));
+      await runAcceptance();report.phase='complete';console.log(JSON.stringify({output,valid:report.valid,checks:report.acceptance?.checks?.length}));
     }else if(process.env.PERF_CAMPAIGN==='1'){
       report.phase='campaign-runtime';console.log('Running all 62 campaign memories and objective transitions.');
       await evaluate('window.__runCampaign();true');
@@ -102,8 +130,7 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
     const pairs=process.env.PERF_STRESS==='1'?21:3;
     report.transitions=await evaluate(`window.__perfReview.transitions(${JSON.stringify(Array.from({length:pairs},()=>[1,2]).flat())},300)`);
     if(process.env.PERF_STRESS==='1'){
-      report.phase='optimization-acceptance';
-      report.acceptance=await evaluate('window.__optimizationChecks()');
+      await runAcceptance();
       // Ignore the first pair while the second mission warms app-lifetime caches.
       for(const id of [1,2])for(const key of ['geometries','textures','programs']){
         const values=report.transitions.slice(2).filter(s=>s.id===id).map(s=>s.renderers.main[key]);

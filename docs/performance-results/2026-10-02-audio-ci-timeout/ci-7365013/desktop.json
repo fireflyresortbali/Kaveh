@@ -1,0 +1,1324 @@
+{
+  "kind": "desktop-headless-diagnostic",
+  "runAt": "2026-10-02T07:34:31.276Z",
+  "physicalMobile": false,
+  "seed": null,
+  "valid": true,
+  "phase": "complete",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/154.0.8037.57",
+    "revision": "@73c14f6228d7cd537c855007e8f88678969cc0eb",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "jsVersion": "15.4.80.11"
+  },
+  "environment": {
+    "source": {
+      "commit": "cd38b4238a398c4b2d85eae524242b9977a3b3cd",
+      "dirtyFiles": "",
+      "htmlSha256": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+      "htmlBytes": 8582934,
+      "toolingSha256": {
+        "server.cjs": "ce419fb1d016afa1822eb0c915915913a8b062906375192b12996926363945bc",
+        "harness.js": "4974cd36693c6f01867bfb8cb2a9ed45a4af2c95428932f6f58e525162f24f4a",
+        "run-review.cjs": "ae838ef956e61e6b561c504ce3c9922f2774da90f345b85a76a19ff139a00f00",
+        "optimization-checks.js": "468296933f9cdd9c31268dd13143e2b0ea5547794eeb8db3d6968ffbc576fc67",
+        "../campaign-runtime.js": "23159f34a5c3ac570e1fe8573f9c80bcf9a56bb272720822dd46c4f3ddfc185a"
+      }
+    },
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "mobileBranch": false,
+    "viewport": [
+      960,
+      553
+    ],
+    "devicePixelRatio": 1,
+    "errors": []
+  },
+  "webgl": {
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "menu": {
+    "label": "campaign-menu",
+    "requestedSeconds": 5,
+    "elapsedMs": 5000.5,
+    "before": {
+      "wallMs": 8949.700000000004,
+      "simulationSeconds": 0,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 34,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 0,
+      "geometryCache": 196,
+      "materialCache": 52,
+      "bakedCache": 6,
+      "portraitCache": 10,
+      "sceneChildren": 359,
+      "staticWorldObjects": 353,
+      "dpr": 1,
+      "adaptiveScale": 1,
+      "drawingBuffer": [
+        960,
+        553
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 1,
+          "textures": 1,
+          "programs": 1
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 128217907
+    },
+    "after": {
+      "wallMs": 13950.200000000004,
+      "simulationSeconds": 0,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 34,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 0,
+      "geometryCache": 196,
+      "materialCache": 52,
+      "bakedCache": 6,
+      "portraitCache": 10,
+      "sceneChildren": 359,
+      "staticWorldObjects": 353,
+      "dpr": 1,
+      "adaptiveScale": 1,
+      "drawingBuffer": [
+        960,
+        553
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 1,
+          "textures": 1,
+          "programs": 1
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 102780568
+    },
+    "visibilityChanges": 0,
+    "truncated": false,
+    "comparable": true,
+    "metrics": {},
+    "intervalsOver50ms": 0,
+    "intervalsOver100ms": 0,
+    "raw": {},
+    "errors": [],
+    "caveats": [
+      "Instrumented diagnostics; not a physical-mobile release benchmark.",
+      "RAF intervals are delivered callback cadence, not GPU duration or displayed frames.",
+      "CPU timings are inclusive and may overlap; do not sum nested timings.",
+      "Resource values are renderer counts, not bytes. Adaptive DPR remains enabled.",
+      "Gameplay randomness is not seeded; repeated runs are not deterministic."
+    ]
+  },
+  "gameplay": {
+    "label": "opening-gameplay",
+    "requestedSeconds": 10,
+    "elapsedMs": 15057.900000000009,
+    "before": {
+      "wallMs": 21175,
+      "simulationSeconds": 0,
+      "paused": false,
+      "memory": 1,
+      "completedMainRenders": 35,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 1,
+      "adaptiveScale": 1,
+      "drawingBuffer": [
+        960,
+        553
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 212,
+          "textures": 30,
+          "programs": 21
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 76384334
+    },
+    "after": {
+      "wallMs": 36232.90000000001,
+      "simulationSeconds": 0.25,
+      "paused": false,
+      "memory": 1,
+      "completedMainRenders": 40,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 216,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 80960790
+    },
+    "visibilityChanges": 0,
+    "truncated": false,
+    "comparable": true,
+    "metrics": {
+      "simulationMs": {
+        "n": 5,
+        "p50": 0.6000000000058208,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "mean": 1.079999999998836
+      },
+      "visualSyncMs": {
+        "n": 5,
+        "p50": 0.40000000000873115,
+        "p95": 0.9000000000087311,
+        "p99": 0.9000000000087311,
+        "max": 0.9000000000087311,
+        "mean": 0.5000000000058208
+      },
+      "effectsSyncMs": {
+        "n": 5,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0,
+        "mean": 0
+      },
+      "main.submitMs": {
+        "n": 5,
+        "p50": 7.899999999994179,
+        "p95": 58.90000000000873,
+        "p99": 58.90000000000873,
+        "max": 58.90000000000873,
+        "mean": 17.639999999999418
+      },
+      "main.calls": {
+        "n": 5,
+        "p50": 1169,
+        "p95": 1169,
+        "p99": 1169,
+        "max": 1169,
+        "mean": 948.6
+      },
+      "main.triangles": {
+        "n": 5,
+        "p50": 2334562,
+        "p95": 2334562,
+        "p99": 2334562,
+        "max": 2334562,
+        "mean": 1936710
+      },
+      "main.points": {
+        "n": 5,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0,
+        "mean": 0
+      },
+      "main.lines": {
+        "n": 5,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0,
+        "mean": 0
+      },
+      "overlayMs": {
+        "n": 5,
+        "p50": 0.09999999999126885,
+        "p95": 1.1000000000058208,
+        "p99": 1.1000000000058208,
+        "max": 1.1000000000058208,
+        "mean": 0.3799999999988358
+      },
+      "rafIntervalMs": {
+        "n": 4,
+        "p50": 2749.7999999999993,
+        "p95": 4266.5,
+        "p99": 4266.5,
+        "max": 4266.5,
+        "mean": 3104.05
+      },
+      "hudMs": {
+        "n": 1,
+        "p50": 0.6000000000058208,
+        "p95": 0.6000000000058208,
+        "p99": 0.6000000000058208,
+        "max": 0.6000000000058208,
+        "mean": 0.6000000000058208
+      },
+      "minimapMs": {
+        "n": 1,
+        "p50": 0.6999999999970896,
+        "p95": 0.6999999999970896,
+        "p99": 0.6999999999970896,
+        "max": 0.6999999999970896,
+        "mean": 0.6999999999970896
+      }
+    },
+    "intervalsOver50ms": 4,
+    "intervalsOver100ms": 4,
+    "raw": {
+      "simulationMs": [
+        0.6000000000058208,
+        0.5999999999912689,
+        0.19999999999708962,
+        2,
+        2
+      ],
+      "visualSyncMs": [
+        0.9000000000087311,
+        0.5,
+        0.40000000000873115,
+        0.3000000000029104,
+        0.40000000000873115
+      ],
+      "effectsSyncMs": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "main.submitMs": [
+        58.90000000000873,
+        7.399999999994179,
+        8.89999999999418,
+        5.100000000005821,
+        7.899999999994179
+      ],
+      "main.calls": [
+        1169,
+        618,
+        1169,
+        618,
+        1169
+      ],
+      "main.triangles": [
+        2334562,
+        1339932,
+        2334562,
+        1339932,
+        2334562
+      ],
+      "main.points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "main.lines": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "overlayMs": [
+        0.09999999999126885,
+        1.1000000000058208,
+        0.6999999999970896,
+        0,
+        0
+      ],
+      "rafIntervalMs": [
+        4266.5,
+        2966.600000000002,
+        2749.7999999999993,
+        2433.2999999999993
+      ],
+      "hudMs": [
+        0.6000000000058208
+      ],
+      "minimapMs": [
+        0.6999999999970896
+      ]
+    },
+    "errors": [],
+    "caveats": [
+      "Instrumented diagnostics; not a physical-mobile release benchmark.",
+      "RAF intervals are delivered callback cadence, not GPU duration or displayed frames.",
+      "CPU timings are inclusive and may overlap; do not sum nested timings.",
+      "Resource values are renderer counts, not bytes. Adaptive DPR remains enabled.",
+      "Gameplay randomness is not seeded; repeated runs are not deterministic."
+    ]
+  },
+  "paused": {
+    "label": "paused-mission",
+    "requestedSeconds": 5,
+    "elapsedMs": 5000.899999999994,
+    "before": {
+      "wallMs": 41334.90000000001,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 42,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 216,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 72497218
+    },
+    "after": {
+      "wallMs": 46335.8,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 42,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 216,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 72522426
+    },
+    "visibilityChanges": 0,
+    "truncated": false,
+    "comparable": true,
+    "metrics": {},
+    "intervalsOver50ms": 0,
+    "intervalsOver100ms": 0,
+    "raw": {},
+    "errors": [],
+    "caveats": [
+      "Instrumented diagnostics; not a physical-mobile release benchmark.",
+      "RAF intervals are delivered callback cadence, not GPU duration or displayed frames.",
+      "CPU timings are inclusive and may overlap; do not sum nested timings.",
+      "Resource values are renderer counts, not bytes. Adaptive DPR remains enabled.",
+      "Gameplay randomness is not seeded; repeated runs are not deterministic."
+    ]
+  },
+  "effectBaseline": {
+    "wallMs": 46337.5,
+    "simulationSeconds": 0.3,
+    "paused": true,
+    "memory": 1,
+    "completedMainRenders": 42,
+    "errors": [],
+    "entities": 832,
+    "units": 13,
+    "effects": 0,
+    "visualObjects": 45,
+    "geometryCache": 203,
+    "materialCache": 55,
+    "bakedCache": 6,
+    "portraitCache": 0,
+    "sceneChildren": 417,
+    "staticWorldObjects": 353,
+    "dpr": 0.7,
+    "adaptiveScale": 0.7,
+    "drawingBuffer": [
+      672,
+      387
+    ],
+    "renderers": {
+      "main": {
+        "geometries": 216,
+        "textures": 31,
+        "programs": 24
+      },
+      "story": {
+        "geometries": 0,
+        "textures": 0,
+        "programs": 0
+      },
+      "portrait": {
+        "geometries": 184,
+        "textures": 19,
+        "programs": 18
+      }
+    },
+    "jsHeapBytes": 72522426
+  },
+  "effects": [
+    {
+      "wallMs": 48834.3,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 44,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73517234
+    },
+    {
+      "wallMs": 53782.7,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 46,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 72820410
+    },
+    {
+      "wallMs": 58732.90000000001,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 48,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73110786
+    },
+    {
+      "wallMs": 63913.90000000001,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 50,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73388054
+    },
+    {
+      "wallMs": 68953.90000000001,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 52,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73641694
+    },
+    {
+      "wallMs": 73866.5,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 54,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73903714
+    },
+    {
+      "wallMs": 78754.6,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 56,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73193198
+    },
+    {
+      "wallMs": 83675.90000000001,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 58,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73461086
+    },
+    {
+      "wallMs": 88581.50000000001,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 60,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73706838
+    },
+    {
+      "wallMs": 93489.09999999999,
+      "simulationSeconds": 0.3,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 62,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 73963778
+    }
+  ],
+  "transitions": [
+    {
+      "id": 1,
+      "transitionAndSettleMs": 7683.600000000006,
+      "renderedFrames": 2,
+      "simulationAdvancedSeconds": 0.05,
+      "settleTimedOut": false,
+      "valid": true,
+      "wallMs": 101184.59999999999,
+      "simulationSeconds": 0.05,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 64,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 203,
+      "materialCache": 55,
+      "bakedCache": 6,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 217,
+          "textures": 31,
+          "programs": 24
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 82961680
+    },
+    {
+      "id": 2,
+      "transitionAndSettleMs": 6255,
+      "renderedFrames": 2,
+      "simulationAdvancedSeconds": 0.05,
+      "settleTimedOut": false,
+      "valid": true,
+      "wallMs": 107439.90000000001,
+      "simulationSeconds": 0.05,
+      "paused": true,
+      "memory": 2,
+      "completedMainRenders": 66,
+      "errors": [],
+      "entities": 791,
+      "units": 11,
+      "effects": 0,
+      "visualObjects": 48,
+      "geometryCache": 229,
+      "materialCache": 57,
+      "bakedCache": 7,
+      "portraitCache": 0,
+      "sceneChildren": 412,
+      "staticWorldObjects": 347,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 266,
+          "textures": 36,
+          "programs": 29
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 140280889
+    },
+    {
+      "id": 1,
+      "transitionAndSettleMs": 6391,
+      "renderedFrames": 2,
+      "simulationAdvancedSeconds": 0.05,
+      "settleTimedOut": false,
+      "valid": true,
+      "wallMs": 113831.40000000001,
+      "simulationSeconds": 0.05,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 68,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 229,
+      "materialCache": 57,
+      "bakedCache": 7,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 301,
+          "textures": 36,
+          "programs": 29
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 190987286
+    },
+    {
+      "id": 2,
+      "transitionAndSettleMs": 5368.100000000006,
+      "renderedFrames": 2,
+      "simulationAdvancedSeconds": 0.05,
+      "settleTimedOut": false,
+      "valid": true,
+      "wallMs": 119199.7,
+      "simulationSeconds": 0.05,
+      "paused": true,
+      "memory": 2,
+      "completedMainRenders": 70,
+      "errors": [],
+      "entities": 791,
+      "units": 11,
+      "effects": 0,
+      "visualObjects": 48,
+      "geometryCache": 229,
+      "materialCache": 57,
+      "bakedCache": 7,
+      "portraitCache": 0,
+      "sceneChildren": 412,
+      "staticWorldObjects": 347,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 266,
+          "textures": 36,
+          "programs": 29
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 225944230
+    },
+    {
+      "id": 1,
+      "transitionAndSettleMs": 6412.099999999977,
+      "renderedFrames": 2,
+      "simulationAdvancedSeconds": 0.05,
+      "settleTimedOut": false,
+      "valid": true,
+      "wallMs": 125612.59999999999,
+      "simulationSeconds": 0.05,
+      "paused": true,
+      "memory": 1,
+      "completedMainRenders": 72,
+      "errors": [],
+      "entities": 832,
+      "units": 13,
+      "effects": 0,
+      "visualObjects": 45,
+      "geometryCache": 229,
+      "materialCache": 57,
+      "bakedCache": 7,
+      "portraitCache": 0,
+      "sceneChildren": 417,
+      "staticWorldObjects": 353,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 301,
+          "textures": 36,
+          "programs": 29
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 100955922
+    },
+    {
+      "id": 2,
+      "transitionAndSettleMs": 5318.599999999977,
+      "renderedFrames": 2,
+      "simulationAdvancedSeconds": 0.05,
+      "settleTimedOut": false,
+      "valid": true,
+      "wallMs": 130933.09999999999,
+      "simulationSeconds": 0.05,
+      "paused": true,
+      "memory": 2,
+      "completedMainRenders": 74,
+      "errors": [],
+      "entities": 791,
+      "units": 11,
+      "effects": 0,
+      "visualObjects": 48,
+      "geometryCache": 229,
+      "materialCache": 57,
+      "bakedCache": 7,
+      "portraitCache": 0,
+      "sceneChildren": 412,
+      "staticWorldObjects": 347,
+      "dpr": 0.7,
+      "adaptiveScale": 0.7,
+      "drawingBuffer": [
+        672,
+        387
+      ],
+      "renderers": {
+        "main": {
+          "geometries": 266,
+          "textures": 36,
+          "programs": 29
+        },
+        "story": {
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        "portrait": {
+          "geometries": 184,
+          "textures": 19,
+          "programs": 18
+        }
+      },
+      "jsHeapBytes": 154471548
+    }
+  ],
+  "final": {
+    "wallMs": 133133.2,
+    "simulationSeconds": 0.05,
+    "paused": true,
+    "memory": 2,
+    "completedMainRenders": 75,
+    "errors": [],
+    "entities": 791,
+    "units": 11,
+    "effects": 0,
+    "visualObjects": 48,
+    "geometryCache": 229,
+    "materialCache": 57,
+    "bakedCache": 7,
+    "portraitCache": 0,
+    "sceneChildren": 412,
+    "staticWorldObjects": 347,
+    "dpr": 0.7,
+    "adaptiveScale": 0.7,
+    "drawingBuffer": [
+      672,
+      387
+    ],
+    "renderers": {
+      "main": {
+        "geometries": 266,
+        "textures": 36,
+        "programs": 29
+      },
+      "story": {
+        "geometries": 0,
+        "textures": 0,
+        "programs": 0
+      },
+      "portrait": {
+        "geometries": 184,
+        "textures": 19,
+        "programs": 18
+      }
+    },
+    "jsHeapBytes": 155153551
+  },
+  "finishedAt": "2026-10-02T07:36:56.171Z"
+}

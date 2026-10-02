@@ -81,3 +81,48 @@ They also exercise the shipped completion recorder/read predicate, rejecting sta
 epochs and unhealthy states. This distinguishes completion from polling latency
 without allowing audio itself to exceed the budget. Final quick and desktop
 results are in the accompanying archive; corrected Linux CI remains the next gate. [Retained CI evidence](performance-results/2026-10-02-audio-ci/ci-a72ad0c/).
+
+## Linux acceptance command timeout at 7365013
+
+[Run 36979260638](https://github.com/fireflyresortbali/Kaveh/actions/runs/36979260638)
+passed quick and strict resource checks, then failed to return the monolithic
+acceptance evaluation before its 180-second CDP command deadline. No completed
+acceptance result was returned, so that run does not verify the audio correction.
+[Original reports](performance-results/2026-10-02-audio-ci-timeout/ci-7365013/)
+remain failed. The next tooling correction makes long acceptance work observable
+and asynchronous with cooperative cycle yields, preserving all assertions and
+cycle counts and retaining a bounded overall deadline. This is not permission to
+wait indefinitely or relabel an incomplete attempt as passing.
+
+The asynchronous implementation is shared by desktop acceptance and stress. It
+starts an 8-minute overall budget before launch, receives progress/results through
+a CDP runtime binding, and stores each milestone immediately. The final result
+arrives in the completion message, avoiding a second long evaluation. The ordinary
+180-second CDP command bound remains for launching; that time counts inside the
+8-minute suite budget. All 25 assertions and 21 effect/21 auxiliary cycles remain.
+Each expensive cycle yields once to keep the event loop observable. The audio
+completion milestone is saved before subsequent render-resource checks.
+
+Runner fixtures cover healthy completion, an explicit rejection, a stalled suite,
+and completion with no result. The original failure logs are retained. Final
+quick, desktop and stress reports are archived alongside the timeout evidence;
+production/native code and audio timing thresholds remain unchanged. Corrected
+Linux CI must still confirm the complete suite under its software renderer.
+
+Final local validation: quick plus `async-desktop-02` and `async-stress-02` pass.
+They retain the progress timeline and complete 25-check result. Incomplete result
+payloads throw before stress can recompute its final validity; a 24-check fault
+fixture explicitly verifies this. The `-01` profiles also passed before that final
+failure-path tightening and remain archived as superseded evidence. Native and
+campaign implementations were not changed or rerun in this diagnostic-only round.
+
+## Overall deadline boundary follow-up
+
+The independent asynchronous-runner review found that a terminal result could win
+the completion race just after the 8-minute overall deadline. The resumed,
+authorized correction rechecks the deadline after awaiting that race, before
+accepting any result. A valid 25-check payload received too late remains invalid
+with its progress preserved. The auxiliary regression fixture exercises the real
+runner with controlled clock advancement and demonstrates the original omission.
+Final quick/desktop/stress and independent recheck evidence accompany this change.
+The previous review finding is preserved rather than rewritten as an earlier pass.
