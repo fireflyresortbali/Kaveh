@@ -1,0 +1,39 @@
+warning: [options] bootstrap class path not set in conjunction with -source 8
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+Note: /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/emulation/native/BenchActivity.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+4 warnings
+ready
+capture campaign-menu
+capture mission-1-gameplay
+background-ready playing
+lifecycle playing
+capture paused-menu
+background-ready paused
+lifecycle paused
+effects
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+complete
+Saved /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/perf-results/followup-android-01/android-2

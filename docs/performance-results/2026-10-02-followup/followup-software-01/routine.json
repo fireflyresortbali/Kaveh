@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "valid": false,
+  "startedAt": "2026-10-02T05:42:21.184Z",
+  "sourceHash": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+  "profile": "desktop",
+  "node": "v24.19.0",
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "27.0.0",
+    "cpu": "Apple M4 Pro"
+  },
+  "commit": "07610df07232bac05a92b915ed3e6f802e85c5de",
+  "physicalMobile": false,
+  "visualReview": "not applicable",
+  "trials": [
+    {
+      "name": "desktop",
+      "report": "desktop.json",
+      "valid": true,
+      "exitCode": 0,
+      "failures": []
+    },
+    {
+      "name": "acceptance",
+      "report": "acceptance.json",
+      "valid": false,
+      "exitCode": 1,
+      "failures": [
+        "Child command failed (exit 1)",
+        "Missing, incomplete or failing report",
+        "Missing or failed 25-check acceptance suite"
+      ]
+    }
+  ],
+  "finishedAt": "2026-10-02T05:43:52.031Z"
+}

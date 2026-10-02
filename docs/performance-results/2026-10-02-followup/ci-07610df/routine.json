@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "valid": false,
+  "startedAt": "2026-10-01T21:44:23.180Z",
+  "sourceHash": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+  "profile": "desktop",
+  "node": "v24.21.0",
+  "host": {
+    "platform": "linux",
+    "arch": "x64",
+    "release": "6.17.0-1022-azure",
+    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C"
+  },
+  "commit": "d5328fec9305c86f002d7034a7223551fa469539",
+  "physicalMobile": false,
+  "visualReview": "not applicable",
+  "trials": [
+    {
+      "name": "desktop",
+      "report": "desktop.json",
+      "valid": false,
+      "exitCode": 0,
+      "failures": [
+        "Mission 1 after first pair: programs did not plateau"
+      ]
+    },
+    {
+      "name": "acceptance",
+      "report": "acceptance.json",
+      "valid": true,
+      "exitCode": 0,
+      "failures": []
+    }
+  ],
+  "finishedAt": "2026-10-01T21:49:19.976Z"
+}

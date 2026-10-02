@@ -1,0 +1,51 @@
+{
+  "sourceHtmlSha256": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+  "automatedMobileBatchesPassed": false,
+  "reviewer": "Codex visual inspection of all six planned current-source trial screenshots",
+  "trials": [
+    {
+      "path": "android-02/android-1",
+      "automatedPassed": true,
+      "visualAssessment": "Unobstructed mission 2 gameplay; automated pass.",
+      "eligibleCompleteTrial": true,
+      "failure": null
+    },
+    {
+      "path": "android-02/android-2",
+      "automatedPassed": false,
+      "visualAssessment": "Android home screen at timeout; not eligible. Last event was paused lifecycle, effect phase never completed.",
+      "eligibleCompleteTrial": false,
+      "failure": "Error: Benchmark completion timed out after 5 minutes\n    at Timeout._onTimeout (/Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/emulation/run.cjs:120:31)\n    at listOnTimeout (node:internal/timers:635:17)\n    at process.processTimers (node:internal/timers:571:7)"
+    },
+    {
+      "path": "android-02/android-3",
+      "automatedPassed": false,
+      "visualAssessment": "Unobstructed mission 1 screenshot, but timed out after playing background-ready; not eligible.",
+      "eligibleCompleteTrial": false,
+      "failure": "Error: Benchmark completion timed out after 5 minutes\n    at Timeout._onTimeout (/Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/emulation/run.cjs:120:31)\n    at listOnTimeout (node:internal/timers:635:17)\n    at process.processTimers (node:internal/timers:571:7)"
+    },
+    {
+      "path": "ios-01/ios-1",
+      "automatedPassed": false,
+      "visualAssessment": "iOS home screen after install command failure; no game measurement, not eligible.",
+      "eligibleCompleteTrial": false,
+      "failure": "Error: Command failed: xcrun simctl install C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4 /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-alg61-shells/ios/KavehBench.app\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1141:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)"
+    },
+    {
+      "path": "ios-01/ios-2",
+      "automatedPassed": true,
+      "visualAssessment": "Unobstructed mission 2 gameplay; automated pass.",
+      "eligibleCompleteTrial": true,
+      "failure": null
+    },
+    {
+      "path": "ios-01/ios-3",
+      "automatedPassed": true,
+      "visualAssessment": "Unobstructed mission 2 gameplay; automated pass.",
+      "eligibleCompleteTrial": true,
+      "failure": null
+    }
+  ],
+  "supersededAttempt": "android-01 was explicitly interrupted to correct independent review finding; routine remains invalid, partial logs retained. Not a member of corrected six-trial plan.",
+  "limits": "No performance comparison or mobile acceptance: incomplete native batches; failures and older iOS09 are not waived. xcresult bundles stay under local perf-results; text lifecycle logs archived."
+}

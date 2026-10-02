@@ -1,0 +1,2 @@
+--------- beginning of main
+10-02 04:42:12.316  3863  3863 I KavehBench: onResume

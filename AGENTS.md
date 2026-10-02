@@ -85,6 +85,9 @@ unrelated studio administration, canvas, or personal-accountability routines her
   the intended generated `index.html` changes. Do not hand-edit the campaign block
   between `// BEGIN ARIEL CAMPAIGN` and `// END ARIEL CAMPAIGN`. Other application
   code in `index.html` is authored source; the whole HTML file is not disposable.
+- Follow [the routine performance checks](docs/PERFORMANCE-TESTING.md): run `quick`
+  for every change, `desktop` before sharing a PR, and the deeper profiles required
+  by the changed systems. Keep failed evidence and record the profile/results in the PR.
 - Run relevant syntax/build checks and behavior tests (commands in the team guide).
   Gameplay changes also need browser runtime checks and human playtesting. A server
   starting, a build passing, or agents agreeing is not proof of gameplay correctness.

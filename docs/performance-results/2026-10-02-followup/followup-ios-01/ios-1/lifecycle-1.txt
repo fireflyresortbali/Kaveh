@@ -1,0 +1,41 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/emulation/native/BenchDriver.xcodeproj -scheme BenchDriver -destination "platform=iOS Simulator,id=C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4" -derivedDataPath /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-alg61-driver -parallel-testing-enabled NO -resultBundlePath /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/perf-results/followup-ios-01/ios-1/lifecycle-1.xcresult
+
+Writing result bundle at path:
+	/Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/perf-results/followup-ios-01/ios-1/lifecycle-1.xcresult
+
+2026-10-02 13:50:52.848998+0800 BenchDriver-Runner[686:12788199] [Default] Running tests...
+objc[686]: Class UIAccessibilityLoaderWebShared is implemented in both /private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.Eb0cq2/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x10800c398) and /private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.Eb0cq2/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x108100310). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Landscape Right
+Test Suite 'All tests' started at 2026-10-02 13:51:03.265.
+Test Suite 'BenchDriver.xctest' started at 2026-10-02 13:51:03.270.
+Test Suite 'BackgroundTests' started at 2026-10-02 13:51:03.270.
+Test Case '-[BenchDriver.BackgroundTests testCycle]' started.
+    t =     0.01s Start Test at 2026-10-02 13:51:03.279
+    t =     0.36s Set Up
+    t =     0.37s Open com.apple.Preferences
+    t =     0.37s     Launch com.apple.Preferences
+    t =     0.51s         Interface orientation changed to Portrait
+    t =     0.68s         Setting up automation session
+    t =     3.89s         Wait for com.apple.Preferences to idle
+    t =     7.06s Wait for io.algorstudio.kavehbench to become Running Background
+    t =    10.06s Open io.algorstudio.kavehbench
+    t =    10.07s     Activate io.algorstudio.kavehbench
+    t =    10.09s         Interface orientation changed to Landscape Right
+    t =    10.20s         Wait for io.algorstudio.kavehbench to idle
+    t =    10.30s Wait for io.algorstudio.kavehbench to become Running Foreground
+    t =    10.30s Tear Down
+Test Case '-[BenchDriver.BackgroundTests testCycle]' passed (10.572 seconds).
+Test Suite 'BackgroundTests' passed at 2026-10-02 13:51:13.851.
+	 Executed 1 test, with 0 failures (0 unexpected) in 10.572 (10.581) seconds
+Test Suite 'BenchDriver.xctest' passed at 2026-10-02 13:51:13.853.
+	 Executed 1 test, with 0 failures (0 unexpected) in 10.572 (10.584) seconds
+Test Suite 'All tests' passed at 2026-10-02 13:51:13.854.
+	 Executed 1 test, with 0 failures (0 unexpected) in 10.572 (10.588) seconds
+
+Test session results, code coverage, and logs:
+	/Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/perf-results/followup-ios-01/ios-1/lifecycle-1.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

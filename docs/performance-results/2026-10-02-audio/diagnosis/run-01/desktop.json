@@ -1,0 +1,13 @@
+{
+  "kind": "desktop-headless-diagnostic",
+  "runAt": "2026-10-02T06:20:27.292Z",
+  "physicalMobile": false,
+  "seed": null,
+  "valid": false,
+  "phase": "browser-launch",
+  "failure": {
+    "phase": "browser-launch",
+    "error": "Error: Chromium did not start. \n    at /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/performance/run-review.cjs:33:47"
+  },
+  "finishedAt": "2026-10-02T06:20:47.687Z"
+}

@@ -1,6 +1,7 @@
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const dir=__dirname,file=path.join(dir,'index.html');
-let html=fs.readFileSync(file,'utf8').replace(/\r\n/g,'\n');
+const original=fs.readFileSync(file,'utf8').replace(/\r\n/g,'\n');
+let html=original;
 const levels=JSON.parse(fs.readFileSync(path.join(dir,'campaign-data.json'),'utf8').replace(/^\uFEFF/,''));
 if(levels.length!==62||levels.some((l,i)=>l.id!==i+1))throw Error('Campaign must contain all 62 ordered memories.');
 const source=fs.readFileSync(path.join(dir,'campaign.js'),'utf8');
@@ -19,5 +20,7 @@ html=html.replace('The Shahnameh · Chapter I','The Shahnameh · 62 memories');
 html=html.replace('The eternal fire burns. Glory now flows from the Temple.','The Temple is ready. Train priests and keep them nearby to generate Glory.');
 const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 for(const script of scripts)new vm.Script(script);
-fs.writeFileSync(file,html);
-console.log('Built Ariel campaign: 62 memories, '+new Set(levels.map(l=>l.act)).size+' acts. All scripts parse.');
+if(process.argv.includes('--check')){
+  if(html!==original)throw Error('Generated campaign is stale. Run node build-campaign.cjs and include index.html.');
+}else fs.writeFileSync(file,html);
+console.log((process.argv.includes('--check')?'Verified':'Built')+' Ariel campaign: 62 memories, '+new Set(levels.map(l=>l.act)).size+' acts. All scripts parse.');

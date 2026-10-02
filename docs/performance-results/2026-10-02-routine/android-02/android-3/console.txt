@@ -1,0 +1,2 @@
+--------- beginning of main
+10-02 04:51:12.107  4161  4161 I KavehBench: WARNING: [.WebGL-0x781400f28a00]GL ERROR :GL_INVALID_ENUM : GetIntegerv: <- error from previous GL command

@@ -1,0 +1,136 @@
+Verified Ariel campaign: 62 memories, 9 acts. All scripts parse.
+Diagnostic regressions passed: mission readiness and runtime failures, campaign failures, and healthy/failed/stalled/missing async acceptance with retained progress.
+PASS: delayed resume, stalled progress, readiness after deadline, default audio deadline.
+{
+  "passed": true,
+  "currentEpochVerified": true,
+  "completionDeadlineCases": [
+    "on-time completion with late poll",
+    "late completion rejected",
+    "stalled/rejected resume rejected"
+  ],
+  "cases": [
+    {
+      "name": "synchronous burst, suspend slow",
+      "trace": [
+        {
+          "kind": "suspend",
+          "stateAtCall": "running",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "suspend",
+          "stateAtCall": "running",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "resume",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "running"
+        }
+      ],
+      "epoch": 4
+    },
+    {
+      "name": "synchronous burst, resume slow",
+      "trace": [
+        {
+          "kind": "suspend",
+          "stateAtCall": "running",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "suspend",
+          "stateAtCall": "running",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "resume",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "running"
+        }
+      ],
+      "epoch": 4
+    },
+    {
+      "name": "microtask-separated burst",
+      "trace": [
+        {
+          "kind": "suspend",
+          "stateAtCall": "running",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "suspend",
+          "stateAtCall": "running",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "resume",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "running"
+        }
+      ],
+      "epoch": 4
+    },
+    {
+      "name": "already suspended before rapid burst",
+      "trace": [
+        {
+          "kind": "suspend",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "suspend",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "resume",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "running"
+        }
+      ],
+      "epoch": 4
+    },
+    {
+      "name": "hide arrives during an in-flight resume",
+      "trace": [
+        {
+          "kind": "suspend",
+          "stateAtCall": "running",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "resume",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "running"
+        },
+        {
+          "kind": "suspend",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "suspended"
+        },
+        {
+          "kind": "resume",
+          "stateAtCall": "suspended",
+          "stateAtResolve": "running"
+        }
+      ],
+      "epoch": 4
+    }
+  ]
+}
+Running android-1; log: /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-routine-test-3K46qa/failed/android-1.log
+Running android-2; log: /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-routine-test-3K46qa/failed/android-2.log
+Running android-3; log: /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-routine-test-3K46qa/failed/android-3.log
+Running desktop; log: /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-routine-test-3K46qa/pass/desktop.log
+Running acceptance; log: /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-routine-test-3K46qa/pass/acceptance.log
+Running campaign; log: /var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-routine-test-3K46qa/missing/campaign.log
+Routine regressions passed: healthy run, 16 invalid evidence cases, failed acceptance/child, missing report, all planned trials retained and output collision.
+PASS: incremental logs, initial invalid status, missing completion, failure summary, event ordering, unknown event and output collision checks.
+PASS: healthy native captures/lifecycle; menu simulation, stalled capture simulation and paused/active resume faults.
+PASS: fatal/timeout/build/lifecycle failures retain diagnostics and original errors, clean owned app/server/mapping/lock.
+PASS: host heartbeat healthy/sleep/clock-jump/helper-failure, scoped helper cleanup and non-mac behavior.
+PASS: syntax, generated campaign freshness, diagnostic and emulator failure regressions.

@@ -31,3 +31,13 @@ The previous prototype's character and story art remains in `assets/`. New frame
 ## Narrative authority
 
 The supplied document controls this adaptation. Ariel, his immortality and the recurring Whisperer are original connecting fiction, not claims about Ferdowsi's text. Its 62-level division is an editorial game structure, not an official fixed division of the poem. To bridge the years between the last king and Ferdowsi, this prototype has Sorush carry mortal Ariel forward to Tus; this is a provisional interpretation pending the user's preference.
+
+## Performance work
+
+The [first optimization pass](docs/OPTIMIZATION-PASS-2026-10-02.md) records resource ownership, idle rendering changes, measurements, test commands and remaining mobile validation. Use `node build-campaign.cjs --check` to validate the embedded campaign without modifying it.
+
+For Android Studio and Xcode testing, see the [emulator benchmark guide](tests/emulation/README.md). It produces incremental logs and checks actual Android WebView/iOS WKWebView lifecycle behavior.
+
+The [2 October mobile emulation results](docs/EMULATION-BASELINE-2026-10-02.md) include Android/iOS measurements and links to raw logs.
+
+Routine development checks: [Performance testing](docs/PERFORMANCE-TESTING.md). Start with `node tests/performance/check.cjs quick`; PRs also run real-browser checks and retain logs.

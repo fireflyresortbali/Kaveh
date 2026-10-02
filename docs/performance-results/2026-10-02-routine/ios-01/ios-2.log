@@ -1,0 +1,33 @@
+/var/folders/g0/r64175x948392nsx0pyfl8g80000gn/T/kaveh-alg61-shells/ios/KavehBench.app: replacing existing signature
+ready
+capture campaign-menu
+capture mission-1-gameplay
+background-ready playing
+lifecycle playing
+capture paused-menu
+background-ready paused
+lifecycle paused
+effects
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+transition-pair
+complete
+Saved /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/perf-results/ios-01/ios-2
