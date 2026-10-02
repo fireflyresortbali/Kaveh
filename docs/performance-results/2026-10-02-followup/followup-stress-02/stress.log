@@ -1,0 +1,322 @@
+Game ready. Capturing paused menu and live play diagnostics.
+Checking repeated effects and landscape transitions.
+{
+  "output": "/Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/perf-results/followup-stress-02/stress.json",
+  "valid": true,
+  "errors": [],
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)",
+  "gameplayIntervals": {
+    "n": 600,
+    "p50": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "p99": 16.80000000000109,
+    "max": 16.80000000000109,
+    "mean": 16.666
+  },
+  "effects": [
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    }
+  ],
+  "transitions": [
+    {
+      "id": 1,
+      "geometries": 217,
+      "textures": 31,
+      "programs": 24
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 1,
+      "geometries": 301,
+      "textures": 36,
+      "programs": 29
+    },
+    {
+      "id": 2,
+      "geometries": 266,
+      "textures": 36,
+      "programs": 29
+    }
+  ]
+}

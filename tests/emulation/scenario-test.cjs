@@ -30,7 +30,7 @@ async function check(fault){
           metrics:playing?{'main.calls':{n:30},'main.submitMs':{n:30}}:{}};
       },
       start:async()=>{paused=false;return {};},pause:()=>{paused=true;},
-      effectCycles:async()=>Array.from({length:10},snap),transitions:async()=>[1,2].map(id=>({id,valid:true,...snap()}))}
+      effectCycles:async()=>Array.from({length:10},snap),transitions:async()=>[1,2].map(id=>({id,valid:true,renderedFrames:2,simulationAdvancedSeconds:0.1,settleTimedOut:false,...snap()}))}
   };
   await vm.runInNewContext(fs.readFileSync(__dirname+'/scenario.js','utf8'),context);
   assert.equal(isComplete(events),!fault,fault||'healthy');

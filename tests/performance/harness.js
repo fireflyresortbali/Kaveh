@@ -147,12 +147,22 @@ const perfReview = (() => {
       for(const id of ids) {
         const start=performance.now();
         await this.start(id);
-        const rendersBefore=completedMainRenders;
-        // Allow actual renderer uploads before taking resource counts.
-        await delay(settleMs); paused=true;
+        const rendersBefore=completedMainRenders,simulationBefore=now;
+        const deadline=performance.now()+15000;
+        // The production loop refreshes shadows every second frame. A timer alone
+        // can sample before its first shadow pass (especially with software WebGL).
+        // Wait for independent readiness, never for a desired resource count.
+        await delay(settleMs);
+        while(errors.length===0&&!document.hidden&&performance.now()<deadline&&
+          (completedMainRenders-rendersBefore<2||now<=simulationBefore))await delay(25);
         const renderedFrames=completedMainRenders-rendersBefore;
+        const simulationAdvancedSeconds=now-simulationBefore;
+        const settleTimedOut=performance.now()>=deadline;
+        const settled=renderedFrames>=2&&simulationAdvancedSeconds>0&&!settleTimedOut;
+        paused=true;
         samples.push({id,transitionAndSettleMs:performance.now()-start,renderedFrames,
-          valid:renderedFrames>0&&errors.length===0&&!document.hidden,...snapshot()});
+          simulationAdvancedSeconds,settleTimedOut,
+          valid:settled&&errors.length===0&&!document.hidden,...snapshot()});
       }
       return samples;
     },

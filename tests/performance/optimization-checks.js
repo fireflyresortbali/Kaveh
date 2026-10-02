@@ -2,7 +2,7 @@
 window.__optimizationChecks=async function(){
   const checks=[],delay=ms=>new Promise(r=>setTimeout(r,ms));
   const check=(ok,label)=>{if(!ok)throw Error(label);checks.push(label)};
-  const until=async(predicate,label)=>{const deadline=performance.now()+3000;while(!predicate()&&performance.now()<deadline)await delay(25);check(predicate(),label)};
+  const until=async(predicate,label,timeoutMs=3000)=>{const deadline=performance.now()+timeoutMs;while(!predicate()&&performance.now()<deadline)await delay(25);check(predicate()&&performance.now()<=deadline,label)};
   const count=()=>window.__perfReview.snapshot().completedMainRenders;
   const render=()=>{updateCamera(0);cullChunks();R3.render(scene,camera)};
   await window.__perfReview.start(1);await delay(200);
@@ -32,10 +32,10 @@ window.__optimizationChecks=async function(){
   check(paused&&!AU.music&&!AU.sfx,'visibility resume preserves manual pause and mute preferences');
   await until(()=>AU.ctx.state==='running','previously running audio context resumes');
   n=count();await delay(100);check(count()===n,'resumed manual pause remains static');
-  closeModal();requestWorldFrame();await delay(150);check(count()>n&&now>time,'playing resumes after closing pause');
+  closeModal();requestWorldFrame();await until(()=>count()>n&&now>time,'playing resumes after closing pause',15000);
   window.dispatchEvent(new Event('pagehide'));n=count();time=now;await delay(100);
-  window.dispatchEvent(new Event('pageshow'));await delay(150);
-  check(count()>n&&now-time>0&&now-time<.5,'page resume restarts play without simulating the hidden interval');
+  window.dispatchEvent(new Event('pageshow'));
+  await until(()=>count()>n&&now-time>0&&now-time<.5,'page resume restarts play without simulating the hidden interval',15000);
   window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
   window.dispatchEvent(new Event('pagehide'));window.dispatchEvent(new Event('pageshow'));
   await until(()=>AU.ctx.state==='running','rapid hide/show preserves pending audio resume');

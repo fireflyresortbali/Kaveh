@@ -17,7 +17,7 @@ function desktopFailures(r,count){
   };
   check(r?.effects?.length===10,'Missing 10 effect cycles');plateau((r?.effects||[]).slice(1),'Effects after warmup');
   check(r?.transitions?.length===count,'Wrong mission transition count');
-  check(Array.isArray(r?.transitions)&&r.transitions.every((s,i)=>s.valid===true&&s.id===i%2+1&&s.memory===s.id&&s.renderedFrames>0&&s.errors?.length===0),'Invalid mission transitions');
+  check(Array.isArray(r?.transitions)&&r.transitions.every((s,i)=>s.valid===true&&s.id===i%2+1&&s.memory===s.id&&s.renderedFrames>=2&&s.simulationAdvancedSeconds>0&&s.settleTimedOut===false&&s.errors?.length===0),'Invalid mission transitions');
   for(const id of [1,2])plateau((r?.transitions||[]).slice(2).filter(s=>s.id===id),'Mission '+id+' after first pair');
   return failures;
 }

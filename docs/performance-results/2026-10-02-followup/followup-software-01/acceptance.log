@@ -1,0 +1,5 @@
+Error: Error: playing resumes after closing pause
+    at check (http://127.0.0.1:56134/:3050:41)
+    at window.__optimizationChecks (http://127.0.0.1:56134/:3081:53)
+    at evaluate (/Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/performance/run-review.cjs:54:36)
+    at async /Users/alireza/.codex/worktrees/kaveh-alg-61-emulator-performance-logs/tests/performance/run-review.cjs:69:64

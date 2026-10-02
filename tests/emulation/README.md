@@ -17,7 +17,10 @@ triangles, renderer resource counts, loading time and JavaScript errors.
 The scenarios are: 3 seconds covered campaign menu, 2 seconds gameplay warmup,
 15 seconds mission 1, actual app background/resume while playing, 3 seconds pause,
 background/resume while paused, 10 rain creation/removal cycles, and 21 pairs of
-mission 1/2 loads. The first pair warms caches; the remaining 20 pairs must have
+mission 1/2 loads. Each load waits for at least two completed renders and positive simulation
+advancement, bounded to 15 seconds after start, so an initial zero-time frame or
+unexecuted shadow pass cannot be mistaken for readiness. Resource equality stays
+strict; readiness does not wait for desired resource counts. The first pair warms caches; the remaining 20 pairs must have
 stable geometry/texture/program counts per mission. This is a small regression
 suite, not a busy-battle benchmark or a full campaign playthrough.
 
@@ -105,3 +108,9 @@ qualification in ALG-55; emulator evidence belongs to ALG-61.
 
 Apple describes the differences between [simulated and physical devices](https://developer.apple.com/documentation/xcode/running-your-app-on-simulated-or-physical-devices).
 Android documents the host-dependent [emulator acceleration](https://developer.android.com/studio/run/emulator-acceleration).
+
+Native schema version 2 includes transition readiness evidence. `host-continuity.json`
+records a scoped idle-sleep helper and host heartbeat; a scheduling/clock gap above
+15 seconds invalidates the attempt. Keep the Mac lid open. Caffeinate prevents
+idle sleep only; it does not override lid closure or change system settings.
+Native command failures retain exit code, signal and killed status when available.

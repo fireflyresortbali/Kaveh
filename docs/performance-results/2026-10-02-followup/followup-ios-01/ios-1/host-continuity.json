@@ -1,0 +1,9 @@
+{
+  "idleSleepPrevention": "active",
+  "maxGapMs": 1039,
+  "gaps": [],
+  "thresholdMs": 15000,
+  "measurementStartedAt": "2026-10-02T05:50:05.609Z",
+  "measurementFinishedAt": "2026-10-02T05:52:06.237Z",
+  "stoppedAt": "2026-10-02T05:52:08.359Z"
+}

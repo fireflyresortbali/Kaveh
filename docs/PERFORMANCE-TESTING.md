@@ -21,7 +21,10 @@ not claim the missing profile passed.
 ## Commands
 
 Choose a **new output directory** for each invocation. Create the parent first.
-The runner refuses to overwrite earlier results. `perf-results/` is git-ignored.
+The runner refuses to overwrite earlier results. Native runs prevent idle sleep
+with a temporary `caffeinate -i` child on macOS and record `host-continuity.json`.
+Keep the lid open: closed-lid/forced sleep is not prevented. A host scheduling or
+clock gap above 15 seconds invalidates the attempt; it is not a game speed result. `perf-results/` is git-ignored.
 
 ```sh
 node tests/performance/check.cjs quick
@@ -71,7 +74,8 @@ missing, stale or incomplete evidence. Each measured invocation writes:
 
 Strict gates: zero runtime errors, visible/untruncated captures, advancing live
 simulation/rendering, **zero menu renders**, at most one paused redraw and no
-paused simulation, valid mission transitions and exactly stable warmed resource
+paused simulation, valid mission transitions (at least two actual renders and advancing simulation,
+with a 15-second readiness deadline) and exactly stable warmed resource
 counts. The desktop routine checks 10 effects (first warms), then 6 or 42 mission
 loads (first pair warms); stress also runs 25 acceptance checks. Mobile uses its
 existing strict native lifecycle and 20 warmed-pair checks. Failed assertions are
@@ -101,19 +105,17 @@ CI jobs running is distinct from branch protection requiring them.
 
 ## Current baseline and remaining work
 
-See [current routine validation](ROUTINE-VALIDATION-2026-10-02.md) for the integrated
-source: desktop/stress/campaign pass; both mobile batches remain incomplete with
-retained Android timeouts and an iOS install failure.
+See the [follow-up investigation and measurements](PERFORMANCE-FOLLOWUP-2026-10-02.md)
+for the sampling/host-continuity corrections and fresh trials. The original
+[routine validation](ROUTINE-VALIDATION-2026-10-02.md) and
+[emulator baseline](EMULATION-BASELINE-2026-10-02.md) retain earlier failures;
+those attempts remain failed. The targeted probe explains the zero-time CI
+shader sample; the older iOS09 report has a matching one-frame symptom but lacks
+shader identities. Resource limits have not been weakened.
 
-The [2026-10-02 emulator baseline](EMULATION-BASELINE-2026-10-02.md) has three clean
-Android passes and iOS **two passes plus one retained shader-count stability failure**
-(iOS09: one 27-program sample versus 28). Its cause is unconfirmed. Those logs use
-HTML hash `3cf2b7bbea002e58b559a5b04c859a5a286d2f3a488a3608bc4341f450b70651`
-before the newer courtyard/unlock integration; they are historical evidence, not
-validation of the current source. Keep iOS09 visible until a targeted investigation
-explains it and a fresh complete planned batch validates the fix. The routine
-wrapper does not waive it. Native app delivery, busy battles/draw-call reduction
-and physical-device release qualification remain separate work.
+Native app delivery, busy battles/draw-call reduction and physical-device release
+qualification remain separate work. These emulator logs establish correctness
+and resource stability for the measured scenarios, not a phone speed budget.
 
 Before sharing, record profile commands/results, environment/source hashes,
 independent review, visual review and human gameplay checklist in the PR template.

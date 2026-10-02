@@ -2,7 +2,7 @@ const fs=require('node:fs'),path=require('node:path');
 function createReport(dir,metadata){
   // A run must never overwrite or accidentally reuse an earlier successful result.
   fs.mkdirSync(dir,{recursive:false});
-  const report={schemaVersion:1,valid:false,startedAt:new Date().toISOString(),...metadata,events:[],limitations:[
+  const report={schemaVersion:2,valid:false,startedAt:new Date().toISOString(),...metadata,events:[],limitations:[
     'Emulators use Mac resources: not phone FPS, GPU timing, battery or thermal qualification.',
     'Instrumented, random gameplay with adaptive resolution; compare only matching scenarios and settings.',
     'Renderer resources are counts, not GPU bytes. Native app memory excludes separate web/GPU processes.',
@@ -63,7 +63,7 @@ function isComplete(events){
   const effects=of('effects');
   if(effects.length!==1||effects[0].length!==10||new Set(effects[0].map(d=>JSON.stringify(d.renderers?.main))).size!==1)return false;
   const pairs=of('transition-pair');
-  if(pairs.length!==21||!pairs.every((p,i)=>p.index===i&&p.warmup===(i===0)&&p.samples.length===2&&p.samples.every((s,j)=>s.id===j+1&&s.valid)))return false;
+  if(pairs.length!==21||!pairs.every((p,i)=>p.index===i&&p.warmup===(i===0)&&p.samples.length===2&&p.samples.every((s,j)=>s.id===j+1&&s.valid&&s.renderedFrames>=2&&s.simulationAdvancedSeconds>0&&s.settleTimedOut===false)))return false;
   return [1,2].every(id=>new Set(pairs.slice(1).flatMap(p=>p.samples).filter(s=>s.id===id).map(s=>JSON.stringify(s.renderers.main))).size===1);
 }
 module.exports={createReport,validateEvent,isComplete,validCapture};

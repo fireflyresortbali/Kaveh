@@ -1,0 +1,2 @@
+PID  PPID  %CPU    RSS      VSZ COMM
+  288 99744   3.4 172176 465169312 /Users/alireza/Library/Developer/CoreSimulator/Devices/C6F5AB02-132C-43B8-9C10-C1FD02F2DDB4/data/Containers/Bundle/Application/58BDA368-25F4-40DA-B3FB-8CE08E2B4239/KavehBench.app/KavehBench

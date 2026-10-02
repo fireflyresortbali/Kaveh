@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "valid": true,
+  "startedAt": "2026-10-02T05:45:48.204Z",
+  "sourceHash": "19d75ddb7cfbec373f59e271a99b9c6a4621c5bdddfe1b3e552a3bc681680880",
+  "profile": "mobile",
+  "node": "v24.19.0",
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "27.0.0",
+    "cpu": "Apple M4 Pro"
+  },
+  "commit": "07610df07232bac05a92b915ed3e6f802e85c5de",
+  "physicalMobile": false,
+  "visualReview": "pending — inspect every screen.png, including failures",
+  "trials": [
+    {
+      "name": "android-1",
+      "report": "android-1/report.json",
+      "valid": true,
+      "exitCode": 0,
+      "failures": []
+    },
+    {
+      "name": "android-2",
+      "report": "android-2/report.json",
+      "valid": true,
+      "exitCode": 0,
+      "failures": []
+    },
+    {
+      "name": "android-3",
+      "report": "android-3/report.json",
+      "valid": true,
+      "exitCode": 0,
+      "failures": []
+    }
+  ],
+  "finishedAt": "2026-10-02T05:49:49.491Z"
+}

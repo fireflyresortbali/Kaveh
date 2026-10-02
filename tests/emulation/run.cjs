@@ -4,6 +4,7 @@ const {promisify}=require('node:util'),execFile=promisify(cp.execFile);
 const {createServer}=require('../performance/server.cjs');
 const {build,bundle}=require('./build-shells.cjs');
 const {createReport,validateEvent}=require('./report.cjs');
+const {createHostMonitor}=require('./host-monitor.cjs');
 const sha=data=>crypto.createHash('sha256').update(data).digest('hex');
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const run=async(file,args,options={})=>(await execFile(file,args,{encoding:'utf8',timeout:60000,maxBuffer:8*1024*1024,...options})).stdout.trim();
@@ -12,7 +13,7 @@ async function main(){
   if(!['android','ios'].includes(platform)||!device||!output)throw Error('Usage: node tests/emulation/run.cjs android|ios DEVICE_ID NEW_OUTPUT_DIRECTORY');
   const dir=path.resolve(output);fs.mkdirSync(path.dirname(dir),{recursive:true});
   const log=createReport(dir,{platform,device,host:{platform:os.platform(),release:os.release(),arch:os.arch(),cpu:os.cpus()[0]?.model,totalMemoryBytes:os.totalmem(),loadAverage:os.loadavg(),node:process.version}});
-  let server,port,pid,installed=false,verifiedDevice=false,timer,sequence=0,finished=false,locked=false;
+  let hostMonitor,server,port,pid,installed=false,verifiedDevice=false,timer,sequence=0,finished=false,locked=false;
   const lock=path.join(os.tmpdir(),'kaveh-emulation-'+sha(platform+device).slice(0,16)+'.lock');
   const adb=(...args)=>run(process.env.ADB||'adb',['-s',device,...args]);
   const sim=(...args)=>run('xcrun',['simctl',...args]);
@@ -44,7 +45,13 @@ async function main(){
     });
   }
   function commandFailure(error,file){
-    fs.writeFileSync(path.join(dir,file),String(error.message)+'\nSTDOUT:\n'+String(error.stdout||'')+'\nSTDERR:\n'+String(error.stderr||''));
+    const parts=[];
+    for(let cause=error,depth=0;cause&&depth<4;cause=cause.cause,depth++){
+      parts.push((depth?'CAUSE: ':'')+String(cause.message),
+        'COMMAND STATUS: '+JSON.stringify({code:cause.code,signal:cause.signal,killed:cause.killed}),
+        'STDOUT:\n'+String(cause.stdout||''),'STDERR:\n'+String(cause.stderr||''));
+    }
+    fs.writeFileSync(path.join(dir,file),parts.join('\n')+'\n');
   }
   let cycle=0,actions=Promise.resolve();
   const actionAbort=new AbortController();
@@ -82,10 +89,11 @@ async function main(){
       log.report.runtime={...entry,xcode:await run('xcodebuild',['-version'])};
     }
     verifiedDevice=true;log.save();
+    hostMonitor=createHostMonitor({onGap:fail,onUpdate(state){fs.writeFileSync(path.join(dir,'host-continuity.json'),JSON.stringify(state,null,2)+'\n');}});
     if(platform==='ios')await run('xcodebuild',['build-for-testing',...driverArgs,'-quiet'],{timeout:120000});
     const shell=build(platform,path.join(os.tmpdir(),'kaveh-alg61-shells',platform));
     log.report.shell={...shell,executableSha256:sha(fs.readFileSync(platform==='ios'?path.join(shell.file,'KavehBench'):shell.file))};
-    log.report.toolingSha256=Object.fromEntries(['run.cjs','scenario.js','report.cjs','build-shells.cjs','native/Bench.swift','native/BenchActivity.java','native/AndroidManifest.xml','native/BackgroundTests.swift','native/BenchDriver.xcodeproj/project.pbxproj','native/BenchDriver.xcodeproj/xcshareddata/xcschemes/BenchDriver.xcscheme'].map(f=>[f,sha(fs.readFileSync(path.join(__dirname,f)))]));
+    log.report.toolingSha256=Object.fromEntries(['run.cjs','host-monitor.cjs','scenario.js','report.cjs','build-shells.cjs','native/Bench.swift','native/BenchActivity.java','native/AndroidManifest.xml','native/BackgroundTests.swift','native/BenchDriver.xcodeproj/project.pbxproj','native/BenchDriver.xcodeproj/xcshareddata/xcschemes/BenchDriver.xcscheme'].map(f=>[f,sha(fs.readFileSync(path.join(__dirname,f)))]));
     const enginePath=path.join(os.tmpdir(),'kaveh-alg61-deps','three.min.js');
     fs.mkdirSync(path.dirname(enginePath),{recursive:true});
     const engineHash='8a5f7249903b54d30f79f708699d2fed2d6a1d0741a4cd41377d1f01bb5a2271';
@@ -117,6 +125,7 @@ async function main(){
     }});
     await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));port=server.address().port;
     const url=`http://127.0.0.1:${port}/`;
+    hostMonitor.startMeasurement();
     timer=setTimeout(()=>fail(Error('Benchmark completion timed out after 5 minutes')),300000);
     if(platform==='android'){
       await adb('install','-r',shell.file);installed=true;
@@ -129,16 +138,17 @@ async function main(){
       log.report.launch=await sim('launch',device,bundle,'--url',url);
       pid=Number(log.report.launch.split(':').at(-1).trim());
     }
-    log.save();await done;await actions;await diagnostics('completed');
+    log.save();await done;await actions;hostMonitor.endMeasurement();await diagnostics('completed');
     log.finish();if(!log.report.valid)throw Error('Missing successful completion event');
     console.log('Saved '+dir);
   }catch(error){
+    if(hostMonitor?.error&&hostMonitor.error!==error)error=Error(hostMonitor.error.message,{cause:error});
     actionAbort.abort();await actions.catch(()=>{});
     commandFailure(error,'failure-command.txt');
     await diagnostics('failure');log.finish(error);throw error;
   }
   finally{
-    clearTimeout(timer);actionAbort.abort();await actions.catch(()=>{});server?.closeAllConnections();server?.close();
+    clearTimeout(timer);hostMonitor?.stop();actionAbort.abort();await actions.catch(()=>{});server?.closeAllConnections();server?.close();
     process.removeListener('SIGINT',interrupt);process.removeListener('SIGTERM',interrupt);
     if(platform==='android'&&port)await adb('reverse','--remove',`tcp:${port}`).catch(()=>{});
     if(installed){if(platform==='android')await adb('shell','am','force-stop',bundle).catch(()=>{});else await sim('terminate',device,bundle).catch(()=>{});}
